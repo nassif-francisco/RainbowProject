@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="game.cpp" />
+    <ClCompile Include="Main.cpp" />
+    <ClCompile Include="game_state_start.cpp" />
+    <ClCompile Include="game_state_editor.cpp" />
+    <ClCompile Include="texture_manager.hpp">
+      <Filter>Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="texture_manager.cpp" />
+    <ClCompile Include="animation_handler.cpp" />
+    <ClCompile Include="tile.cpp" />
+    <ClCompile Include="map.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Headers">
+      <UniqueIdentifier>{79c5c80e-37bf-4a72-aae7-709a5014cfb9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="game.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="game_state.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="game_state_start.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="game_state_editor.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="animation_handler.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tile.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="map.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
