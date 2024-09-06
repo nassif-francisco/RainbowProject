@@ -4,10 +4,12 @@
 #include "game_state_editor.hpp"
 #include "game_state.hpp"
 #include <iostream>
+#include "constants.hpp"
 
 void GameStateStart::draw(const float dt)
 {
     this->game->window.setView(this->view);
+    this->game->window.setView(this->guiView);
 
     this->game->window.clear(sf::Color::Black);
 
@@ -24,6 +26,8 @@ void GameStateStart::draw(const float dt)
     sf::FloatRect localbounds = game->background.getLocalBounds();*/
 
     this->game->window.draw(this->game->background);
+    this->game->window.draw(this->game->toolbar);
+    this->game->window.draw(this->brickBrushIcon);
 
     return;
 }
@@ -124,12 +128,16 @@ GameStateStart::GameStateStart(Game* game)
     sf::Vector2f size = sf::Vector2f(this->game->window.getSize());
     sf::Vector2f pos = sf::Vector2f(this->game->window.getPosition());
 
+    this->brickBrushIcon.setTexture(this->game->texmgr.getRef("brickBrushIcon"));
+
     float xcoord = pos.x + size.x / 2.f;
     float ycoord = pos.y + size.y / 2.f;
 
     this->view.setSize(size);
+    this->guiView.setSize(size);
     //pos *= 0.5f;
     this->view.setCenter(sf::Vector2f(xcoord, ycoord));
+    this->guiView.setCenter(sf::Vector2f(xcoord, ycoord));
 
     sf::Vector2f viewCenter = view.getCenter();
     sf::Vector2f viewSize = view.getSize();
@@ -140,6 +148,13 @@ GameStateStart::GameStateStart(Game* game)
     sf::Vector2f posgame = game->background.getPosition();
     //sf::Vector2f pos1 = sf::Vector2f(950.f, 0.f);
     game->background.setPosition(pos);
+
+    float toolbarOffsetPosition = RBConstants::windowHeight - RBConstants::toolbarHeight;
+
+    game->toolbar.setPosition(pos.x, pos.y + toolbarOffsetPosition);
+
+    this->brickBrushIcon.setPosition(pos.x + 30.f, pos.y + toolbarOffsetPosition + 30.f);
+
     sf::FloatRect bounds = game->background.getGlobalBounds();
     sf::FloatRect localbounds = game->background.getLocalBounds();
 }

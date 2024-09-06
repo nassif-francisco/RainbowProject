@@ -28,6 +28,7 @@ public:
     TextureManager texmgr;
 
     sf::Sprite background;
+    sf::Sprite toolbar;
 
     void pushState(GameState* state);
     void popState();

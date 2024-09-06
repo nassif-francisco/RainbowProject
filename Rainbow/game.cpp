@@ -19,6 +19,8 @@ void Game::loadTextures()
     texmgr.loadTexture("industrial", "media/industrial.png");
     texmgr.loadTexture("road", "media/road.png");
     texmgr.loadTexture("background", "media/background.png");
+    texmgr.loadTexture("toolbar", "media/toolbar.png");
+    texmgr.loadTexture("brickBrushIcon", "media/brickBrushIcon.png");
 }
 
 void Game::pushState(GameState* state)
@@ -78,6 +80,7 @@ Game::Game()
     this->window.setFramerateLimit(60);
 
     this->background.setTexture(this->texmgr.getRef("background"));
+    this->toolbar.setTexture(this->texmgr.getRef("toolbar"));
 }
 
 void Game::loadTiles()

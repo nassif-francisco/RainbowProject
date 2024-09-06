@@ -9,7 +9,6 @@ void GameStateEditor::draw(const float dt)
 {
     this->game->window.clear(sf::Color::Black);
 
-    //this->game->window.setView(this->guiView);
     this->game->window.draw(this->game->background);
 
     this->game->window.setView(this->gameView);

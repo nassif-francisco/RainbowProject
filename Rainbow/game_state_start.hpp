@@ -10,6 +10,10 @@ class GameStateStart : public GameState
 private:
 
     sf::View view;
+    sf::View guiView;
+
+    sf::Sprite brickBrushIcon;
+
     void loadgame();
 
 public:
