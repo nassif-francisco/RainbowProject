@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 
 #include "game_state.hpp"
+#include "canvas.hpp"
+#include "map.hpp"
 
 class GameStateStart : public GameState
 {
@@ -13,7 +15,8 @@ private:
     sf::View guiView;
 
     sf::Sprite brickBrushIcon;
-
+    Canvas canvas;
+    Map map;
     void loadgame();
 
 public:

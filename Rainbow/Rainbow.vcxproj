@@ -132,6 +132,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="animation_handler.cpp" />
+    <ClCompile Include="canvas.cpp" />
+    <ClCompile Include="canvasObject.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_state_editor.cpp" />
     <ClCompile Include="game_state_start.cpp" />
@@ -143,6 +145,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation_handler.hpp" />
+    <ClInclude Include="canvas.hpp" />
+    <ClInclude Include="canvasObject.hpp" />
     <ClInclude Include="constants.hpp" />
     <ClInclude Include="game.hpp" />
     <ClInclude Include="game_state.hpp" />

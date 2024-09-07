@@ -63,6 +63,16 @@ public:
         this->height = 0;
         this->numRegions[0] = 1;
     }
+
+    Map(Game* game)
+    {
+        this->tileHeight = 8;
+        this->width = 0;
+        this->height = 0;
+        this->numRegions[0] = 1;
+
+        this->game = game;
+    }
     /* Load map from file constructor */
     Map(const std::string& filename, unsigned int width, unsigned int height,
         std::map<std::string, Tile>& tileAtlas, Game* game)

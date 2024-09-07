@@ -5,6 +5,7 @@
 #include "game_state.hpp"
 #include <iostream>
 #include "constants.hpp"
+#include "tile.hpp"
 
 void GameStateStart::draw(const float dt)
 {
@@ -27,7 +28,8 @@ void GameStateStart::draw(const float dt)
 
     this->game->window.draw(this->game->background);
     this->game->window.draw(this->game->toolbar);
-    this->game->window.draw(this->brickBrushIcon);
+    //this->game->window.draw(this->brickBrushIcon);
+    this->map.draw(this->game->window, dt);
 
     return;
 }
@@ -53,7 +55,7 @@ void GameStateStart::handleInput()
         case sf::Event::MouseButtonPressed:
         {
             // get global mouse position
-            sf::Vector2i position = sf::Mouse::getPosition();
+            sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
             sf::Vector2i positionWindow = this->game->window.getPosition();
 
             // set mouse position relative to a window
@@ -66,6 +68,13 @@ void GameStateStart::handleInput()
 
             std::cout << "worldPos.x: " << worldPos.x << std::endl;
             std::cout << "worldPos.y: " << worldPos.y << std::endl;
+            
+            TileType tileType;
+            tileType = TileType::FOREST;
+            this->map.tiles.push_back(game->tileAtlas.at("forest"));
+            Tile& tile = this->map.tiles.back();
+            tile.sprite.setPosition(worldPos.x, worldPos.y);
+            
             
             //view.setCenter(900.f, 900.f);
             break;
@@ -132,6 +141,8 @@ GameStateStart::GameStateStart(Game* game)
 
     float xcoord = pos.x + size.x / 2.f;
     float ycoord = pos.y + size.y / 2.f;
+
+    map = Map(this->game);
 
     this->view.setSize(size);
     this->guiView.setSize(size);
