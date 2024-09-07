@@ -7,7 +7,7 @@
 #include "map.hpp"
 
 
-enum class ActionState { NONE, PANNING };
+enum class ActionState { NONE, PANNING, PAINTING };
 
 class GameStateEditor : public GameState
 {

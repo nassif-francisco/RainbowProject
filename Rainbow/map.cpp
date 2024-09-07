@@ -92,9 +92,7 @@ void Map::draw(sf::RenderWindow& window, float dt)
 
     for (int i = 0; i < this->tiles.size(); ++i)
     {
-            /* Draw the tile */
-            this->tiles[i].draw(window, dt);
-            i++;
+        this->tiles[i].draw(window, dt);
     }
     return;
 }

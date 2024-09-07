@@ -4,13 +4,12 @@
 #include "game_state_editor.hpp"
 #include "game_state.hpp"
 #include <iostream>
-#include "constants.hpp"
 #include "tile.hpp"
 
 void GameStateStart::draw(const float dt)
 {
     this->game->window.setView(this->view);
-    this->game->window.setView(this->guiView);
+    //this->game->window.setView(this->guiView);
 
     this->game->window.clear(sf::Color::Black);
 
@@ -52,31 +51,100 @@ void GameStateStart::handleInput()
             game->window.close();
             break;
         }
+        case sf::Event::MouseWheelMoved:
+        {
+            if (event.mouseWheel.delta < 0)
+            {
+                view.zoom(2.0f);
+                zoomLevel *= 2.0f;
+            }
+            else
+            {
+                view.zoom(0.5f);
+                zoomLevel *= 0.5f;
+            }
+            break;
+        }
+        case sf::Event::MouseMoved:
+        {
+            /* Pan the camera */
+            if (this->actionState == RBActionState::PANNING)
+            {
+                sf::Vector2f pos = sf::Vector2f(sf::Mouse::getPosition(this->game->window) - this->panningAnchor);
+                view.move(-1.0f * pos * this->zoomLevel);
+                panningAnchor = sf::Mouse::getPosition(this->game->window);
+            }
+            else if (actionState == RBActionState::BRUSHING)
+            {
+                sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
+                sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+
+                TileType tileType;
+                tileType = TileType::FOREST;
+                this->map.tiles.push_back(game->tileAtlas.at("forest"));
+                Tile& tile = this->map.tiles.back();
+                tile.sprite.setPosition(worldPos.x, worldPos.y);
+            }
+        }
         case sf::Event::MouseButtonPressed:
         {
-            // get global mouse position
-            sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
-            sf::Vector2i positionWindow = this->game->window.getPosition();
+            /* Start panning */
+            if (event.mouseButton.button == sf::Mouse::Middle)
+            {
+                if (this->actionState != RBActionState::PANNING)
+                {
+                    this->actionState = RBActionState::PANNING;
+                    this->panningAnchor = sf::Mouse::getPosition(this->game->window);
+                }
+            }
+            
+            else if (event.mouseButton.button == sf::Mouse::Left)
+            {
+                // get global mouse position
+                if (this->actionState != RBActionState::PAINTING)
+                {
+                    this->actionState = RBActionState::PAINTING;
+                }
+                sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
+                sf::Vector2i positionWindow = this->game->window.getPosition();
 
-            // set mouse position relative to a window
-            //sf::Mouse::setPosition(sf::Vector2i(100, 200), game->window);
-            
-            std::cout << "postition.x: " << position.x << std::endl;
-            std::cout << "position.y: " << position.y << std::endl;
+                // set mouse position relative to a window
+                //sf::Mouse::setPosition(sf::Vector2i(100, 200), game->window);
 
-            sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+                std::cout << "postition.x: " << position.x << std::endl;
+                std::cout << "position.y: " << position.y << std::endl;
 
-            std::cout << "worldPos.x: " << worldPos.x << std::endl;
-            std::cout << "worldPos.y: " << worldPos.y << std::endl;
-            
-            TileType tileType;
-            tileType = TileType::FOREST;
-            this->map.tiles.push_back(game->tileAtlas.at("forest"));
-            Tile& tile = this->map.tiles.back();
-            tile.sprite.setPosition(worldPos.x, worldPos.y);
-            
-            
-            //view.setCenter(900.f, 900.f);
+                sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+
+                std::cout << "worldPos.x: " << worldPos.x << std::endl;
+                std::cout << "worldPos.y: " << worldPos.y << std::endl;
+
+                TileType tileType;
+                tileType = TileType::FOREST;
+                this->map.tiles.push_back(game->tileAtlas.at("forest"));
+                Tile& tile = this->map.tiles.back();
+                tile.sprite.setPosition(worldPos.x, worldPos.y);
+
+
+                //view.setCenter(900.f, 900.f);
+            }
+            break;
+        }
+        case sf::Event::MouseButtonReleased:
+        {
+            /* Stop panning */
+            if (event.mouseButton.button == sf::Mouse::Middle)
+            {
+                this->actionState = RBActionState::NONE;
+            }
+            /* Stop selecting */
+            else if (event.mouseButton.button == sf::Mouse::Left)
+            {
+                if (this->actionState == RBActionState::PAINTING || this->actionState == RBActionState::BRUSHING)
+                {
+                    this->actionState = RBActionState::NONE;
+                }
+            }
             break;
         }
         /* Resize the window */
@@ -143,6 +211,7 @@ GameStateStart::GameStateStart(Game* game)
     float ycoord = pos.y + size.y / 2.f;
 
     map = Map(this->game);
+    this->zoomLevel = 1.0f;
 
     this->view.setSize(size);
     this->guiView.setSize(size);

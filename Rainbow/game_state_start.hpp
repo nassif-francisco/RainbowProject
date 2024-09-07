@@ -6,6 +6,7 @@
 #include "game_state.hpp"
 #include "canvas.hpp"
 #include "map.hpp"
+#include "constants.hpp"
 
 class GameStateStart : public GameState
 {
@@ -15,6 +16,10 @@ private:
     sf::View guiView;
 
     sf::Sprite brickBrushIcon;
+    RBActionState  actionState;
+    sf::Vector2i panningAnchor;
+    float zoomLevel;
+
     Canvas canvas;
     Map map;
     void loadgame();
