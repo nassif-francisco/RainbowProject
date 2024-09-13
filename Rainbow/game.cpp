@@ -20,7 +20,8 @@ void Game::loadTextures()
     texmgr.loadTexture("road", "media/road.png");
     texmgr.loadTexture("background", "media/background.png");
     texmgr.loadTexture("toolbar", "media/toolbar.png");
-    texmgr.loadTexture("brickBrushIcon", "media/brickBrushIcon.png");
+    texmgr.loadTexture("flower", "media/Packs/Forest/flower.png");
+    texmgr.loadTexture("flowerButton", "media/Packs/Forest/flowerButton.png");
 }
 
 void Game::pushState(GameState* state)
@@ -76,7 +77,7 @@ Game::Game()
     this->loadTextures();
     this->loadTiles();
     
-    this->window.create(sf::VideoMode(800, 600), "City Builder");
+    this->window.create(sf::VideoMode(892, 658), "City Builder");
     this->window.setFramerateLimit(60);
 
     this->background.setTexture(this->texmgr.getRef("background"));
@@ -91,7 +92,7 @@ void Game::loadTiles()
             { staticAnim },
             TileType::GRASS, 50, 0, 1);
     tileAtlas["forest"] =
-        Tile(this->tileHeight, 1, texmgr.getRef("forest"),
+        Tile(25, 1, texmgr.getRef("forest"),
             { staticAnim },
             TileType::FOREST, 100, 0, 1);
     tileAtlas["water"] =

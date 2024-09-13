@@ -41,12 +41,14 @@ public:
     /* Goods stored */
     float storedGoods;
 
+    bool isAnimated;
+
     /* Constructor */
     Tile() { }
     Tile(const unsigned int tileSize, const unsigned int height, sf::Texture& texture,
         const std::vector<Animation>& animations,
         const TileType tileType, const unsigned int cost, const unsigned int maxPopPerLevel,
-        const unsigned int maxLevels)
+        const unsigned int maxLevels, bool isAnimated = false)
     {
         this->tileType = tileType;
         this->tileVariant = 0;
@@ -58,6 +60,7 @@ public:
         this->maxLevels = maxLevels;
         this->production = 0;
         this->storedGoods = 0;
+        this->isAnimated = isAnimated;
 
         this->sprite.setOrigin(sf::Vector2f(0.0f, tileSize * (height - 1)));
         this->sprite.setTexture(texture);

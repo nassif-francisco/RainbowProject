@@ -7,6 +7,7 @@
 #include "canvas.hpp"
 #include "map.hpp"
 #include "constants.hpp"
+#include <string>
 
 class GameStateStart : public GameState
 {
@@ -19,10 +20,15 @@ private:
     RBActionState  actionState;
     sf::Vector2i panningAnchor;
     float zoomLevel;
+    std::string currentTyleID;
+    float toolbarMinY;
 
     Canvas canvas;
     Map map;
     void loadgame();
+    void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
+    void setCurrentTyleID(sf::Vector2i position);
+    //std::string getCurrentTyleID();
 
 public:
 

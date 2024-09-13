@@ -5,6 +5,7 @@
 #include "game_state.hpp"
 #include <iostream>
 #include "tile.hpp"
+#include <string>
 
 void GameStateStart::draw(const float dt)
 {
@@ -27,7 +28,7 @@ void GameStateStart::draw(const float dt)
 
     this->game->window.draw(this->game->background);
     this->game->window.draw(this->game->toolbar);
-    //this->game->window.draw(this->brickBrushIcon);
+    this->game->window.draw(this->brickBrushIcon);
     this->map.draw(this->game->window, dt);
 
     return;
@@ -89,6 +90,7 @@ void GameStateStart::handleInput()
         case sf::Event::MouseButtonPressed:
         {
             /* Start panning */
+            
             if (event.mouseButton.button == sf::Mouse::Middle)
             {
                 if (this->actionState != RBActionState::PANNING)
@@ -101,12 +103,21 @@ void GameStateStart::handleInput()
             else if (event.mouseButton.button == sf::Mouse::Left)
             {
                 // get global mouse position
+                sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
+                sf::Vector2i positionWindow = this->game->window.getPosition();
+                sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+
+                if (position.y > toolbarMinY)
+                {
+                    //find which brush is being selected
+                    setCurrentTyleID(position);
+                    break;
+                }
+
                 if (this->actionState != RBActionState::PAINTING)
                 {
                     this->actionState = RBActionState::PAINTING;
-                }
-                sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
-                sf::Vector2i positionWindow = this->game->window.getPosition();
+                } 
 
                 // set mouse position relative to a window
                 //sf::Mouse::setPosition(sf::Vector2i(100, 200), game->window);
@@ -114,14 +125,14 @@ void GameStateStart::handleInput()
                 std::cout << "postition.x: " << position.x << std::endl;
                 std::cout << "position.y: " << position.y << std::endl;
 
-                sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+                
 
                 std::cout << "worldPos.x: " << worldPos.x << std::endl;
                 std::cout << "worldPos.y: " << worldPos.y << std::endl;
 
                 TileType tileType;
                 tileType = TileType::FOREST;
-                this->map.tiles.push_back(game->tileAtlas.at("forest"));
+                this->map.tiles.push_back(game->tileAtlas.at(tileTypeToStr(tileType)));
                 Tile& tile = this->map.tiles.back();
                 tile.sprite.setPosition(worldPos.x, worldPos.y);
 
@@ -155,13 +166,17 @@ void GameStateStart::handleInput()
             this->game->background.setScale(
                 float(event.size.width) / float(this->game->background.getTexture()->getSize().x),
                 float(event.size.height) / float(this->game->background.getTexture()->getSize().y));*/
+            sf::Vector2i positionWindow = this->game->window.getPosition();
             sf::Vector2u sizeWindow = game->window.getSize();
+
+            float toolbarOffsetPosition = sizeWindow.y - sizeWindow.y/7;
+            toolbarMinY = toolbarOffsetPosition;
 
             std::cout << "SizeWindow.x: " << sizeWindow.x << std::endl;
             std::cout << "SizeWindow.y: " << sizeWindow.y << std::endl;
 
             sf::Vector2i position = sf::Mouse::getPosition();
-            sf::Vector2i positionWindow = this->game->window.getPosition();
+            
 
             // set mouse position relative to a window
             //sf::Mouse::setPosition(sf::Vector2i(100, 200), game->window);
@@ -199,13 +214,40 @@ void GameStateStart::handleInput()
     return;
 }
 
+void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size)
+{
+    float xcoord = pos.x + size.x / 2.f;
+    float ycoord = pos.y + size.y / 2.f;
+
+
+    float toolbarOffsetPosition = size.y - size.y / 7;
+    
+    //float toolbarOffsetPosition = RBConstants::windowHeight - RBConstants::toolbarHeight;
+    toolbarMinY = toolbarOffsetPosition;
+
+    this->brickBrushIcon.setTexture(this->game->texmgr.getRef("flowerButton"));
+
+    sf::FloatRect floatrect = this->brickBrushIcon.getLocalBounds();
+
+    game->toolbar.setPosition(pos.x, pos.y + toolbarOffsetPosition);
+
+    this->guiView.setSize(size);
+    this->guiView.setCenter(sf::Vector2f(xcoord, ycoord));
+
+    this->brickBrushIcon.setPosition(pos.x + 10.f, pos.y + toolbarOffsetPosition + 10.f);
+
+}
+
+void GameStateStart::setCurrentTyleID(sf::Vector2i position)
+{
+
+}
+
 GameStateStart::GameStateStart(Game* game)
 {
     this->game = game;
     sf::Vector2f size = sf::Vector2f(this->game->window.getSize());
     sf::Vector2f pos = sf::Vector2f(this->game->window.getPosition());
-
-    this->brickBrushIcon.setTexture(this->game->texmgr.getRef("brickBrushIcon"));
 
     float xcoord = pos.x + size.x / 2.f;
     float ycoord = pos.y + size.y / 2.f;
@@ -214,10 +256,9 @@ GameStateStart::GameStateStart(Game* game)
     this->zoomLevel = 1.0f;
 
     this->view.setSize(size);
-    this->guiView.setSize(size);
+
     //pos *= 0.5f;
     this->view.setCenter(sf::Vector2f(xcoord, ycoord));
-    this->guiView.setCenter(sf::Vector2f(xcoord, ycoord));
 
     sf::Vector2f viewCenter = view.getCenter();
     sf::Vector2f viewSize = view.getSize();
@@ -229,11 +270,7 @@ GameStateStart::GameStateStart(Game* game)
     //sf::Vector2f pos1 = sf::Vector2f(950.f, 0.f);
     game->background.setPosition(pos);
 
-    float toolbarOffsetPosition = RBConstants::windowHeight - RBConstants::toolbarHeight;
-
-    game->toolbar.setPosition(pos.x, pos.y + toolbarOffsetPosition);
-
-    this->brickBrushIcon.setPosition(pos.x + 30.f, pos.y + toolbarOffsetPosition + 30.f);
+    assembleToolbar(game, pos, size);
 
     sf::FloatRect bounds = game->background.getGlobalBounds();
     sf::FloatRect localbounds = game->background.getLocalBounds();
