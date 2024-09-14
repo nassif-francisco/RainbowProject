@@ -62,7 +62,7 @@ public:
         this->storedGoods = 0;
         this->isAnimated = isAnimated;
 
-        this->sprite.setOrigin(sf::Vector2f(0.0f, tileSize * (height - 1)));
+        //this->sprite.setOrigin(sf::Vector2f(0.0f, tileSize * (height - 1)));
         this->sprite.setTexture(texture);
         this->animHandler.frameSize = sf::IntRect(0, 0, tileSize * 2, tileSize * height);
         for (auto animation : animations)

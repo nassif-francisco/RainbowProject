@@ -132,7 +132,7 @@ void GameStateStart::handleInput()
 
                 TileType tileType;
                 tileType = TileType::FOREST;
-                this->map.tiles.push_back(game->tileAtlas.at(tileTypeToStr(tileType)));
+                this->map.tiles.push_back(game->tileAtlas.at("FlowerPot4YELLOW"));
                 Tile& tile = this->map.tiles.back();
                 tile.sprite.setPosition(worldPos.x, worldPos.y);
 
@@ -225,7 +225,17 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     //float toolbarOffsetPosition = RBConstants::windowHeight - RBConstants::toolbarHeight;
     toolbarMinY = toolbarOffsetPosition;
 
-    this->brickBrushIcon.setTexture(this->game->texmgr.getRef("flowerButton"));
+    //load pack
+    //check everything in Packs/Forest folder
+    //load each tuple in a vector, pack icons
+    //set pack region--> extract first 42 elements from pack
+    //draw elements
+
+   /* for (const std::string& brushIcon : game->brushNames) {
+        this->brickBrushIcon.setTexture(this->game->texmgr.getRef(brushIcon));
+    }*/
+
+    this->brickBrushIcon.setTexture(this->game->texmgr.getRef("FlowerPot4YELLOWButton"));
 
     sf::FloatRect floatrect = this->brickBrushIcon.getLocalBounds();
 

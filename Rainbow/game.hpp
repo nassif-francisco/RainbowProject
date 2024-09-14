@@ -6,6 +6,13 @@
 #include "texture_manager.hpp"
 #include "tile.hpp"
 
+#include <iostream>
+#include <filesystem>
+#include <string>
+
+namespace fs = std::filesystem;
+
+
 class GameState;
 
 class Game
@@ -13,6 +20,11 @@ class Game
 private:
     void loadTextures();
     void loadTiles();
+
+    void processFile(const fs::path& filePath) {
+        // Replace this with your actual processing code
+        std::cout << "Processing file: " << filePath << std::endl;
+    }
 
 public:
 
@@ -24,6 +36,8 @@ public:
     sf::RenderWindow window;
 
     std::map<std::string, Tile> tileAtlas;
+    std::vector<std::string> tileNames;
+    std::vector<std::string> brushNames;
 
     TextureManager texmgr;
 

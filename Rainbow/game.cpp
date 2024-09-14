@@ -8,20 +8,59 @@
 #include "texture_manager.hpp"
 #include "animation_handler.hpp"
 
+#include <iostream>
+#include <filesystem>
+#include <string>
+
 
 void Game::loadTextures()
 {
-    texmgr.loadTexture("grass", "media/grass.png");
-    texmgr.loadTexture("forest", "media/forest.png");
-    texmgr.loadTexture("water", "media/water.png");
-    texmgr.loadTexture("residential", "media/residential.png");
-    texmgr.loadTexture("commercial", "media/commercial.png");
-    texmgr.loadTexture("industrial", "media/industrial.png");
-    texmgr.loadTexture("road", "media/road.png");
+    //texmgr.loadTexture("grass", "media/grass.png");
+    //texmgr.loadTexture("forest", "media/Packs/Forest/Grid1.png");
+    //texmgr.loadTexture("water", "media/water.png");
+    //texmgr.loadTexture("residential", "media/residential.png");
+    //texmgr.loadTexture("commercial", "media/commercial.png");
+    //texmgr.loadTexture("industrial", "media/industrial.png");
+    //texmgr.loadTexture("road", "media/road.png");
     texmgr.loadTexture("background", "media/background.png");
     texmgr.loadTexture("toolbar", "media/toolbar.png");
-    texmgr.loadTexture("flower", "media/Packs/Forest/flower.png");
-    texmgr.loadTexture("flowerButton", "media/Packs/Forest/flowerButton.png");
+    /*texmgr.loadTexture("flower", "media/Packs/Forest/flower.png");
+    texmgr.loadTexture("flowerButton", "media/Packs/Forest/Grid1Button.png");*/
+
+    std::string directoryPath = "media/Packs/Forest"; // Replace with your directory path
+
+    try {
+        for (const auto& entry : fs::directory_iterator(directoryPath)) {
+            if (entry.is_regular_file()) {
+                fs::path filePath = entry.path();
+                std::string filename = filePath.filename().string();
+                std::string buttonString = "Button";
+
+                std::string finalPath = filePath.string();
+                std::string finalPath2 = finalPath.replace(finalPath.find("\\"), 1, "/");
+
+                // Check if the filename ends with "Button"
+                if (filename.find(buttonString) == std::string::npos) {
+                    std::string tileName = filename.replace(filename.find(".png"), 4, "");
+                    tileNames.push_back(tileName);
+                    texmgr.loadTexture(tileName, finalPath2);
+                }
+                else
+                {
+                    std::string tileName = filename.replace(filename.find(".png"), 4, "");
+                    brushNames.push_back(tileName);
+                    texmgr.loadTexture(tileName, finalPath2);
+                }
+            }
+        }
+    }
+    catch (const fs::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+
 }
 
 void Game::pushState(GameState* state)
@@ -87,7 +126,16 @@ Game::Game()
 void Game::loadTiles()
 {
     Animation staticAnim(0, 0, 1.0f);
-    this->tileAtlas["grass"] =
+
+    for (const std::string& tile : tileNames) {
+        tileAtlas[tile] =
+            Tile(25, 1, texmgr.getRef(tile),
+                { staticAnim },
+                TileType::FOREST, 100, 0, 1);
+    }
+
+
+   /* this->tileAtlas["grass"] =
         Tile(this->tileHeight, 1, texmgr.getRef("grass"),
             { staticAnim },
             TileType::GRASS, 50, 0, 1);
@@ -121,7 +169,7 @@ void Game::loadTiles()
             staticAnim, staticAnim, staticAnim,
             staticAnim, staticAnim, staticAnim,
             staticAnim, staticAnim },
-            TileType::ROAD, 100, 0, 1);
+            TileType::ROAD, 100, 0, 1);*/
 
     return;
 }
