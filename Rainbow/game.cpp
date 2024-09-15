@@ -39,7 +39,7 @@ void Game::loadTextures()
                 std::string finalPath = filePath.string();
                 std::string finalPath2 = finalPath.replace(finalPath.find("\\"), 1, "/");
 
-                // Check if the filename ends with "Button"
+                // Check if the filename does not end with "Button"
                 if (filename.find(buttonString) == std::string::npos) {
                     std::string tileName = filename.replace(filename.find(".png"), 4, "");
                     tileNames.push_back(tileName);
@@ -49,7 +49,7 @@ void Game::loadTextures()
                 {
                     std::string tileName = filename.replace(filename.find(".png"), 4, "");
                     brushNames.push_back(tileName);
-                    texmgr.loadTexture(tileName, finalPath2);
+                    texmgr.loadBrushTexture(tileName, finalPath2);
                 }
             }
         }

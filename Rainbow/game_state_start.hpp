@@ -17,6 +17,10 @@ private:
     sf::View guiView;
 
     sf::Sprite brickBrushIcon;
+
+    std::vector<sf::Sprite> Row1Brushes;
+    std::vector<sf::Sprite> Row2Brushes;
+
     RBActionState  actionState;
     sf::Vector2i panningAnchor;
     float zoomLevel;

@@ -28,7 +28,18 @@ void GameStateStart::draw(const float dt)
 
     this->game->window.draw(this->game->background);
     this->game->window.draw(this->game->toolbar);
-    this->game->window.draw(this->brickBrushIcon);
+
+    for (auto brush : this->Row1Brushes)
+    {
+        this->game->window.draw(brush);
+    }
+
+    for (auto brush : this->Row2Brushes)
+    {
+        this->game->window.draw(brush);
+    }
+
+    //this->game->window.draw(this->brickBrushIcon);
     this->map.draw(this->game->window, dt);
 
     return;
@@ -132,7 +143,7 @@ void GameStateStart::handleInput()
 
                 TileType tileType;
                 tileType = TileType::FOREST;
-                this->map.tiles.push_back(game->tileAtlas.at("FlowerPot4YELLOW"));
+                this->map.tiles.push_back(game->tileAtlas.at("FlowerPot4COLORFUL"));
                 Tile& tile = this->map.tiles.back();
                 tile.sprite.setPosition(worldPos.x, worldPos.y);
 
@@ -234,17 +245,39 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
    /* for (const std::string& brushIcon : game->brushNames) {
         this->brickBrushIcon.setTexture(this->game->texmgr.getRef(brushIcon));
     }*/
+    float brushPositionX = pos.x;
+    float brushDistance = 10.f;
+    float brushWidth = 32.f;
+    float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
-    this->brickBrushIcon.setTexture(this->game->texmgr.getRef("FlowerPot4YELLOWButton"));
+    for (int i =0; i<=6; i++)
+    {
+        brushPositionX += brushDistance + brushWidth;
+        sf::Sprite newSprite = sf::Sprite();
+        Row1Brushes.push_back(newSprite);
 
-    sf::FloatRect floatrect = this->brickBrushIcon.getLocalBounds();
+        this->Row1Brushes[i].setTexture(this->game->texmgr.getBrushRef(this->game->brushNames[i]));
+
+        this->Row1Brushes[i].setPosition(brushPositionX, pos.y + brushDistance + toolbarOffsetPosition);
+    }
+
+    //for (size_t i = 21; i <= this->game->brushNames.size(); i++)
+    //{
+
+
+    //}
+
+
+    //this->brickBrushIcon.setTexture(this->game->texmgr.getBrushRef("FlowerPot4YELLOWButton"));
+
+    //sf::FloatRect floatrect = this->brickBrushIcon.getLocalBounds();
 
     game->toolbar.setPosition(pos.x, pos.y + toolbarOffsetPosition);
 
     this->guiView.setSize(size);
     this->guiView.setCenter(sf::Vector2f(xcoord, ycoord));
 
-    this->brickBrushIcon.setPosition(pos.x + 10.f, pos.y + toolbarOffsetPosition + 10.f);
+    //this->brickBrushIcon.setPosition(pos.x + 10.f, pos.y + toolbarOffsetPosition + 10.f);
 
 }
 
