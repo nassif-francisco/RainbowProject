@@ -27,6 +27,9 @@ void GameStateStart::draw(const float dt)
     sf::FloatRect localbounds = game->background.getLocalBounds();*/
 
     this->game->window.draw(this->game->background);
+
+    this->map.draw(this->game->window, dt);
+
     this->game->window.draw(this->game->toolbar);
 
     for (auto brush : this->Row1Brushes)
@@ -40,7 +43,7 @@ void GameStateStart::draw(const float dt)
     }
 
     //this->game->window.draw(this->brickBrushIcon);
-    this->map.draw(this->game->window, dt);
+    
 
     return;
 }
@@ -141,9 +144,16 @@ void GameStateStart::handleInput()
                 std::cout << "worldPos.x: " << worldPos.x << std::endl;
                 std::cout << "worldPos.y: " << worldPos.y << std::endl;
 
+                if (currentBrush == nullptr)
+                {
+                    return;
+                }
+                std::string currentBrushName = this->game->brushNames[*currentBrush];
+                std::string tileName = currentBrushName.replace(currentBrushName.find("Button"), 6, "");
+
                 TileType tileType;
                 tileType = TileType::FOREST;
-                this->map.tiles.push_back(game->tileAtlas.at("FlowerPot4COLORFUL"));
+                this->map.tiles.push_back(game->tileAtlas.at(tileName));
                 Tile& tile = this->map.tiles.back();
                 tile.sprite.setPosition(worldPos.x, worldPos.y);
 
@@ -255,8 +265,8 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     for (int i =0; i<=6; i++)
     {
         brushPositionX += brushDistance + brushWidth;
-        sf::Sprite newSprite = sf::Sprite();
-        Row1Brushes.push_back(newSprite);
+        sf::Sprite* newSprite =  new sf::Sprite();
+        Row1Brushes.push_back(*newSprite);
 
         this->Row1Brushes[i].setTexture(this->game->texmgr.getBrushRef(this->game->brushNames[i]));
 
@@ -285,7 +295,17 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
 
 void GameStateStart::setCurrentTyleID(sf::Vector2i position)
 {
+    int b = 0;
+    for (auto brush : this->Row1Brushes)
+    {
+        sf::FloatRect boundingBox = brush.getGlobalBounds();
 
+        if (boundingBox.contains((sf::Vector2f)position))
+        {
+            currentBrush = new int(b);
+        }
+        b++;
+    }
 }
 
 GameStateStart::GameStateStart(Game* game)

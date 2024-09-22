@@ -18,6 +18,7 @@ private:
 
     sf::Sprite brickBrushIcon;
 
+    int* currentBrush = nullptr;
     std::vector<sf::Sprite> Row1Brushes;
     std::vector<sf::Sprite> Row2Brushes;
 
