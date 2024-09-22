@@ -7,8 +7,10 @@ static class RBConstants
 
 {
 public: 
-	static constexpr float windowHeight = 600.f;
-	static constexpr float toolbarHeight = 100.f;
+	static constexpr float windowHeight = 1080.f;
+	static constexpr float toolbarHeight = 94.f;
+	static constexpr float toolbarHeightFactor = 11.48;
+	
 
 
 };

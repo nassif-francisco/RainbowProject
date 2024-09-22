@@ -116,7 +116,11 @@ Game::Game()
     this->loadTextures();
     this->loadTiles();
     
-    this->window.create(sf::VideoMode(892, 658), "City Builder");
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+
+    this->window.create(sf::VideoMode(desktop.width, desktop.height - RBConstants::toolbarHeight), "app.exe", sf::Style::Default);
+    //local tweat to set window in corner
+    this->window.setPosition(sf::Vector2i(-10, -5));
     this->window.setFramerateLimit(60);
 
     this->background.setTexture(this->texmgr.getRef("background"));

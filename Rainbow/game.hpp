@@ -9,6 +9,7 @@
 #include <iostream>
 #include <filesystem>
 #include <string>
+#include "constants.hpp"
 
 namespace fs = std::filesystem;
 
