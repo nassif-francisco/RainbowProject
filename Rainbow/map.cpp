@@ -81,7 +81,7 @@ void Map::save(const std::string& filename)
     return;
 }
 
-void Map::draw(sf::RenderWindow& window, float dt)
+void Map::draw(sf::RenderWindow& window, float dt, int* hoveredTile)
 {
     //pos.x = (x - y) * this->tileSize + this->width * this->tileSize;
     //pos.y = (x + y) * this->tileSize * 0.5;
@@ -93,7 +93,14 @@ void Map::draw(sf::RenderWindow& window, float dt)
     for (int i = 0; i < this->tiles.size(); ++i)
     {
         this->tiles[i].draw(window, dt);
+        this->tiles[i].sprite.setColor(sf::Color::White);
     }
+
+    if (hoveredTile != nullptr)
+    {
+        this->tiles[*hoveredTile].sprite.setColor(sf::Color(255, 255, 255, 128));
+    }
+
     return;
 }
 

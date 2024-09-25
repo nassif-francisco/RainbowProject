@@ -19,6 +19,7 @@ private:
     sf::Sprite brickBrushIcon;
 
     int* currentBrush = nullptr;
+    int* currentTileHovered = nullptr;
     std::vector<sf::Sprite> Row1Brushes;
     std::vector<sf::Sprite> Row2Brushes;
 
@@ -33,6 +34,7 @@ private:
     void loadgame();
     void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void setCurrentTyleID(sf::Vector2i position);
+    bool checkIfMousePositionIsOnTile(sf::Vector2i position);
     //std::string getCurrentTyleID();
 
 public:

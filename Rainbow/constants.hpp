@@ -15,7 +15,7 @@ public:
 
 };
 
-enum class RBActionState { NONE, PANNING, PAINTING, BRUSHING };
+enum class RBActionState { NONE, PANNING, PAINTING, BRUSHING, MOVING };
 
 
 #endif /* ANIMATION_HANDLER_HPP */

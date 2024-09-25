@@ -28,7 +28,7 @@ void GameStateStart::draw(const float dt)
 
     this->game->window.draw(this->game->background);
 
-    this->map.draw(this->game->window, dt);
+    this->map.draw(this->game->window, dt, currentTileHovered);
 
     this->game->window.draw(this->game->toolbar);
     
@@ -89,6 +89,24 @@ void GameStateStart::handleInput()
         case sf::Event::MouseMoved:
         {
             /* Pan the camera */
+            sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
+            sf::Vector2i positionWindow = this->game->window.getPosition();
+            sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+
+            if (position.y < toolbarMinY)
+            {
+                //find which brush is being selected
+                checkIfMousePositionIsOnTile(position);
+                //break;
+            }
+
+            //if (this->actionState != RBActionState::MOVING)
+            //{
+            //    this->actionState = RBActionState::MOVING;
+            //}
+
+
+
             if (this->actionState == RBActionState::PANNING)
             {
                 sf::Vector2f pos = sf::Vector2f(sf::Mouse::getPosition(this->game->window) - this->panningAnchor);
@@ -269,7 +287,7 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     float brushWidth = 32.f;
     float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
-    for (int i =0; i<=6; i++)
+    for (int i =0; i<=4; i++)
     {
         brushPositionX += brushDistance + brushWidth;
         sf::Sprite* newSprite =  new sf::Sprite();
@@ -299,6 +317,26 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     //this->brickBrushIcon.setPosition(pos.x + 10.f, pos.y + toolbarOffsetPosition + 10.f);
 
 }
+
+bool GameStateStart::checkIfMousePositionIsOnTile(sf::Vector2i position)
+{
+    int b = 0;
+    for (auto tile : this->map.tiles)
+    {
+        sf::FloatRect boundingBox = tile.sprite.getGlobalBounds();
+
+        if (boundingBox.contains((sf::Vector2f)position))
+        {
+            currentTileHovered = new int(b);
+            return true;
+        }
+        b++;
+    }
+    currentTileHovered = nullptr;
+    return false;
+}
+
+
 
 void GameStateStart::setCurrentTyleID(sf::Vector2i position)
 {
