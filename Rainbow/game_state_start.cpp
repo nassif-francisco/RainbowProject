@@ -161,7 +161,9 @@ void GameStateStart::handleInput()
                 tileType = TileType::FOREST;
                 this->map.tiles.push_back(game->tileAtlas.at(tileName));
                 Tile& tile = this->map.tiles.back();
-                tile.sprite.setPosition(worldPos.x, worldPos.y);
+                sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+                sf::Vector2f spriteSize = bounds.getSize();
+                tile.sprite.setPosition(worldPos.x - spriteSize.x/2, worldPos.y - spriteSize.y/2);
 
                 //view.setCenter(900.f, 900.f);
             }
