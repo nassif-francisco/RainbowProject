@@ -182,6 +182,7 @@ void GameStateStart::handleInput()
                 sf::FloatRect bounds = tile.sprite.getGlobalBounds();
                 sf::Vector2f spriteSize = bounds.getSize();
                 tile.sprite.setPosition(worldPos.x - spriteSize.x/2, worldPos.y - spriteSize.y/2);
+                currentTileHovered = new int(map.tiles.size()-1);
 
                 //view.setCenter(900.f, 900.f);
             }
