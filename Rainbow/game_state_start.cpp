@@ -31,10 +31,16 @@ void GameStateStart::draw(const float dt)
     this->map.draw(this->game->window, dt);
 
     this->game->window.draw(this->game->toolbar);
-
+    
+    int k = 0;
     for (auto brush : this->Row1Brushes)
     {
+        if (currentBrush != nullptr && *currentBrush == k)
+        {
+            brush.setColor(sf::Color(255, 255, 255, 128));
+        }
         this->game->window.draw(brush);
+        k++;
     }
 
     for (auto brush : this->Row2Brushes)
@@ -156,7 +162,6 @@ void GameStateStart::handleInput()
                 this->map.tiles.push_back(game->tileAtlas.at(tileName));
                 Tile& tile = this->map.tiles.back();
                 tile.sprite.setPosition(worldPos.x, worldPos.y);
-
 
                 //view.setCenter(900.f, 900.f);
             }
@@ -303,6 +308,7 @@ void GameStateStart::setCurrentTyleID(sf::Vector2i position)
         if (boundingBox.contains((sf::Vector2f)position))
         {
             currentBrush = new int(b);
+            brush.setColor(sf::Color(255, 255, 255, 128));
         }
         b++;
     }
