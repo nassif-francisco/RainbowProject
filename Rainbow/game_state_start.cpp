@@ -95,6 +95,19 @@ void GameStateStart::handleInput()
 
             if (position.y < toolbarMinY)
             {
+                if (this->actionState == RBActionState::MOVING && currentTileHovered != nullptr)
+                {
+                    sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
+                    sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+
+                    Tile& tile = this->map.tiles[*currentTileHovered];
+
+                    sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+                    sf::Vector2f spriteSize = bounds.getSize();
+                    tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
+                    break;
+                }
+                
                 //find which brush is being selected
                 checkIfMousePositionIsOnTile(position);
                 //break;
@@ -152,6 +165,13 @@ void GameStateStart::handleInput()
                     break;
                 }
 
+                //check if current position is over any existing tile
+                if (checkIfMouseClickIsOnTile(position))
+                {
+                    this->actionState = RBActionState::MOVING;
+                    break;
+                }
+
                 if (this->actionState != RBActionState::PAINTING)
                 {
                     this->actionState = RBActionState::PAINTING;
@@ -198,7 +218,9 @@ void GameStateStart::handleInput()
             /* Stop selecting */
             else if (event.mouseButton.button == sf::Mouse::Left)
             {
-                if (this->actionState == RBActionState::PAINTING || this->actionState == RBActionState::BRUSHING)
+                if (this->actionState == RBActionState::PAINTING 
+                    || this->actionState == RBActionState::BRUSHING
+                    || this->actionState == RBActionState::MOVING)
                 {
                     this->actionState = RBActionState::NONE;
                 }
@@ -320,6 +342,24 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
 }
 
 bool GameStateStart::checkIfMousePositionIsOnTile(sf::Vector2i position)
+{
+    int b = 0;
+    for (auto tile : this->map.tiles)
+    {
+        sf::FloatRect boundingBox = tile.sprite.getGlobalBounds();
+
+        if (boundingBox.contains((sf::Vector2f)position))
+        {
+            currentTileHovered = new int(b);
+            return true;
+        }
+        b++;
+    }
+    currentTileHovered = nullptr;
+    return false;
+}
+
+bool GameStateStart::checkIfMouseClickIsOnTile(sf::Vector2i position)
 {
     int b = 0;
     for (auto tile : this->map.tiles)
