@@ -33,9 +33,9 @@ private:
     Map map;
     void loadgame();
     void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
-    void setCurrentTyleID(sf::Vector2i position);
-    bool checkIfMousePositionIsOnTile(sf::Vector2i position);
-    bool checkIfMouseClickIsOnTile(sf::Vector2i position);
+    void setCurrentTyleID(sf::Vector2f position);
+    bool checkIfMousePositionIsOnTile(sf::Vector2f position);
+    bool checkIfMouseClickIsOnTile(sf::Vector2f position);
     //std::string getCurrentTyleID();
 
 public:

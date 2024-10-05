@@ -109,7 +109,7 @@ void GameStateStart::handleInput()
                 }
                 
                 //find which brush is being selected
-                checkIfMousePositionIsOnTile(position);
+                checkIfMousePositionIsOnTile(worldPos);
                 //break;
             }
 
@@ -158,15 +158,15 @@ void GameStateStart::handleInput()
                 sf::Vector2i positionWindow = this->game->window.getPosition();
                 sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
 
-                if (position.y > toolbarMinY)
+                if (worldPos.y > toolbarMinY)
                 {
                     //find which brush is being selected
-                    setCurrentTyleID(position);
+                    setCurrentTyleID(worldPos);
                     break;
                 }
 
                 //check if current position is over any existing tile
-                if (checkIfMouseClickIsOnTile(position))
+                if (checkIfMouseClickIsOnTile(worldPos))
                 {
                     this->actionState = RBActionState::MOVING;
                     break;
@@ -240,7 +240,7 @@ void GameStateStart::handleInput()
 
             float height = sf::VideoMode::getDesktopMode().height;
 
-            float toolbarOffsetPosition = height - height/RBConstants::toolbarHeightFactor;
+            float toolbarOffsetPosition = (height - RBConstants::toolbarHeight) - (height - RBConstants::toolbarHeight)/RBConstants::toolbarHeightFactor;
             toolbarMinY = toolbarOffsetPosition;
 
             std::cout << "SizeWindow.x: " << sizeWindow.x << std::endl;
@@ -341,7 +341,7 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
 
 }
 
-bool GameStateStart::checkIfMousePositionIsOnTile(sf::Vector2i position)
+bool GameStateStart::checkIfMousePositionIsOnTile(sf::Vector2f position)
 {
     int b = 0;
     for (auto tile : this->map.tiles)
@@ -359,7 +359,7 @@ bool GameStateStart::checkIfMousePositionIsOnTile(sf::Vector2i position)
     return false;
 }
 
-bool GameStateStart::checkIfMouseClickIsOnTile(sf::Vector2i position)
+bool GameStateStart::checkIfMouseClickIsOnTile(sf::Vector2f position)
 {
     int b = 0;
     for (auto tile : this->map.tiles)
@@ -379,7 +379,7 @@ bool GameStateStart::checkIfMouseClickIsOnTile(sf::Vector2i position)
 
 
 
-void GameStateStart::setCurrentTyleID(sf::Vector2i position)
+void GameStateStart::setCurrentTyleID(sf::Vector2f position)
 {
     int b = 0;
     for (auto brush : this->Row1Brushes)
