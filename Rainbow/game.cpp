@@ -35,6 +35,9 @@ void Game::loadTextures()
             if (entry.is_regular_file()) {
                 fs::path filePath = entry.path();
                 std::string filename = filePath.filename().string();
+                for (size_t pos = 0; (pos = filename.find('_', pos)) != std::string::npos; ) {
+                    filename.erase(pos, 2);  // Remove the underscore and the next character
+                }
                 std::string buttonString = "Button";
 
                 std::string finalPath = filePath.string();
