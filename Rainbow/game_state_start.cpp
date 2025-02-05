@@ -28,6 +28,8 @@ void GameStateStart::draw(const float dt)
 
     this->game->window.draw(this->game->background);
 
+    this->game->window.draw(this->game->board);
+
     this->map.draw(this->game->window, dt, currentTileHovered);
 
     this->game->window.draw(this->game->toolbar);
@@ -310,7 +312,7 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     float brushWidth = 32.f;
     float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
-    for (int i =0; i<=4; i++)
+    for (int i =0; i<=6; i++)
     {
         brushPositionX += brushDistance + brushWidth;
         sf::Sprite* newSprite =  new sf::Sprite();
@@ -421,6 +423,7 @@ GameStateStart::GameStateStart(Game* game)
     sf::Vector2f posgame = game->background.getPosition();
     //sf::Vector2f pos1 = sf::Vector2f(950.f, 0.f);
     game->background.setPosition(pos);
+    game->board.setPosition(viewCenter.x - 378.5, viewCenter.y - 378.5);
 
     assembleToolbar(game, pos, size);
 

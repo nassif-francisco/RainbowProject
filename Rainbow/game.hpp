@@ -44,6 +44,7 @@ public:
 
     sf::Sprite background;
     sf::Sprite toolbar;
+    sf::Sprite board;
 
     void pushState(GameState* state);
     void popState();

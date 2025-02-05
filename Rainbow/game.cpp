@@ -24,6 +24,7 @@ void Game::loadTextures()
     //texmgr.loadTexture("road", "media/road.png");
     texmgr.loadTexture("background", "media/background.png");
     texmgr.loadTexture("toolbar", "media/toolbar.png");
+    texmgr.loadTexture("board", "media/board.png");
     /*texmgr.loadTexture("flower", "media/Packs/Forest/flower.png");
     texmgr.loadTexture("flowerButton", "media/Packs/Forest/Grid1Button.png");*/
 
@@ -125,6 +126,7 @@ Game::Game()
 
     this->background.setTexture(this->texmgr.getRef("background"));
     this->toolbar.setTexture(this->texmgr.getRef("toolbar"));
+    this->board.setTexture(this->texmgr.getRef("board"));
 }
 
 void Game::loadTiles()
