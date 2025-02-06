@@ -38,6 +38,7 @@ public:
 
     std::map<std::string, Tile> tileAtlas;
     std::vector<std::string> tileNames;
+    std::map<std::string, int> tileSprites;
     std::vector<std::string> brushNames;
 
     TextureManager texmgr;

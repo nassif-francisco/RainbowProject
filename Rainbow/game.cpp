@@ -33,11 +33,18 @@ void Game::loadTextures()
     try {
         for (const auto& entry : fs::directory_iterator(directoryPath)) {
             if (entry.is_regular_file()) {
+                std::string numberOfFrames = "";
+                
                 fs::path filePath = entry.path();
                 std::string filename = filePath.filename().string();
-                for (size_t pos = 0; (pos = filename.find('_', pos)) != std::string::npos; ) {
-                    filename.erase(pos, 2);  // Remove the underscore and the next character
+
+                for (size_t pos = 0; (pos = filename.find('_', pos)) != std::string::npos; ++pos) {
+                    if (pos + 1 < filename.size() && std::isdigit(filename[pos + 1])) 
+                    { // Check if next character is a digit
+                        numberOfFrames = filename[pos + 1];
+                    }
                 }
+
                 std::string buttonString = "Button";
 
                 std::string finalPath = filePath.string();
@@ -46,7 +53,15 @@ void Game::loadTextures()
                 // Check if the filename does not end with "Button"
                 if (filename.find(buttonString) == std::string::npos) {
                     std::string tileName = filename.replace(filename.find(".png"), 4, "");
-                    tileNames.push_back(tileName);
+                    if (!numberOfFrames.empty())
+                    {
+                        tileSprites[filename] = std::stoi(numberOfFrames);
+                    }
+                    else
+                    {
+                        tileNames.push_back(tileName);
+                    }
+
                     texmgr.loadTexture(tileName, finalPath2);
                 }
                 else
