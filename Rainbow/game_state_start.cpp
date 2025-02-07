@@ -197,6 +197,8 @@ void GameStateStart::handleInput()
                 std::string currentBrushName = this->game->brushNames[*currentBrush];
                 std::string tileName = currentBrushName.replace(currentBrushName.find("Button"), 6, "");
 
+               
+                
                 TileType tileType;
                 tileType = TileType::FOREST;
                 this->map.tiles.push_back(game->tileAtlas.at(tileName));
@@ -212,6 +214,14 @@ void GameStateStart::handleInput()
                 else
                 {
                     tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2); 
+                }
+
+                if (tileName == "AABB")
+                {
+                    //sf::RectangleShape rectangle({ 120.f, 50.f });
+
+                    //// change the size to 100x100
+                    //rectangle.setSize({ 100.f, 100.f });
                 }
 
                 currentTileHovered = new int(map.tiles.size() - 1);
@@ -323,7 +333,7 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     float brushWidth = 32.f;
     float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
-    for (int i =0; i<=6; i++)
+    for (int i =0; i<=7; i++)
     {
         brushPositionX += brushDistance + brushWidth;
         sf::Sprite* newSprite =  new sf::Sprite();

@@ -89,13 +89,14 @@ void Map::draw(sf::RenderWindow& window, float dt, int* hoveredTile)
     sf::Vector2f pos = sf::Vector2f(this->game->window.getPosition());
     sf::Vector2f diamondNodeZero = sf::Vector2f(pos.x, pos.y);
 
-
+    //reset the sprite color
     for (int i = 0; i < this->tiles.size(); ++i)
     {
         this->tiles[i].draw(window, dt);
         this->tiles[i].sprite.setColor(sf::Color::White);
     }
 
+    //make transparency at the hovered/selected tile
     if (hoveredTile != nullptr)
     {
         this->tiles[*hoveredTile].sprite.setColor(sf::Color(255, 255, 255, 128));
