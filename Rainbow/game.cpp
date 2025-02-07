@@ -157,6 +157,15 @@ void Game::loadTiles()
                 { staticAnim },
                 TileType::FOREST, 100, 0, 1);
     }
+    sf::Texture textu = texmgr.getRef("TestTileSprite_4");
+    sf::Vector2u size = textu.getSize();
+
+    for (const auto& pair : tileSprites) {
+        tileAtlas[pair.first] =
+            Tile(pair.second, texmgr.getRef(pair.first),
+                { Animation(0, 3, 0.5f) },
+                TileType::FOREST, 0, 0, 1, true);
+    }
 
 
    /* this->tileAtlas["grass"] =

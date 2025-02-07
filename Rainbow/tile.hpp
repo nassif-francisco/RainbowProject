@@ -72,6 +72,34 @@ public:
         this->animHandler.update(0.0f);
     }
 
+    Tile(const unsigned int frames, sf::Texture& texture,
+        const std::vector<Animation>& animations,
+        const TileType tileType, const unsigned int cost, const unsigned int maxPopPerLevel,
+        const unsigned int maxLevels, bool isAnimated = false)
+    {
+        this->tileType = tileType;
+        this->tileVariant = 0;
+        this->regions[0] = 0;
+
+        this->cost = cost;
+        this->population = 0;
+        this->maxPopPerLevel = maxPopPerLevel;
+        this->maxLevels = maxLevels;
+        this->production = 0;
+        this->storedGoods = 0;
+        this->isAnimated = isAnimated;
+
+        //this->sprite.setOrigin(sf::Vector2f(0.0f, tileSize * (height - 1)));
+        this->sprite.setTexture(texture);
+        this->animHandler.frameSize = sf::IntRect(0, 0, texture.getSize().x/frames, texture.getSize().y);
+        for (auto animation : animations)
+        {
+            this->animHandler.addAnim(animation);
+        }
+        this->animHandler.update(0.0f);
+    }
+
+
     void draw(sf::RenderWindow& window, float dt);
 
     void update();
