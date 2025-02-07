@@ -19,6 +19,8 @@ public:
 
     TileType tileType;
 
+    int frames;
+
     /* Tile variant, allowing for different looking versions of the
      * same tile */
     int tileVariant;
@@ -77,6 +79,7 @@ public:
         const TileType tileType, const unsigned int cost, const unsigned int maxPopPerLevel,
         const unsigned int maxLevels, bool isAnimated = false)
     {
+        this->frames = frames;
         this->tileType = tileType;
         this->tileVariant = 0;
         this->regions[0] = 0;
