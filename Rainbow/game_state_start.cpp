@@ -335,6 +335,10 @@ void GameStateStart::handleInput()
         {
             if (event.key.code == sf::Keyboard::Escape) this->game->window.close();
             else if (event.key.code == sf::Keyboard::Space) this->loadgame();
+            else if (event.key.code == sf::Keyboard::H)
+            {
+                currentTileHovered = nullptr;
+            }
             break;
         }
         default: break;
