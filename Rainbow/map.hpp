@@ -45,7 +45,11 @@ public:
     void save(const std::string& filename);
 
     /* Draw the map */
-    void draw(sf::RenderWindow& window, float dt, int* hoveredTile = nullptr);
+    void draw(sf::RenderWindow& window, float dt, 
+        int* hoveredTile = nullptr,
+        int* hoveredHitbox = nullptr,
+        int* hoveredVertexHandle = nullptr,
+        int* hoveredMainHandle = nullptr);
 
     void GetDiamondPointZero();
 

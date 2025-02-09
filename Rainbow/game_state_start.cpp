@@ -31,7 +31,7 @@ void GameStateStart::draw(const float dt)
 
     this->game->window.draw(this->game->board);
 
-    this->map.draw(this->game->window, dt, currentTileHovered);
+    this->map.draw(this->game->window, dt, currentTileHovered, currentHitboxHovered, currentVertexHandleHovered, currentMainHandleHovered);
 
     this->game->window.draw(this->game->toolbar);
     
@@ -112,8 +112,28 @@ void GameStateStart::handleInput()
                 }
                 
                 //find which brush is being selected
-                checkIfMousePositionIsOnTile(worldPos);
+                //checkIfMousePositionIsOnTile(worldPos);
                 //break;
+
+                if (!sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+                {
+                    if (checkIfMouseClickIsOnTile(worldPos))
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    if (checkIfMouseClickIsOnVertexHandle(worldPos))
+                    {
+                        break;
+                    }
+
+                    if (checkIfMouseClickIsOnMainHandle(worldPos))
+                    {
+                        break;
+                    }
+                }
             }
 
             //if (this->actionState != RBActionState::MOVING)

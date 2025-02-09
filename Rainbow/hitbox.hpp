@@ -11,7 +11,7 @@ class Hitbox
 	public:
 
 	vector<sf::Vector2f> AABB;
-	sf::RectangleShape Rectangle;
+	sf::RectangleShape* Rectangle = nullptr;
 	vector<sf::CircleShape> VertexHandles;
 	sf::CircleShape MainHandle;
 

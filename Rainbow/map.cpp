@@ -81,7 +81,7 @@ void Map::save(const std::string& filename)
     return;
 }
 
-void Map::draw(sf::RenderWindow& window, float dt, int* hoveredTile)
+void Map::draw(sf::RenderWindow& window, float dt, int* hoveredTile, int* hoveredHitbox, int* hoveredVertexHandle, int* hoveredMainHandle)
 {
     //pos.x = (x - y) * this->tileSize + this->width * this->tileSize;
     //pos.y = (x + y) * this->tileSize * 0.5;
@@ -99,6 +99,11 @@ void Map::draw(sf::RenderWindow& window, float dt, int* hoveredTile)
     for (int i = 0; i < this->hitboxes.size(); ++i)
     {
         this->hitboxes[i].draw(window, dt);
+        for (int k = 0; k< hitboxes[i].VertexHandles.size(); k++)
+        {
+            hitboxes[i].VertexHandles[k].setFillColor(sf::Color(150, 50, 250));
+        }
+        hitboxes[i].MainHandle.setFillColor(sf::Color(76, 175, 80));
         //this->hitboxes[i].Rectangle.setFillColor(sf::Color::White);
     }
 
@@ -106,6 +111,26 @@ void Map::draw(sf::RenderWindow& window, float dt, int* hoveredTile)
     if (hoveredTile != nullptr)
     {
         this->tiles[*hoveredTile].sprite.setColor(sf::Color(255, 255, 255, 128));
+    }
+    else if (hoveredHitbox != nullptr)
+    {
+        //I am hovering over a vertex or the main handle at the centre
+        if (hoveredVertexHandle != nullptr)
+        {
+            //sf::CircleShape circle;
+            //// change the size to 100x100
+            //circle.setRadius({ RBConstants::VerticesSize });
+            //circle.setFillColor(sf::Color(10, 10, 10));
+            //circle.setPosition(hitboxes[*hoveredHitbox].VertexHandles[*hoveredVertexHandle].getPosition());
+            //this->hitboxes[*hoveredHitbox].VertexHandles[*hoveredVertexHandle] = circle;
+            
+            this->hitboxes[*hoveredHitbox].VertexHandles[*hoveredVertexHandle].setFillColor(sf::Color(255, 255, 255, 128));
+        }
+        else
+        {
+            this->hitboxes[*hoveredHitbox].MainHandle.setFillColor(sf::Color(255, 255, 255, 128));
+        }
+        
     }
 
     return;
