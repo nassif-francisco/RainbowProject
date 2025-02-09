@@ -202,9 +202,9 @@ void GameStateStart::handleInput()
                 {
                     sf::Vector2f P1 = worldPos;
                     std::vector<sf::Vector2f> hitboxPositions = {worldPos, 
-                        sf::Vector2f(worldPos.x + 20, worldPos.y), 
-                        sf::Vector2f(worldPos.x, worldPos.y + 20),
-                        sf::Vector2f(worldPos.x + 20, worldPos.y + 20)};
+                        sf::Vector2f(worldPos.x + 50, worldPos.y), 
+                        sf::Vector2f(worldPos.x, worldPos.y + 50),
+                        sf::Vector2f(worldPos.x + 50, worldPos.y + 50)};
 
                     //Hitbox* hitbox = new Hitbox(hitboxPositions);
                     Hitbox currentHitbox(hitboxPositions);

@@ -47,6 +47,8 @@ class Hitbox
 
 	void update();
 
+	void drawVertices(sf::RenderWindow& window);
+
 	private : 
 
 };
