@@ -11,6 +11,9 @@ class Hitbox
 	public:
 
 	vector<sf::Vector2f> AABB;
+	sf::RectangleShape Rectangle;
+	vector<sf::CircleShape> VertexHandles;
+	sf::CircleShape MainHandle;
 
 	//Constructors
 	Hitbox()
@@ -47,7 +50,7 @@ class Hitbox
 
 	void update();
 
-	void drawVertices(sf::RenderWindow& window);
+	void drawVerticesAndHandle(sf::RenderWindow& window);
 
 	private : 
 

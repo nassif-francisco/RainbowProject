@@ -168,12 +168,35 @@ void GameStateStart::handleInput()
                     break;
                 }
 
+                if (!sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+                {
+                    if (checkIfMouseClickIsOnTile(worldPos))
+                    {
+                        this->actionState = RBActionState::MOVING;
+                        break;
+                    }
+                }
+                else
+                {
+                    if (checkIfMouseClickIsOnVertexHandle(worldPos))
+                    {
+                        this->actionState = RBActionState::EDITING;
+                        break;
+                    }
+
+                    if (checkIfMouseClickIsOnMainHandle(worldPos))
+                    {
+                        this->actionState = RBActionState::MOVING;
+                        break;
+                    }
+                }
+
                 //check if current position is over any existing tile
-                if (checkIfMouseClickIsOnTile(worldPos))
+                /*if (checkIfMouseClickIsOnTile(worldPos))
                 {
                     this->actionState = RBActionState::MOVING;
                     break;
-                }
+                }*/
 
                 if (this->actionState != RBActionState::PAINTING)
                 {
@@ -346,7 +369,7 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     float brushWidth = 32.f;
     float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
-    for (int i =0; i<=7; i++)
+    for (int i =0; i<=8; i++)
     {
         brushPositionX += brushDistance + brushWidth;
         sf::Sprite* newSprite =  new sf::Sprite();
@@ -380,6 +403,12 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
 bool GameStateStart::checkIfMousePositionIsOnTile(sf::Vector2f position)
 {
     int b = 0;
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+    {
+        return false;
+    }
+
     for (auto tile : this->map.tiles)
     {
         sf::FloatRect boundingBox = tile.sprite.getGlobalBounds();
@@ -412,6 +441,56 @@ bool GameStateStart::checkIfMouseClickIsOnTile(sf::Vector2f position)
     currentTileHovered = nullptr;
     return false;
 }
+
+bool GameStateStart::checkIfMouseClickIsOnVertexHandle(sf::Vector2f position)
+{
+    int b = 0;
+    for (auto hitbox : this->map.hitboxes)
+    {     
+        int h = 0;
+        for (auto handle: hitbox.VertexHandles)
+        {
+            sf::FloatRect boundingBox = handle.getGlobalBounds();
+
+            if (boundingBox.contains((sf::Vector2f)position))
+            {
+                currentHitboxHovered = new int(b);
+                currentVertexHandleHovered = new int(h);
+                return true;
+            }
+            h++;        
+        }
+        b++;
+    }
+    currentHitboxHovered = nullptr;
+    currentVertexHandleHovered = nullptr;
+
+    return false;
+}
+
+bool GameStateStart::checkIfMouseClickIsOnMainHandle(sf::Vector2f position)
+{
+    int b = 0;
+    for (auto hitbox : this->map.hitboxes)
+    {
+
+        sf::FloatRect boundingBox = hitbox.MainHandle.getGlobalBounds();
+
+        if (boundingBox.contains((sf::Vector2f)position))
+        {
+            currentHitboxHovered = new int(b);
+            currentMainHandleHovered = new int(0);
+            return true;
+        }
+
+        b++;
+    }
+    currentHitboxHovered = nullptr;
+    currentMainHandleHovered = nullptr;
+
+    return false;
+}
+
 
 
 

@@ -20,6 +20,9 @@ private:
 
     int* currentBrush = nullptr;
     int* currentTileHovered = nullptr;
+    int* currentHitboxHovered = nullptr;
+    int* currentVertexHandleHovered = nullptr;
+    int* currentMainHandleHovered = nullptr;
     std::vector<sf::Sprite> Row1Brushes;
     std::vector<sf::Sprite> Row2Brushes;
 
@@ -36,6 +39,8 @@ private:
     void setCurrentTyleID(sf::Vector2f position);
     bool checkIfMousePositionIsOnTile(sf::Vector2f position);
     bool checkIfMouseClickIsOnTile(sf::Vector2f position);
+    bool checkIfMouseClickIsOnVertexHandle(sf::Vector2f position);
+    bool checkIfMouseClickIsOnMainHandle(sf::Vector2f position);
     //std::string getCurrentTyleID();
 
 public:
