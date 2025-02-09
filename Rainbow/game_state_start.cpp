@@ -5,6 +5,7 @@
 #include "game_state.hpp"
 #include <iostream>
 #include "tile.hpp"
+#include "hitbox.hpp"
 #include <string>
 
 void GameStateStart::draw(const float dt)
@@ -197,7 +198,25 @@ void GameStateStart::handleInput()
                 std::string currentBrushName = this->game->brushNames[*currentBrush];
                 std::string tileName = currentBrushName.replace(currentBrushName.find("Button"), 6, "");
 
-               
+                if (tileName == "AABB")
+                {
+                    sf::Vector2f P1 = worldPos;
+                    std::vector<sf::Vector2f> hitboxPositions = {worldPos, 
+                        sf::Vector2f(worldPos.x + 20, worldPos.y), 
+                        sf::Vector2f(worldPos.x, worldPos.y + 20),
+                        sf::Vector2f(worldPos.x + 20, worldPos.y + 20)};
+
+                    //Hitbox* hitbox = new Hitbox(hitboxPositions);
+                    Hitbox currentHitbox(hitboxPositions);
+
+                    this->map.hitboxes.push_back(currentHitbox);
+                    break;
+                    //this->map.hitboxes.push_back(*hitbox);
+                    //sf::RectangleShape rectangle({ 120.f, 50.f });
+
+                    //// change the size to 100x100
+                    //rectangle.setSize({ 100.f, 100.f });
+                }
                 
                 TileType tileType;
                 tileType = TileType::FOREST;
@@ -216,13 +235,7 @@ void GameStateStart::handleInput()
                     tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2); 
                 }
 
-                if (tileName == "AABB")
-                {
-                    //sf::RectangleShape rectangle({ 120.f, 50.f });
-
-                    //// change the size to 100x100
-                    //rectangle.setSize({ 100.f, 100.f });
-                }
+               
 
                 currentTileHovered = new int(map.tiles.size() - 1);
                 

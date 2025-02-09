@@ -9,6 +9,7 @@
 #include "game.hpp"
 
 #include "tile.hpp"
+#include "hitbox.hpp"
 
 class Map
 {
@@ -23,6 +24,7 @@ public:
     unsigned int height;
 
     std::vector<Tile> tiles;
+    std::vector<Hitbox> hitboxes;
 
     /* Resource map */
     std::vector<int> resources;

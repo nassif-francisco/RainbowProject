@@ -96,6 +96,12 @@ void Map::draw(sf::RenderWindow& window, float dt, int* hoveredTile)
         this->tiles[i].sprite.setColor(sf::Color::White);
     }
 
+    for (int i = 0; i < this->hitboxes.size(); ++i)
+    {
+        this->hitboxes[i].draw(window, dt);
+        //this->hitboxes[i].sprite.setColor(sf::Color::White);
+    }
+
     //make transparency at the hovered/selected tile
     if (hoveredTile != nullptr)
     {
