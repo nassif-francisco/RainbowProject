@@ -52,6 +52,10 @@ class Hitbox
 
 	void drawVerticesAndHandle(sf::RenderWindow& window);
 
+	void initializeVerticesAndMainHandle();
+
+	void initializeRectangle();
+
 	private : 
 
 };
