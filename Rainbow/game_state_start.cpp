@@ -98,6 +98,8 @@ void GameStateStart::handleInput()
 
             if (position.y < toolbarMinY)
             {
+                //CHECK FOR MOVING ACTION
+                
                 if (this->actionState == RBActionState::MOVING && currentTileHovered != nullptr)
                 {
                     sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
@@ -148,6 +150,59 @@ void GameStateStart::handleInput()
                     
                     break;
                 }
+
+                //END OF CHECK FOR MOVING
+
+                //BEGIN CHECK FOR EDITING
+                if (this->actionState == RBActionState::EDITING && currentVertexHandleHovered != nullptr)
+                {
+                    sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
+                    sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+
+                    Hitbox& hitbox = this->map.hitboxes[*currentHitboxHovered];
+
+                    AABBPoint point = static_cast<AABBPoint>(*currentVertexHandleHovered);
+
+                    //hitbox.UpdatePoints(worldPos, point);
+                    //hitbox.initializeRectangle();
+                    //hitbox.updateRectangle();
+
+                    //sf::Vector2f P1 = worldPos;
+
+                    std::vector<sf::Vector2f> hitboxPositions = { worldPos,
+                        sf::Vector2f(hitbox.AABB[1].x, worldPos.y),
+                        sf::Vector2f(hitbox.AABB[2].x, hitbox.AABB[2].y),
+                        sf::Vector2f(worldPos.x, hitbox.AABB[3].y) };
+
+                    //Hitbox* hitbox = new Hitbox(hitboxPositions);
+                    Hitbox currentHitbox(hitboxPositions);
+                    hitbox = currentHitbox;
+
+                    ////Hitbox* hitbox = new Hitbox(hitboxPositions);
+                    ////Hitbox currentHitbox(hitboxPositions);
+
+                    ///*this->map.hitboxes.push_back(currentHitbox);*/
+
+
+                    //sf::FloatRect bounds = hitbox.Rectangle->getGlobalBounds();
+                    //sf::Vector2f spriteSize = bounds.getSize();
+                    //hitbox.Rectangle->setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
+                    //hitbox.AABB = hitboxPositions;
+
+                    //float handleCenterX = ((hitbox.AABB[0].x - RBConstants::VerticesSize) + (hitbox.AABB[1].x - RBConstants::VerticesSize)) / 2 - spriteSize.x / 2;
+                    //float handleCenterY = ((hitbox.AABB[1].y - RBConstants::VerticesSize) + (hitbox.AABB[3].y - RBConstants::VerticesSize)) / 2 - spriteSize.y / 2;
+
+                    //hitbox.MainHandle.setPosition(handleCenterX, handleCenterY);
+
+
+                    //for (int k = 0; k < hitbox.AABB.size(); k++)
+                    //{
+                    //    hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x - RBConstants::VerticesSize - spriteSize.x / 2, hitbox.AABB[k].y - RBConstants::VerticesSize - spriteSize.y / 2 });
+                    //}
+
+                    break;
+                }
+                //END CHECK FOR EDITING
                 
                 //find which brush is being selected
                 //checkIfMousePositionIsOnTile(worldPos);
@@ -282,10 +337,11 @@ void GameStateStart::handleInput()
                 if (tileName == "AABB")
                 {
                     sf::Vector2f P1 = worldPos;
-                    std::vector<sf::Vector2f> hitboxPositions = {worldPos, 
-                        sf::Vector2f(worldPos.x + 50, worldPos.y), 
-                        sf::Vector2f(worldPos.x, worldPos.y + 50),
-                        sf::Vector2f(worldPos.x + 50, worldPos.y + 50)};
+
+                    std::vector<sf::Vector2f> hitboxPositions = { worldPos,
+                        sf::Vector2f(worldPos.x + 50, worldPos.y),
+                        sf::Vector2f(worldPos.x + 50, worldPos.y + 50),
+                        sf::Vector2f(worldPos.x, worldPos.y + 50) };
 
                     //Hitbox* hitbox = new Hitbox(hitboxPositions);
                     Hitbox currentHitbox(hitboxPositions);

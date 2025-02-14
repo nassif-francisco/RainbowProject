@@ -27,6 +27,12 @@ void Hitbox::initializeRectangle()
     Rectangle->setPosition({ AABB[0].x, AABB[0].y });
 }
 
+void Hitbox::updateRectangle()
+{
+    Rectangle->setSize({ AABB[1].x - AABB[0].x, AABB[3].y - AABB[1].y });
+    //Rectangle->setPosition({ AABB[0].x, AABB[0].y });
+}
+
 void Hitbox::update()
 {
 

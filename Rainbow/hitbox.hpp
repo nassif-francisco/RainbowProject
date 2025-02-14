@@ -30,16 +30,20 @@ class Hitbox
 		switch (point)
 		{
 		case AABBPoint::P1:
-			AABB[0] = updatedCoordinates;
+			AABB[3].x = updatedCoordinates.x; //P4.x = P1.X
+			AABB[1].y = updatedCoordinates.y;//P2.y = P1.y
 			break;
 		case AABBPoint::P2:
-			AABB[1] = updatedCoordinates;
+			AABB[2].x = updatedCoordinates.x; //P3.x = P2.X
+			AABB[0].y = updatedCoordinates.y;//P1.y = P2.y
 			break;
 		case AABBPoint::P3:
-			AABB[2] = updatedCoordinates;
+			AABB[1].x = updatedCoordinates.x; //P2.x = P3.X
+			AABB[3].y = updatedCoordinates.y;//P4.y = P3.y
 			break;
 		case AABBPoint::P4:
-			AABB[3] = updatedCoordinates;
+			AABB[0].x = updatedCoordinates.x; //P1.x = P4.X
+			AABB[2].y = updatedCoordinates.y;//P3.y = P4.y
 			break;
 		default:
 			break;
@@ -55,6 +59,8 @@ class Hitbox
 	void initializeVerticesAndMainHandle();
 
 	void initializeRectangle();
+
+	void updateRectangle();
 
 	private : 
 
