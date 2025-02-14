@@ -110,6 +110,44 @@ void GameStateStart::handleInput()
                     tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
                     break;
                 }
+
+                if (this->actionState == RBActionState::MOVING && currentMainHandleHovered != nullptr)
+                {
+                    sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
+                    sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+
+                    Hitbox& hitbox = this->map.hitboxes[*currentMainHandleHovered];
+
+                    sf::Vector2f P1 = worldPos;
+                    std::vector<sf::Vector2f> hitboxPositions = {worldPos, 
+                        sf::Vector2f(worldPos.x + 50, worldPos.y), 
+                        sf::Vector2f(worldPos.x, worldPos.y + 50),
+                        sf::Vector2f(worldPos.x + 50, worldPos.y + 50)};
+
+                    //Hitbox* hitbox = new Hitbox(hitboxPositions);
+                    //Hitbox currentHitbox(hitboxPositions);
+
+                    /*this->map.hitboxes.push_back(currentHitbox);*/
+
+
+                    sf::FloatRect bounds = hitbox.Rectangle->getGlobalBounds();
+                    sf::Vector2f spriteSize = bounds.getSize();
+                    hitbox.Rectangle->setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
+                    hitbox.AABB = hitboxPositions;
+
+                    float handleCenterX = ((hitbox.AABB[0].x - RBConstants::VerticesSize) + (hitbox.AABB[1].x - RBConstants::VerticesSize)) / 2 - spriteSize.x/2;
+                    float handleCenterY = ((hitbox.AABB[1].y - RBConstants::VerticesSize) + (hitbox.AABB[3].y - RBConstants::VerticesSize)) / 2 - spriteSize.y/2;
+
+                    hitbox.MainHandle.setPosition(handleCenterX, handleCenterY);
+
+
+                    for (int k = 0; k < hitbox.AABB.size(); k++)
+                    {
+                        hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x - RBConstants::VerticesSize - spriteSize.x / 2, hitbox.AABB[k].y - RBConstants::VerticesSize - spriteSize.y / 2 });
+                    }
+                    
+                    break;
+                }
                 
                 //find which brush is being selected
                 //checkIfMousePositionIsOnTile(worldPos);
@@ -299,7 +337,8 @@ void GameStateStart::handleInput()
             {
                 if (this->actionState == RBActionState::PAINTING 
                     || this->actionState == RBActionState::BRUSHING
-                    || this->actionState == RBActionState::MOVING)
+                    || this->actionState == RBActionState::MOVING
+                    || this->actionState == RBActionState::EDITING)
                 {
                     this->actionState = RBActionState::NONE;
                 }
