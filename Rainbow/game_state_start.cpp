@@ -361,6 +361,18 @@ void GameStateStart::handleInput()
             }
             break;
         }
+        case sf::Event::KeyReleased:
+        {
+            
+            if (event.key.code == sf::Keyboard::H)
+            {
+                currentTileHovered = nullptr;
+                currentHitboxHovered = nullptr;
+                currentVertexHandleHovered = nullptr;
+                currentMainHandleHovered = nullptr;
+            }
+            break;
+        }
         default: break;
         }
     }
