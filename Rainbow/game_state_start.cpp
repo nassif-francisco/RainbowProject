@@ -116,7 +116,7 @@ void GameStateStart::handleInput()
                     sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
                     sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
 
-                    Hitbox& hitbox = this->map.hitboxes[*currentMainHandleHovered];
+                    Hitbox& hitbox = this->map.hitboxes[*currentHitboxHovered];
 
                     sf::Vector2f P1 = worldPos;
                     std::vector<sf::Vector2f> hitboxPositions = {worldPos, 
