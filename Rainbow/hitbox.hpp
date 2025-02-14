@@ -14,15 +14,17 @@ class Hitbox
 	sf::RectangleShape* Rectangle = nullptr;
 	vector<sf::CircleShape> VertexHandles;
 	sf::CircleShape MainHandle;
+	int* initialHoveredHandle = nullptr;
 
 	//Constructors
 	Hitbox()
 	{
 
 	}
-	Hitbox(vector<sf::Vector2f> AABBPoints)
+	Hitbox(vector<sf::Vector2f> AABBPoints, int* hoveredHandle = nullptr)
 	{
 		AABB = AABBPoints;
+		initialHoveredHandle = hoveredHandle;
 	}
 
 	void UpdatePoints(sf::Vector2f updatedCoordinates, AABBPoint point)

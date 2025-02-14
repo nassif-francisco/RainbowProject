@@ -175,7 +175,7 @@ void GameStateStart::handleInput()
                         sf::Vector2f(worldPos.x, hitbox.AABB[3].y) };
 
                     //Hitbox* hitbox = new Hitbox(hitboxPositions);
-                    Hitbox currentHitbox(hitboxPositions);
+                    Hitbox currentHitbox(hitboxPositions, currentVertexHandleHovered);
                     hitbox = currentHitbox;
 
                     ////Hitbox* hitbox = new Hitbox(hitboxPositions);

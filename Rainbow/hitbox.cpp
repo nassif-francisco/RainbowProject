@@ -68,6 +68,11 @@ void Hitbox::initializeVerticesAndMainHandle()
 
     }
 
+    if (initialHoveredHandle != nullptr)
+    {
+        VertexHandles[*initialHoveredHandle].setFillColor(sf::Color(255, 255, 255, 128));
+    }
+
     //draw handle
     sf::CircleShape circle;
     // change the size to 100x100
