@@ -121,10 +121,10 @@ void GameStateStart::handleInput()
                     Hitbox& hitbox = this->map.hitboxes[*currentHitboxHovered];
 
                     sf::Vector2f P1 = worldPos;
-                    std::vector<sf::Vector2f> hitboxPositions = {worldPos, 
-                        sf::Vector2f(worldPos.x + 50, worldPos.y), 
-                        sf::Vector2f(worldPos.x, worldPos.y + 50),
-                        sf::Vector2f(worldPos.x + 50, worldPos.y + 50)};
+                    //std::vector<sf::Vector2f> hitboxPositions = {worldPos, 
+                    //    sf::Vector2f(worldPos.x + 50, worldPos.y), 
+                    //    sf::Vector2f(worldPos.x, worldPos.y + 50),
+                    //    sf::Vector2f(worldPos.x + 50, worldPos.y + 50)};
 
                     //Hitbox* hitbox = new Hitbox(hitboxPositions);
                     //Hitbox currentHitbox(hitboxPositions);
@@ -134,18 +134,38 @@ void GameStateStart::handleInput()
 
                     sf::FloatRect bounds = hitbox.Rectangle->getGlobalBounds();
                     sf::Vector2f spriteSize = bounds.getSize();
-                    hitbox.Rectangle->setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
-                    hitbox.AABB = hitboxPositions;
 
-                    float handleCenterX = ((hitbox.AABB[0].x - RBConstants::VerticesSize) + (hitbox.AABB[1].x - RBConstants::VerticesSize)) / 2 - spriteSize.x/2;
-                    float handleCenterY = ((hitbox.AABB[1].y - RBConstants::VerticesSize) + (hitbox.AABB[3].y - RBConstants::VerticesSize)) / 2 - spriteSize.y/2;
+                    float rectHalfWidth = spriteSize.x/2;
+                    float rectHalfHeight = spriteSize.y/2;
 
+
+                    //std::vector<sf::Vector2f> hitboxPositions = { sf::Vector2f(hitbox.AABB[0].x - deltaX, hitbox.AABB[0].x - deltaY),
+                    //    sf::Vector2f(hitbox.AABB[1].x - deltaX, hitbox.AABB[1].x - deltaY),
+                    //    sf::Vector2f(hitbox.AABB[2].x - deltaX, hitbox.AABB[2].x - deltaY),
+                    //    sf::Vector2f(hitbox.AABB[3].x - deltaX, hitbox.AABB[3].x - deltaY) };
+
+                    hitbox.Rectangle->setPosition(worldPos.x - rectHalfWidth, worldPos.y - rectHalfHeight);
+
+
+                   /* float handleCenterX = ((hitbox.AABB[0].x - RBConstants::VerticesSize) + (hitbox.AABB[1].x - RBConstants::VerticesSize)) / 2 - spriteSize.x/2;
+                    float handleCenterY = ((hitbox.AABB[1].y - RBConstants::VerticesSize) + (hitbox.AABB[3].y - RBConstants::VerticesSize)) / 2 - spriteSize.y/2;*/
+
+                    float handleCenterX = worldPos.x - RBConstants::VerticesSize - RBConstants::VerticesSize/4;
+                    float handleCenterY = worldPos.y - RBConstants::VerticesSize - RBConstants::VerticesSize/4;
                     hitbox.MainHandle.setPosition(handleCenterX, handleCenterY);
+
+
+                    std::vector<sf::Vector2f> hitboxPositions = { sf::Vector2f(handleCenterX - rectHalfWidth, handleCenterY - rectHalfHeight),
+                        sf::Vector2f(handleCenterX + rectHalfWidth, handleCenterY - rectHalfHeight),
+                        sf::Vector2f(handleCenterX + rectHalfWidth, handleCenterY + rectHalfHeight),
+                        sf::Vector2f(handleCenterX - rectHalfWidth, handleCenterY + rectHalfHeight) };
+
+                    hitbox.AABB = hitboxPositions;
 
 
                     for (int k = 0; k < hitbox.AABB.size(); k++)
                     {
-                        hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x - RBConstants::VerticesSize - spriteSize.x / 2, hitbox.AABB[k].y - RBConstants::VerticesSize - spriteSize.y / 2 });
+                        hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x, hitbox.AABB[k].y});
                     }
                     
                     break;
