@@ -188,11 +188,37 @@ void GameStateStart::handleInput()
                     //hitbox.updateRectangle();
 
                     //sf::Vector2f P1 = worldPos;
+                    std::vector<sf::Vector2f> hitboxPositions;
 
-                    std::vector<sf::Vector2f> hitboxPositions = { worldPos,
-                        sf::Vector2f(hitbox.AABB[1].x, worldPos.y),
-                        sf::Vector2f(hitbox.AABB[2].x, hitbox.AABB[2].y),
-                        sf::Vector2f(worldPos.x, hitbox.AABB[3].y) };
+                    if (point == AABBPoint::P1)
+                    {
+                        hitboxPositions = { worldPos,
+                            sf::Vector2f(hitbox.AABB[1].x, worldPos.y),
+                            sf::Vector2f(hitbox.AABB[2].x, hitbox.AABB[2].y),
+                            sf::Vector2f(worldPos.x, hitbox.AABB[3].y) };
+                    }
+                    else if(point == AABBPoint::P2)
+                    {
+                        hitboxPositions = { sf::Vector2f(hitbox.AABB[0].x, worldPos.y),
+                           worldPos,
+                           sf::Vector2f(worldPos.x, hitbox.AABB[2].y),
+                           sf::Vector2f(hitbox.AABB[3].x, hitbox.AABB[3].y) };
+                    }
+                    else if (point == AABBPoint::P3)
+                    {
+                        hitboxPositions = { sf::Vector2f(hitbox.AABB[0].x, hitbox.AABB[0].y),
+                            sf::Vector2f(worldPos.x, hitbox.AABB[1].y),
+                            worldPos,
+                            sf::Vector2f(hitbox.AABB[3].x, worldPos.y) };
+                    }
+                    else if (point == AABBPoint::P4)
+                    {
+                        hitboxPositions = { sf::Vector2f(worldPos.x, hitbox.AABB[0].y),
+                            sf::Vector2f(hitbox.AABB[1].x, hitbox.AABB[1].y),
+                            sf::Vector2f(hitbox.AABB[2].x, worldPos.y),
+                            worldPos };
+                    }
+
 
                     //Hitbox* hitbox = new Hitbox(hitboxPositions);
                     Hitbox currentHitbox(hitboxPositions, currentVertexHandleHovered);
