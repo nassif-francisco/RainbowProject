@@ -27,27 +27,11 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
         switch (tileType)
         {
         default:
-        case TileType::VOID:
-        case TileType::GRASS:
-            this->tiles.push_back(tileAtlas.at("grass"));
+        case TileType::BACKGROUND:
+            this->tiles.push_back(tileAtlas.at("background"));
             break;
-        case TileType::FOREST:
-            this->tiles.push_back(tileAtlas.at("forest"));
-            break;
-        case TileType::WATER:
-            this->tiles.push_back(tileAtlas.at("water"));
-            break;
-        case TileType::RESIDENTIAL:
-            this->tiles.push_back(tileAtlas.at("residential"));
-            break;
-        case TileType::COMMERCIAL:
-            this->tiles.push_back(tileAtlas.at("commercial"));
-            break;
-        case TileType::INDUSTRIAL:
-            this->tiles.push_back(tileAtlas.at("industrial"));
-            break;
-        case TileType::ROAD:
-            this->tiles.push_back(tileAtlas.at("road"));
+        case TileType::FOREGROUND:
+            this->tiles.push_back(tileAtlas.at("foreground"));
             break;
         }
         Tile& tile = this->tiles.back();

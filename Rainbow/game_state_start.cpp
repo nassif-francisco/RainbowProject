@@ -294,7 +294,7 @@ void GameStateStart::handleInput()
                 sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
 
                 TileType tileType;
-                tileType = TileType::FOREST;
+                tileType = TileType::BACKGROUND;
                 this->map.tiles.push_back(game->tileAtlas.at("forest"));
                 Tile& tile = this->map.tiles.back();
                 tile.sprite.setPosition(worldPos.x, worldPos.y);
@@ -402,7 +402,7 @@ void GameStateStart::handleInput()
                 }
                 
                 TileType tileType;
-                tileType = TileType::FOREST;
+                tileType = TileType::BACKGROUND;
                 this->map.tiles.push_back(game->tileAtlas.at(tileName));
                 Tile& tile = this->map.tiles.back();
                 sf::FloatRect bounds = tile.sprite.getGlobalBounds();

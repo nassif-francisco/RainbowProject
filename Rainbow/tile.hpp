@@ -6,7 +6,7 @@
 
 #include "animation_handler.hpp"
 
-enum class TileType { VOID, GRASS, FOREST, WATER, RESIDENTIAL, COMMERCIAL, INDUSTRIAL, ROAD };
+enum class TileType { BACKGROUND, FOREGROUND };
 
 std::string tileTypeToStr(TileType type);
 

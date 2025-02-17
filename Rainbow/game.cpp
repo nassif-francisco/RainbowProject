@@ -155,7 +155,7 @@ void Game::loadTiles()
         tileAtlas[tile] =
             Tile(25, 1, texmgr.getRef(tile),
                 { staticAnim },
-                TileType::FOREST, 100, 0, 1);
+                TileType::BACKGROUND, 100, 0, 1);
     }
     sf::Texture textu = texmgr.getRef("TestTileSprite_4");
     sf::Vector2u size = textu.getSize();
@@ -164,7 +164,7 @@ void Game::loadTiles()
         tileAtlas[pair.first] =
             Tile(pair.second, texmgr.getRef(pair.first),
                 { Animation(0, 3, 0.5f) },
-                TileType::FOREST, 0, 0, 1, true);
+                TileType::BACKGROUND, 0, 0, 1, true);
     }
 
 
