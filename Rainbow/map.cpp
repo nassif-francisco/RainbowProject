@@ -74,10 +74,23 @@ void Map::draw(sf::RenderWindow& window, float dt, int* hoveredTile, int* hovere
     sf::Vector2f diamondNodeZero = sf::Vector2f(pos.x, pos.y);
 
     //reset the sprite color
+    //draw first background tyles and then foreground ones
     for (int i = 0; i < this->tiles.size(); ++i)
     {
-        this->tiles[i].draw(window, dt);
-        this->tiles[i].sprite.setColor(sf::Color::White);
+        if (this->tiles[i].tileType == TileType::BACKGROUND)
+        {
+            this->tiles[i].draw(window, dt);
+            this->tiles[i].sprite.setColor(sf::Color::White);
+        }    
+    }
+
+    for (int i = 0; i < this->tiles.size(); ++i)
+    {
+        if (this->tiles[i].tileType == TileType::FOREGROUND)
+        {
+            this->tiles[i].draw(window, dt);
+            this->tiles[i].sprite.setColor(sf::Color::White);
+        }
     }
 
     for (int i = 0; i < this->hitboxes.size(); ++i)
