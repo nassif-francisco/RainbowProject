@@ -28,7 +28,10 @@ void Game::loadTextures()
     /*texmgr.loadTexture("flower", "media/Packs/Forest/flower.png");
     texmgr.loadTexture("flowerButton", "media/Packs/Forest/Grid1Button.png");*/
 
-    std::string directoryPath = "media/Packs/Forest"; // Replace with your directory path
+
+
+    //begin toolbar region
+    std::string directoryPath = "media/Packs/Toolbar"; // Replace with your directory path
 
     try {
         for (const auto& entry : fs::directory_iterator(directoryPath)) {
@@ -79,6 +82,39 @@ void Game::loadTextures()
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
+    //end of toolbar region
+
+    //end of mainMenu region
+    directoryPath = "media/Packs/MainMenu"; // Replace with your directory path
+
+    try {
+        for (const auto& entry : fs::directory_iterator(directoryPath)) {
+            if (entry.is_regular_file()) {
+                std::string numberOfFrames = "";
+
+                fs::path filePath = entry.path();
+                std::string filename = filePath.filename().string();
+
+                std::string actionName = filename.replace(filename.find(".png"), 4, "");
+
+                std::string finalPath = filePath.string();
+                std::string finalPath2 = finalPath.replace(finalPath.find("\\"), 1, "/");
+                buttonNames.push_back(actionName);
+                texmgr.loadTexture(actionName, finalPath2);
+            }
+        }
+    }
+    catch (const fs::filesystem_error& e) {
+        std::cerr << "Filesystem error: " << e.what() << std::endl;
+    }
+    catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+    }
+    //end of mainMenu region
+
+
+
+
 
 }
 
@@ -144,6 +180,7 @@ Game::Game()
 
     this->background.setTexture(this->texmgr.getRef("background"));
     this->toolbar.setTexture(this->texmgr.getRef("toolbar"));
+    this->mainMenu.setTexture(this->texmgr.getRef("toolbar"));
     this->board.setTexture(this->texmgr.getRef("board"));
 }
 

@@ -41,10 +41,13 @@ public:
     std::map<std::string, int> tileSprites;
     std::vector<std::string> brushNames;
 
+    std::vector<std::string> buttonNames;
+
     TextureManager texmgr;
 
     sf::Sprite background;
     sf::Sprite toolbar;
+    sf::Sprite mainMenu;
     sf::Sprite board;
 
     void pushState(GameState* state);

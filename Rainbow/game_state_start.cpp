@@ -34,6 +34,8 @@ void GameStateStart::draw(const float dt)
     this->map.draw(this->game->window, dt, currentTileHovered, currentHitboxHovered, currentVertexHandleHovered, currentMainHandleHovered);
 
     this->game->window.draw(this->game->toolbar);
+
+    this->game->window.draw(this->game->mainMenu);
     
     int k = 0;
     for (auto brush : this->Row1Brushes)
@@ -49,6 +51,21 @@ void GameStateStart::draw(const float dt)
     for (auto brush : this->Row2Brushes)
     {
         this->game->window.draw(brush);
+    }
+    
+    k = 0;
+    for (auto button : this->MainToolbarButtons)
+    {
+        if (k == 0 && currentPaintingGroundType == PaintingGroundType::PAINTINGBACKGROUND)
+        {
+            button.setColor(sf::Color(255, 255, 255, 128));
+        }
+        else if (k == 1 && currentPaintingGroundType == PaintingGroundType:: PAINTINGFOREGROUND)
+        {
+            button.setColor(sf::Color(255, 255, 255, 128));
+        }
+        this->game->window.draw(button);
+        k++;
     }
 
     //this->game->window.draw(this->brickBrushIcon);
@@ -295,7 +312,7 @@ void GameStateStart::handleInput()
 
                 TileType tileType;
                 tileType = TileType::BACKGROUND;
-                this->map.tiles.push_back(game->tileAtlas.at("forest"));
+                this->map.tiles.push_back(game->tileAtlas.at("background"));
                 Tile& tile = this->map.tiles.back();
                 tile.sprite.setPosition(worldPos.x, worldPos.y);
             }
@@ -577,6 +594,62 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
 
 }
 
+void GameStateStart::assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f size)
+{
+    float xcoord = pos.x + size.x / 2.f;
+    float ycoord = pos.y + size.y / 2.f;
+
+
+    float toolbarOffsetPosition = 0;
+
+    //float toolbarOffsetPosition = RBConstants::windowHeight - RBConstants::toolbarHeight;
+    mainMenuMinY = toolbarOffsetPosition;
+
+    //load pack
+    //check everything in Packs/Forest folder
+    //load each tuple in a vector, pack icons
+    //set pack region--> extract first 42 elements from pack
+    //draw elements
+
+   /* for (const std::string& brushIcon : game->brushNames) {
+        this->brickBrushIcon.setTexture(this->game->texmgr.getRef(brushIcon));
+    }*/
+    float brushPositionX = pos.x;
+    float brushDistance = 10.f;
+    float brushWidth = 60.f;
+    float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
+
+    for (int i = 0; i <= 1; i++)
+    {
+        brushPositionX += brushDistance + brushWidth;
+        sf::Sprite* newSprite = new sf::Sprite();
+        MainToolbarButtons.push_back(*newSprite);
+
+        this->MainToolbarButtons[i].setTexture(this->game->texmgr.getRef(this->game->buttonNames[i]));
+
+        this->MainToolbarButtons[i].setPosition(brushPositionX, pos.y + brushDistance + toolbarOffsetPosition);
+    }
+
+    //for (size_t i = 21; i <= this->game->brushNames.size(); i++)
+    //{
+
+
+    //}
+
+
+    //this->brickBrushIcon.setTexture(this->game->texmgr.getBrushRef("FlowerPot4YELLOWButton"));
+
+    //sf::FloatRect floatrect = this->brickBrushIcon.getLocalBounds();
+
+    game->mainMenu.setPosition(pos.x, pos.y);
+
+    //this->guiView.setSize(size);
+    //this->guiView.setCenter(sf::Vector2f(xcoord, ycoord));
+
+    ////this->brickBrushIcon.setPosition(pos.x + 10.f, pos.y + toolbarOffsetPosition + 10.f);
+
+}
+
 bool GameStateStart::checkIfMousePositionIsOnTile(sf::Vector2f position)
 {
     int b = 0;
@@ -716,6 +789,7 @@ GameStateStart::GameStateStart(Game* game)
     game->board.setPosition(viewCenter.x - 378.5, viewCenter.y - 378.5);
 
     assembleToolbar(game, pos, size);
+    assembleMainMenu(game, pos, size);
 
     sf::FloatRect bounds = game->background.getGlobalBounds();
     sf::FloatRect localbounds = game->background.getLocalBounds();

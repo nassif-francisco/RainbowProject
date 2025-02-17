@@ -9,6 +9,8 @@
 #include "constants.hpp"
 #include <string>
 
+enum class PaintingGroundType { PAINTINGBACKGROUND, PAINTINGFOREGROUND };
+
 class GameStateStart : public GameState
 {
 private:
@@ -19,6 +21,7 @@ private:
     sf::Sprite brickBrushIcon;
 
     int* currentBrush = nullptr;
+    PaintingGroundType currentPaintingGroundType = PaintingGroundType::PAINTINGBACKGROUND;
     int* currentTileHovered = nullptr;
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
@@ -26,16 +29,20 @@ private:
     std::vector<sf::Sprite> Row1Brushes;
     std::vector<sf::Sprite> Row2Brushes;
 
+    std::vector<sf::Sprite> MainToolbarButtons;
+
     RBActionState  actionState;
     sf::Vector2i panningAnchor;
     float zoomLevel;
     std::string currentTyleID;
     float toolbarMinY;
+    float mainMenuMinY;
 
     Canvas canvas;
     Map map;
     void loadgame();
     void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
+    void assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void setCurrentTyleID(sf::Vector2f position);
     bool checkIfMousePositionIsOnTile(sf::Vector2f position);
     bool checkIfMouseClickIsOnTile(sf::Vector2f position);
