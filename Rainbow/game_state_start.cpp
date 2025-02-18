@@ -56,11 +56,11 @@ void GameStateStart::draw(const float dt)
     k = 0;
     for (auto button : this->MainToolbarButtons)
     {
-        if (k == 0 && currentPaintingGroundType == PaintingGroundType::PAINTINGBACKGROUND)
+        if (k == 0 && currentPaintingGroundType == TileType::BACKGROUND)
         {
             button.setColor(sf::Color(255, 255, 255, 128));
         }
-        else if (k == 1 && currentPaintingGroundType == PaintingGroundType:: PAINTINGFOREGROUND)
+        else if (k == 1 && currentPaintingGroundType == TileType::FOREGROUND)
         {
             button.setColor(sf::Color(255, 255, 255, 128));
         }
@@ -425,9 +425,10 @@ void GameStateStart::handleInput()
                 }
                 
                 TileType tileType;
-                tileType = TileType::BACKGROUND;
+                tileType = currentPaintingGroundType;
                 this->map.tiles.push_back(game->tileAtlas.at(tileName));
                 Tile& tile = this->map.tiles.back();
+                tile.tileType = tileType;
                 sf::FloatRect bounds = tile.sprite.getGlobalBounds();
                 sf::Vector2f spriteSize = bounds.getSize();
 
@@ -777,11 +778,11 @@ void GameStateStart::setCurrentTyleType(sf::Vector2f position)
         {
             if (b == 0)
             {
-                currentPaintingGroundType = PaintingGroundType::PAINTINGBACKGROUND;
+                currentPaintingGroundType = TileType::BACKGROUND;
             }
             else
             {
-                currentPaintingGroundType = PaintingGroundType::PAINTINGFOREGROUND;
+                currentPaintingGroundType = TileType::FOREGROUND;
             }
             button.setColor(sf::Color(255, 255, 255, 128));
         }

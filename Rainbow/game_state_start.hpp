@@ -9,7 +9,6 @@
 #include "constants.hpp"
 #include <string>
 
-enum class PaintingGroundType { PAINTINGBACKGROUND, PAINTINGFOREGROUND };
 
 class GameStateStart : public GameState
 {
@@ -21,7 +20,7 @@ private:
     sf::Sprite brickBrushIcon;
 
     int* currentBrush = nullptr;
-    PaintingGroundType currentPaintingGroundType = PaintingGroundType::PAINTINGBACKGROUND;
+    TileType currentPaintingGroundType = TileType::BACKGROUND;
     int* currentTileHovered = nullptr;
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
