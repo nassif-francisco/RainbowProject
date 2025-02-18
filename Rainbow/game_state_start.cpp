@@ -344,6 +344,12 @@ void GameStateStart::handleInput()
                     break;
                 }
 
+                if (worldPos.y > mainMenuMinY && worldPos.y < mainMenuMinY + RBConstants::toolbarHeight)
+                {
+                    setCurrentTyleType(worldPos);
+                    break;
+                }
+
                 if (!sf::Keyboard::isKeyPressed(sf::Keyboard::H))
                 {
                     if (checkIfMouseClickIsOnTile(worldPos))
@@ -755,6 +761,29 @@ void GameStateStart::setCurrentTyleID(sf::Vector2f position)
         {
             currentBrush = new int(b);
             brush.setColor(sf::Color(255, 255, 255, 128));
+        }
+        b++;
+    }
+}
+
+void GameStateStart::setCurrentTyleType(sf::Vector2f position)
+{
+    int b = 0;
+    for (auto button : this->MainToolbarButtons)
+    {
+        sf::FloatRect boundingBox = button.getGlobalBounds();
+
+        if (boundingBox.contains((sf::Vector2f)position))
+        {
+            if (b == 0)
+            {
+                currentPaintingGroundType = PaintingGroundType::PAINTINGBACKGROUND;
+            }
+            else
+            {
+                currentPaintingGroundType = PaintingGroundType::PAINTINGFOREGROUND;
+            }
+            button.setColor(sf::Color(255, 255, 255, 128));
         }
         b++;
     }

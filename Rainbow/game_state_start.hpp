@@ -44,6 +44,7 @@ private:
     void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void setCurrentTyleID(sf::Vector2f position);
+    void setCurrentTyleType(sf::Vector2f position);
     bool checkIfMousePositionIsOnTile(sf::Vector2f position);
     bool checkIfMouseClickIsOnTile(sf::Vector2f position);
     bool checkIfMouseClickIsOnVertexHandle(sf::Vector2f position);
