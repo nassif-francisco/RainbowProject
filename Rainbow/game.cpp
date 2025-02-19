@@ -200,7 +200,7 @@ void Game::loadTiles()
     for (const auto& pair : tileSprites) {
         tileAtlas[pair.first] =
             Tile(pair.second, texmgr.getRef(pair.first),
-                { Animation(0, pair.second - 1, 0.5f) },//this 0.5f is an arbitrary velocity set for now
+                { Animation(0, pair.second - 1, DEFAULT_FRAME_RATE) },//this 0.5f is an arbitrary velocity set for now
                 TileType::BACKGROUND, 0, 0, 1, true);
     }
 

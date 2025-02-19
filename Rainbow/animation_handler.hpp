@@ -4,6 +4,8 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 
+#define DEFAULT_FRAME_RATE 0.5f
+
 class Animation
 {
 public:
