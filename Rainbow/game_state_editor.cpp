@@ -147,12 +147,12 @@ GameStateEditor::GameStateEditor(Game* game)
     float xcoord = pos.x + size.x / 2.f;
     float ycoord = pos.y + size.y / 2.f;
     
-    this->gameView.setSize(size);
+    this->gameView.setSize(5000,5000);
     this->gameView.setCenter(sf::Vector2f(xcoord, ycoord));
 
     map = Map("city_map.dat", 64, 64, game->tileAtlas,game);
 
-    this->zoomLevel = 1.0f;
+    this->zoomLevel = 0.2f;
 
     /* Centre the camera on the map */
     sf::Vector2f centre(this->map.width, this->map.height * 0.5);

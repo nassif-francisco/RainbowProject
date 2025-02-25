@@ -33,6 +33,8 @@ void GameStateStart::draw(const float dt)
 
     this->map.draw(this->game->window, dt, currentTileHovered, currentHitboxHovered, currentVertexHandleHovered, currentMainHandleHovered);
 
+    this->game->window.setView(this->guiView);
+    
     this->game->window.draw(this->game->toolbar);
 
     this->game->window.draw(this->game->mainMenu);
@@ -69,7 +71,7 @@ void GameStateStart::draw(const float dt)
     }
 
     //this->game->window.draw(this->brickBrushIcon);
-    
+    this->game->window.setView(this->view);
 
     return;
 }
@@ -337,16 +339,16 @@ void GameStateStart::handleInput()
                 sf::Vector2i positionWindow = this->game->window.getPosition();
                 sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
 
-                if (worldPos.y > toolbarMinY)
+                if (position.y > toolbarMinY)
                 {
                     //find which brush is being selected
-                    setCurrentTyleID(worldPos);
+                    setCurrentTyleID(sf::Vector2f(position.x, position.y));
                     break;
                 }
 
-                if (worldPos.y > mainMenuMinY && worldPos.y < mainMenuMinY + RBConstants::toolbarHeight)
+                if (position.y > mainMenuMinY && position.y < mainMenuMinY + RBConstants::toolbarHeight)
                 {
-                    setCurrentTyleType(worldPos);
+                    setCurrentTyleType(sf::Vector2f(position.x, position.y));
                     break;
                 }
 
@@ -800,9 +802,10 @@ GameStateStart::GameStateStart(Game* game)
     float ycoord = pos.y + size.y / 2.f;
 
     map = Map(this->game);
-    this->zoomLevel = 1.0f;
+    this->zoomLevel = 1.201f;
 
     this->view.setSize(size);
+    //view.zoom(0.3);
 
     //pos *= 0.5f;
     this->view.setCenter(sf::Vector2f(xcoord, ycoord));
