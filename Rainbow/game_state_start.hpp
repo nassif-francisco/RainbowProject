@@ -22,6 +22,8 @@ private:
     int* currentBrush = nullptr;
     TileType currentPaintingGroundType = TileType::BACKGROUND;
     int* currentTileHovered = nullptr;
+    bool LControlKeyPressed = false;
+    bool SKeyPressed = false;
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
     int* currentMainHandleHovered = nullptr;

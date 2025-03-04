@@ -521,11 +521,19 @@ void GameStateStart::handleInput()
         case sf::Event::KeyPressed:
         {
             if (event.key.code == sf::Keyboard::Escape) this->game->window.close();
-            else if (event.key.code == sf::Keyboard::Space) this->loadgame();
+            else if (event.key.code == sf::Keyboard::LControl) this->LControlKeyPressed = true;
+            else if (event.key.code == sf::Keyboard::S) this->SKeyPressed = true;
             else if (event.key.code == sf::Keyboard::H)
             {
                 currentTileHovered = nullptr;
             }
+            
+
+            if (LControlKeyPressed && SKeyPressed)
+            {
+                map.save("test");
+            }
+
             break;
         }
         case sf::Event::KeyReleased:
@@ -537,6 +545,14 @@ void GameStateStart::handleInput()
                 currentHitboxHovered = nullptr;
                 currentVertexHandleHovered = nullptr;
                 currentMainHandleHovered = nullptr;
+            }
+            else if (event.key.code == sf::Keyboard::S)
+            {
+                SKeyPressed = false;
+            }
+            else if (event.key.code == sf::Keyboard::LControl)
+            {
+                LControlKeyPressed = false;
             }
             break;
         }
