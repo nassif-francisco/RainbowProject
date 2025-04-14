@@ -41,12 +41,12 @@ void Tile::update()
     return;
 }
 
-std::string tileTypeToStr(TileType type)
+const char* tileTypeToStr(TileType type)
 {
     switch (type)
     {
     default:
-    case TileType::BACKGROUND:          return "background";
-    case TileType::FOREGROUND:           return "foreground";
+    case TileType::BACKGROUND:    return "BACKGROUND";
+    case TileType::FOREGROUND:    return "FOREGROUND";
     }
 }

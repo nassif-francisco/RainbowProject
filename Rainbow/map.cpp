@@ -49,15 +49,20 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
 void Map::save(const std::string& filename)
 {
     std::ofstream outputFile;
-    outputFile.open(filename, std::ios::out | std::ios::binary);
+    outputFile.open(filename);
 
     for (auto tile : this->tiles)
     {
-        outputFile.write((char*)&tile.tileType, sizeof(int));
-        outputFile.write((char*)&tile.tileVariant, sizeof(int));
-        outputFile.write((char*)&tile.regions, sizeof(int) * 1);
-        outputFile.write((char*)&tile.population, sizeof(double));
-        outputFile.write((char*)&tile.storedGoods, sizeof(float));
+        const char* tyleType = tileTypeToStr(tile.tileType);
+        std:string tyleTypeString(tyleType);
+
+        outputFile.write(tyleType, tyleTypeString.size());
+        outputFile.write("\n", 1);
+    }
+
+    for(auto box : this->hitboxes)
+    {
+
     }
 
     outputFile.close();

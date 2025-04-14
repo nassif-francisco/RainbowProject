@@ -8,7 +8,7 @@
 
 enum class TileType { BACKGROUND, FOREGROUND };
 
-std::string tileTypeToStr(TileType type);
+const char* tileTypeToStr(TileType type);
 
 class Tile
 {
