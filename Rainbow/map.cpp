@@ -74,25 +74,30 @@ void Map::save(const std::string& filename)
     for (auto tile : backgroundTiles)
     {   
         std::string rowContent;
+        rowContent += tile.tileName; 
+        rowContent += ",";
         rowContent += std::to_string(tile.sprite.getPosition().x);
         rowContent += ",";
         rowContent += std::to_string(tile.sprite.getPosition().y);
-        rowContent += ",";
         outputFile.write(rowContent.c_str(), rowContent.size());
-        //rowContent += std::to_string(tile.sprite.ge);
-
         outputFile.write("\n", 1);
     }
 
-   /* for (auto tile : foregroundTiles)
+    const char* foregroundIdenfitier = "FOREGROUND";
+    outputFile.write(foregroundIdenfitier, std::string(foregroundIdenfitier).size());
+    outputFile.write("\n", 1);
+
+    for (auto tile : foregroundTiles)
     {
-        const char* tyleType = tileTypeToStr(tile.tileType);
-        std:string tyleTypeString(tyleType);
-
-
-        outputFile.write(tyleType, tyleTypeString.size());
+        std::string rowContent;
+        rowContent += tile.tileName;
+        rowContent += ",";
+        rowContent += std::to_string(tile.sprite.getPosition().x);
+        rowContent += ",";
+        rowContent += std::to_string(tile.sprite.getPosition().y);
+        outputFile.write(rowContent.c_str(), rowContent.size());
         outputFile.write("\n", 1);
-    }*/
+    }
 
     for(auto box : this->hitboxes)
     {

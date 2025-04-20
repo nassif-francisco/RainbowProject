@@ -532,6 +532,8 @@ void GameStateStart::handleInput()
             if (LControlKeyPressed && SKeyPressed)
             {
                 map.save("test");
+                SKeyPressed = false;
+                LControlKeyPressed = false;
             }
 
             break;

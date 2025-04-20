@@ -190,7 +190,7 @@ void Game::loadTiles()
 
     for (const std::string& tile : tileNames) {
         tileAtlas[tile] =
-            Tile(25, 1, texmgr.getRef(tile),
+            Tile(tile, 25, 1, texmgr.getRef(tile),
                 { staticAnim },
                 TileType::BACKGROUND, 100, 0, 1);
     }
@@ -199,7 +199,7 @@ void Game::loadTiles()
 
     for (const auto& pair : tileSprites) {
         tileAtlas[pair.first] =
-            Tile(pair.second, texmgr.getRef(pair.first),
+            Tile(pair.first, pair.second, texmgr.getRef(pair.first),
                 { Animation(0, pair.second - 1, DEFAULT_FRAME_RATE) },//this 0.5f is an arbitrary velocity set for now
                 TileType::BACKGROUND, 0, 0, 1, true);
     }

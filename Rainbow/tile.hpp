@@ -19,6 +19,8 @@ public:
 
     TileType tileType;
 
+    std::string tileName;
+
     int frames;
 
     /* Tile variant, allowing for different looking versions of the
@@ -47,7 +49,7 @@ public:
 
     /* Constructor */
     Tile() { }
-    Tile(const unsigned int tileSize, const unsigned int height, sf::Texture& texture,
+    Tile(const std::string tileName, const unsigned int tileSize, const unsigned int height, sf::Texture& texture,
         const std::vector<Animation>& animations,
         const TileType tileType, const unsigned int cost, const unsigned int maxPopPerLevel,
         const unsigned int maxLevels, bool isAnimated = false)
@@ -55,6 +57,7 @@ public:
         this->tileType = tileType;
         this->tileVariant = 0;
         this->regions[0] = 0;
+        this->tileName = tileName;
 
         this->cost = cost;
         this->population = 0;
@@ -74,7 +77,7 @@ public:
         this->animHandler.update(0.0f);
     }
 
-    Tile(const unsigned int frames, sf::Texture& texture,
+    Tile(const std::string tileName, const unsigned int frames, sf::Texture& texture,
         const std::vector<Animation>& animations,
         const TileType tileType, const unsigned int cost, const unsigned int maxPopPerLevel,
         const unsigned int maxLevels, bool isAnimated = false)
@@ -83,6 +86,7 @@ public:
         this->tileType = tileType;
         this->tileVariant = 0;
         this->regions[0] = 0;
+        this->tileName = tileName;
 
         this->cost = cost;
         this->population = 0;
