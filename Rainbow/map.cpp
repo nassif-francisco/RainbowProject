@@ -51,14 +51,48 @@ void Map::save(const std::string& filename)
     std::ofstream outputFile;
     outputFile.open(filename);
 
+    std::vector<Tile> backgroundTiles;
+    std::vector<Tile> foregroundTiles;
+
+    //separate in BACKGROUND and FOREGROUND vectors
     for (auto tile : this->tiles)
+    {
+        if (tile.tileType == TileType::BACKGROUND)
+        {
+            backgroundTiles.push_back(tile);
+        }
+        else
+        {
+            foregroundTiles.push_back(tile);
+        }
+    }
+
+    const char* backgroundIdenfitier = "BACKGROUND";
+    outputFile.write(backgroundIdenfitier, std::string(backgroundIdenfitier).size());
+    outputFile.write("\n", 1);
+
+    for (auto tile : backgroundTiles)
+    {   
+        std::string rowContent;
+        rowContent += std::to_string(tile.sprite.getPosition().x);
+        rowContent += ",";
+        rowContent += std::to_string(tile.sprite.getPosition().y);
+        rowContent += ",";
+        outputFile.write(rowContent.c_str(), rowContent.size());
+        //rowContent += std::to_string(tile.sprite.ge);
+
+        outputFile.write("\n", 1);
+    }
+
+   /* for (auto tile : foregroundTiles)
     {
         const char* tyleType = tileTypeToStr(tile.tileType);
         std:string tyleTypeString(tyleType);
 
+
         outputFile.write(tyleType, tyleTypeString.size());
         outputFile.write("\n", 1);
-    }
+    }*/
 
     for(auto box : this->hitboxes)
     {
