@@ -13,7 +13,7 @@
 #include <string>
 
 
-void Game::loadTextures()
+void Game::loadTextures(std::string currentResolution)
 {
     //texmgr.loadTexture("grass", "media/grass.png");
     //texmgr.loadTexture("forest", "media/Packs/Forest/Grid1.png");
@@ -22,9 +22,13 @@ void Game::loadTextures()
     //texmgr.loadTexture("commercial", "media/commercial.png");
     //texmgr.loadTexture("industrial", "media/industrial.png");
     //texmgr.loadTexture("road", "media/road.png");
-    texmgr.loadTexture("background", "media/background.png");
-    texmgr.loadTexture("toolbar", "media/toolbar.png");
-    texmgr.loadTexture("board", "media/board.png");
+	std::string backgroundPath = "media/background" + currentResolution + ".png";
+	std::string toolbarPath = "media/toolbar" + currentResolution + ".png";
+	std::string boardPath = "media/board" + currentResolution + ".png";
+
+    texmgr.loadTexture("background", backgroundPath);
+    texmgr.loadTexture("toolbar", toolbarPath);
+    texmgr.loadTexture("board", boardPath);
     /*texmgr.loadTexture("flower", "media/Packs/Forest/flower.png");
     texmgr.loadTexture("flowerButton", "media/Packs/Forest/Grid1Button.png");*/
 
@@ -168,12 +172,15 @@ void Game::gameLoop()
 
 Game::Game()
 {
-    this->loadTextures();
-    this->loadTiles();
     
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 
     this->window.create(sf::VideoMode(desktop.width, desktop.height - RBConstants::toolbarHeight), "app.exe", sf::Style::Default);
+    std::string currentResolution = "_" + std::to_string(desktop.width) + "x" + std::to_string(desktop.height);
+    
+    this->loadTextures(currentResolution);
+    this->loadTiles();
+   
     //local tweat to set window in corner
     this->window.setPosition(sf::Vector2i(-10, -5));
     this->window.setFramerateLimit(60);

@@ -19,7 +19,7 @@ class GameState;
 class Game
 {
 private:
-    void loadTextures();
+    void loadTextures(std::string currentResolution);
     void loadTiles();
 
     void processFile(const fs::path& filePath) {
