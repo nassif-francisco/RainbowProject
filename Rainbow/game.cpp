@@ -13,7 +13,7 @@
 #include <string>
 
 
-void Game::loadTextures(std::string currentResolution)
+void Game::loadTextures()
 {
     //texmgr.loadTexture("grass", "media/grass.png");
     //texmgr.loadTexture("forest", "media/Packs/Forest/Grid1.png");
@@ -177,8 +177,10 @@ Game::Game()
 
     this->window.create(sf::VideoMode(desktop.width, desktop.height - RBConstants::toolbarHeight), "app.exe", sf::Style::Default);
     std::string currentResolution = "_" + std::to_string(desktop.width) + "x" + std::to_string(desktop.height);
+
+    this->currentResolution = currentResolution;
     
-    this->loadTextures(currentResolution);
+    this->loadTextures();
     this->loadTiles();
    
     //local tweat to set window in corner

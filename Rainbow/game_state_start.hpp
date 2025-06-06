@@ -39,6 +39,18 @@ private:
     float toolbarMinY;
     float mainMenuMinY;
 
+	const float GetCurrentToolbarHeightFactor()
+	{
+		if (this->game->currentResolution == "_1920x1080")
+		{
+			return RBConstants::toolbarHeightFactor_1920x1080;
+		}
+		else if (this->game->currentResolution == "_2560x1600")
+		{
+			return RBConstants::toolbarHeightFactor_2560x1600;
+		}
+	}
+
     Canvas canvas;
     Map map;
     void loadgame();

@@ -486,7 +486,9 @@ void GameStateStart::handleInput()
 
             float height = sf::VideoMode::getDesktopMode().height;
 
-            float toolbarOffsetPosition = (height - RBConstants::toolbarHeight) - (height - RBConstants::toolbarHeight)/RBConstants::toolbarHeightFactor;
+			float currentToolbarHeightFactor = GetCurrentToolbarHeightFactor();
+
+            float toolbarOffsetPosition = (height - RBConstants::toolbarHeight) - (height - RBConstants::toolbarHeight)/ currentToolbarHeightFactor;
             toolbarMinY = toolbarOffsetPosition;
 
             std::cout << "SizeWindow.x: " << sizeWindow.x << std::endl;
@@ -569,9 +571,9 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
 {
     float xcoord = pos.x + size.x / 2.f;
     float ycoord = pos.y + size.y / 2.f;
+    float currentToolbarHeightFactor = GetCurrentToolbarHeightFactor();
 
-
-    float toolbarOffsetPosition = size.y - size.y / RBConstants::toolbarHeightFactor;
+    float toolbarOffsetPosition = size.y - size.y / currentToolbarHeightFactor;
     
     //float toolbarOffsetPosition = RBConstants::windowHeight - RBConstants::toolbarHeight;
     toolbarMinY = toolbarOffsetPosition;

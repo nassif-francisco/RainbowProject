@@ -19,7 +19,7 @@ class GameState;
 class Game
 {
 private:
-    void loadTextures(std::string currentResolution);
+    void loadTextures();
     void loadTiles();
 
     void processFile(const fs::path& filePath) {
@@ -35,6 +35,8 @@ public:
     const static int tileWidth = 16;
 
     sf::RenderWindow window;
+
+	std::string currentResolution;
 
     std::map<std::string, Tile> tileAtlas;
     std::vector<std::string> tileNames;
