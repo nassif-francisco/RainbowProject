@@ -15,6 +15,10 @@
     <ClCompile Include="canvas.cpp" />
     <ClCompile Include="canvasObject.cpp" />
     <ClCompile Include="hitbox.cpp" />
+    <ClCompile Include="coordinateHandler.hpp">
+      <Filter>Headers</Filter>
+    </ClCompile>
+    <ClCompile Include="coordinateHandler.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">

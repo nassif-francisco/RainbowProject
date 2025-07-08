@@ -8,6 +8,7 @@
 #include "map.hpp"
 #include "constants.hpp"
 #include <string>
+#include "coordinateHandler.hpp"
 
 
 class GameStateStart : public GameState

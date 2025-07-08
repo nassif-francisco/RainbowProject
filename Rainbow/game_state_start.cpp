@@ -837,6 +837,15 @@ GameStateStart::GameStateStart(Game* game)
     float ycoordback = viewCenter.y - viewSize.y / 2.f;
 
     sf::Vector2f posgame = game->background.getPosition();
+	sf::Vector2i mapUpperLeftPosition = CoordinateHandler::GetMapUpperLeftCornerPosition(this->game->window);
+    
+    //assemble board pattern
+    sf::FloatRect boundsSprite = game->board.getGlobalBounds();
+    sf::Vector2f spriteSize = boundsSprite.getSize();
+	MapGrid mapGrid = MapGrid(mapUpperLeftPosition, spriteSize.x, spriteSize.y, 10);
+    //board pattern
+
+
     //sf::Vector2f pos1 = sf::Vector2f(950.f, 0.f);
     game->background.setPosition(pos);
     game->board.setPosition(viewCenter.x - 378.5, viewCenter.y - 378.5);

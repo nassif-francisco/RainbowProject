@@ -12,6 +12,8 @@ public:
 	static constexpr float toolbarHeightFactor_1920x1080 = 11.48;
 	static constexpr float toolbarHeightFactor_2560x1600 = 16;
 	static constexpr float VerticesSize = 8.0f;
+	static constexpr float InitialMapOffset = 10000.0f;
+	
 	
 
 
