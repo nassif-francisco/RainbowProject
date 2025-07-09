@@ -543,7 +543,8 @@ void GameStateStart::handleInput()
 
             if (LControlKeyPressed && SKeyPressed)
             {
-                map.save("test");
+				std::string filename = RBConstants::CommonMediaMapsPath + "test";
+                map.save(filename);
                 SKeyPressed = false;
                 LControlKeyPressed = false;
             }

@@ -2,6 +2,7 @@
 #define RBCONSTANTS
 
 #include <string>
+using namespace std;
 
 static class RBConstants 
 
@@ -13,6 +14,10 @@ public:
 	static constexpr float toolbarHeightFactor_2560x1600 = 16;
 	static constexpr float VerticesSize = 8.0f;
 	static constexpr float InitialMapOffset = 1000.0f;
+	inline static const string CommonMediaPath = "../../CommonMedia/";
+	inline static const string CommonMediaEnvironmentPath = "../../CommonMedia/Environment/" ;
+	inline static const string CommonMediaEnvironmentPacksPath = "../../CommonMedia/Environment/Packs/";
+	inline static const string CommonMediaMapsPath = "../../CommonMedia/Maps/";
 	
 	
 

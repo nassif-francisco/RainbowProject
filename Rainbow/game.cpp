@@ -22,9 +22,9 @@ void Game::loadTextures()
     //texmgr.loadTexture("commercial", "media/commercial.png");
     //texmgr.loadTexture("industrial", "media/industrial.png");
     //texmgr.loadTexture("road", "media/road.png");
-	std::string backgroundPath = "media/background" + currentResolution + ".png";
-	std::string toolbarPath = "media/toolbar" + currentResolution + ".png";
-	std::string boardPath = "media/board" + currentResolution + ".png";
+	std::string backgroundPath = RBConstants::CommonMediaEnvironmentPath + "background" + currentResolution + ".png";
+	std::string toolbarPath = RBConstants::CommonMediaEnvironmentPath + "toolbar" + currentResolution + ".png";
+	std::string boardPath = RBConstants::CommonMediaEnvironmentPath + "board" + currentResolution + ".png";
 
     texmgr.loadTexture("background", backgroundPath);
     texmgr.loadTexture("toolbar", toolbarPath);
@@ -35,7 +35,7 @@ void Game::loadTextures()
 
 
     //begin toolbar region
-    std::string directoryPath = "media/Packs/Toolbar"; // Replace with your directory path
+    std::string directoryPath = RBConstants::CommonMediaEnvironmentPacksPath + "Toolbar"; // Replace with your directory path
 
     try {
         for (const auto& entry : fs::directory_iterator(directoryPath)) {
@@ -89,7 +89,7 @@ void Game::loadTextures()
     //end of toolbar region
 
     //end of mainMenu region
-    directoryPath = "media/Packs/MainMenu"; // Replace with your directory path
+    directoryPath = RBConstants::CommonMediaEnvironmentPacksPath + "MainMenu"; // Replace with your directory path
 
     try {
         for (const auto& entry : fs::directory_iterator(directoryPath)) {
