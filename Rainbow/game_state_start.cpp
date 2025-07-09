@@ -29,7 +29,9 @@ void GameStateStart::draw(const float dt)
 
     this->game->window.draw(this->game->background);
 
-    this->game->window.draw(this->game->board);
+    //this->game->window.draw(this->game->board);
+
+	drawBoardCollection(this->game);
 
     this->map.draw(this->game->window, dt, currentTileHovered, currentHitboxHovered, currentVertexHandleHovered, currentMainHandleHovered);
 
@@ -78,6 +80,14 @@ void GameStateStart::draw(const float dt)
 
 void GameStateStart::update(const float dt)
 {
+}
+
+void GameStateStart::drawBoardCollection(Game* game)
+{
+	for (auto& board : this->game->boardCollection)
+	{
+		game->window.draw(board);
+	}
 }
 
 void GameStateStart::handleInput()
@@ -567,6 +577,24 @@ void GameStateStart::handleInput()
     return;
 }
 
+void GameStateStart::assembleBoardCollection(Game* game, MapGrid& mapGrid)
+{
+    sf::Sprite boardSprite = game->board;
+    
+    for (int k = 0; k < mapGrid.RepetitionFactor; k++) //repetition along y axis
+    {
+        for (int m = 0; m < mapGrid.RepetitionFactor; m++) // rep along x axis
+        {
+			double xPosition = mapGrid.UpperLeftCornerPosition.x + (m * mapGrid.TileSizeX);
+			double yPosition = mapGrid.UpperLeftCornerPosition.y + (k * mapGrid.TileSizeY);
+            
+            sf::Sprite newBoardSprite = boardSprite;
+			newBoardSprite.setPosition(xPosition, yPosition);
+			game->boardCollection.push_back(newBoardSprite);
+        }
+    }
+}
+
 void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size)
 {
     float xcoord = pos.x + size.x / 2.f;
@@ -837,7 +865,7 @@ GameStateStart::GameStateStart(Game* game)
     float ycoordback = viewCenter.y - viewSize.y / 2.f;
 
     sf::Vector2f posgame = game->background.getPosition();
-	sf::Vector2i mapUpperLeftPosition = CoordinateHandler::GetMapUpperLeftCornerPosition(this->game->window);
+	sf::Vector2i mapUpperLeftPosition = MapGrid::GetMapUpperLeftCornerPosition(this->game->window);
     
     //assemble board pattern
     sf::FloatRect boundsSprite = game->board.getGlobalBounds();
@@ -850,6 +878,7 @@ GameStateStart::GameStateStart(Game* game)
     game->background.setPosition(pos);
     game->board.setPosition(viewCenter.x - 378.5, viewCenter.y - 378.5);
 
+	assembleBoardCollection(game, mapGrid);
     assembleToolbar(game, pos, size);
     assembleMainMenu(game, pos, size);
 

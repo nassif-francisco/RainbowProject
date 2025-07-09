@@ -8,7 +8,7 @@
 #include "map.hpp"
 #include "constants.hpp"
 #include <string>
-#include "coordinateHandler.hpp"
+#include "mapGrid.hpp"
 
 
 class GameStateStart : public GameState
@@ -57,12 +57,14 @@ private:
     void loadgame();
     void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f size);
+    void assembleBoardCollection(Game* game, MapGrid& mapGrid);
     void setCurrentTyleID(sf::Vector2f position);
     void setCurrentTyleType(sf::Vector2f position);
     bool checkIfMousePositionIsOnTile(sf::Vector2f position);
     bool checkIfMouseClickIsOnTile(sf::Vector2f position);
     bool checkIfMouseClickIsOnVertexHandle(sf::Vector2f position);
     bool checkIfMouseClickIsOnMainHandle(sf::Vector2f position);
+    void drawBoardCollection(Game* game);
     //std::string getCurrentTyleID();
 
 public:

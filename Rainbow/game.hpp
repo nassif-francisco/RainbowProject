@@ -51,6 +51,7 @@ public:
     sf::Sprite toolbar;
     sf::Sprite mainMenu;
     sf::Sprite board;
+	std::vector<sf::Sprite> boardCollection;
 
     void pushState(GameState* state);
     void popState();

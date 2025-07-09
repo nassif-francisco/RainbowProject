@@ -135,8 +135,8 @@
     <ClCompile Include="animation_handler.cpp" />
     <ClCompile Include="canvas.cpp" />
     <ClCompile Include="canvasObject.cpp" />
-    <ClCompile Include="coordinateHandler.cpp" />
-    <ClCompile Include="coordinateHandler.hpp" />
+    <ClCompile Include="mapGrid.cpp" />
+    <ClCompile Include="mapGrid.hpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="game_state_editor.cpp" />
     <ClCompile Include="game_state_start.cpp" />
