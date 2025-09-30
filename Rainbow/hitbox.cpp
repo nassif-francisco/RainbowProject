@@ -33,6 +33,12 @@ void Hitbox::updateRectangle()
     //Rectangle->setPosition({ AABB[0].x, AABB[0].y });
 }
 
+void Hitbox::updateTag(string newTag)
+{
+    Tag = newTag;
+    //Rectangle->setPosition({ AABB[0].x, AABB[0].y });
+}
+
 void Hitbox::update()
 {
 

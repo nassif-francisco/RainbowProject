@@ -2,6 +2,7 @@
 #define HITBOX_HPP
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -15,6 +16,7 @@ class Hitbox
 	vector<sf::CircleShape> VertexHandles;
 	sf::CircleShape MainHandle;
 	int* initialHoveredHandle = nullptr;
+	string Tag;
 
 	//Constructors
 	Hitbox()
@@ -63,6 +65,8 @@ class Hitbox
 	void initializeRectangle();
 
 	void updateRectangle();
+
+	void updateTag(string newTag);
 
 	private : 
 

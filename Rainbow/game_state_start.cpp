@@ -331,8 +331,13 @@ void GameStateStart::handleInput()
         }
         case sf::Event::MouseButtonPressed:
         {
-            /* Start panning */
             
+            // get global mouse position
+            sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
+            sf::Vector2i positionWindow = this->game->window.getPosition();
+            sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);        
+            
+            //PANNING case
             if (event.mouseButton.button == sf::Mouse::Middle)
             {
                 if (this->actionState != RBActionState::PANNING)
@@ -340,15 +345,11 @@ void GameStateStart::handleInput()
                     this->actionState = RBActionState::PANNING;
                     this->panningAnchor = sf::Mouse::getPosition(this->game->window);
                 }
+                break;
             }
             
             else if (event.mouseButton.button == sf::Mouse::Left)
             {
-                // get global mouse position
-                sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
-                sf::Vector2i positionWindow = this->game->window.getPosition();
-                sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
-
                 if (position.y > toolbarMinY)
                 {
                     //find which brush is being selected
@@ -460,6 +461,18 @@ void GameStateStart::handleInput()
                 
 
                 //view.setCenter(900.f, 900.f);
+            }
+            else if (event.mouseButton.button == sf::Mouse::Right)
+            {
+                if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+                {
+                    if (checkIfMouseClickIsOnMainHandle(worldPos))
+                    {
+                        this->actionState = RBActionState::TAGGING;
+                        break;
+                    }
+                }
+                
             }
             break;
         }
