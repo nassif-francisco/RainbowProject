@@ -7,6 +7,7 @@
 #include "tile.hpp"
 #include "hitbox.hpp"
 #include <string>
+#include "tinyfiledialogs.hpp"
 
 void GameStateStart::draw(const float dt)
 {
@@ -469,6 +470,9 @@ void GameStateStart::handleInput()
                     if (checkIfMouseClickIsOnMainHandle(worldPos))
                     {
                         this->actionState = RBActionState::TAGGING;
+                        char* newTag;
+                        newTag = tinyfd_inputBox(
+                            "Tag Name", NULL, "");
                         break;
                     }
                 }

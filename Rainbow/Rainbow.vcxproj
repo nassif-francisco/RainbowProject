@@ -146,6 +146,7 @@
     <ClCompile Include="texture_manager.cpp" />
     <ClCompile Include="texture_manager.hpp" />
     <ClCompile Include="tile.cpp" />
+    <ClCompile Include="tinyfiledialogs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animation_handler.hpp" />
@@ -159,6 +160,7 @@
     <ClInclude Include="hitbox.hpp" />
     <ClInclude Include="map.hpp" />
     <ClInclude Include="tile.hpp" />
+    <ClInclude Include="tinyfiledialogs.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

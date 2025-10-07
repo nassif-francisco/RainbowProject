@@ -19,6 +19,7 @@
     <ClCompile Include="mapGrid.hpp">
       <Filter>Headers</Filter>
     </ClCompile>
+    <ClCompile Include="tinyfiledialogs.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Filter Include="Headers">
@@ -57,6 +58,9 @@
       <Filter>Headers</Filter>
     </ClInclude>
     <ClInclude Include="hitbox.hpp">
+      <Filter>Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyfiledialogs.hpp">
       <Filter>Headers</Filter>
     </ClInclude>
   </ItemGroup>
