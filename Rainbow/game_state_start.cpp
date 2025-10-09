@@ -472,6 +472,11 @@ void GameStateStart::handleInput()
                     newTag = tinyfd_inputBox(
                         "Give your hitbox a name", NULL, NULL);
 
+                    if (newTag == NULL)
+                    {
+                        break;
+                    }
+
                     Hitbox& hitbox = this->map.hitboxes[*currentHitboxHovered];
                     hitbox.Tag = newTag;
                     break;
