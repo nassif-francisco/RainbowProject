@@ -1459,7 +1459,7 @@ WINDOWSTATE = 'hidden'>\n\
 <script language = 'VBScript'>\n\
 \n\
 intWidth = Screen.Width/4\n\
-intHeight = Screen.Height/6\n\
+intHeight = Screen.Height/4\n\
 ResizeTo intWidth, intHeight\n\
 MoveTo((Screen.Width/2)-(intWidth/2)),((Screen.Height/2)-(intHeight/2))\n\
 result = 0\n\
@@ -1502,32 +1502,38 @@ End If\n\
 End Sub\n\
 \n\
 </script>\n\
-<body style = 'background-color:#EEEEEE' onkeypress = 'vbs:Default_Buttons' align = 'top'>\n\
+<body style = 'background-color:#EEEEEE; font-family:Arial;' onkeypress = 'vbs:Default_Buttons'>\n\
 <table width = '100%' height = '80%' align = 'center' border = '0'>\n\
-<tr border = '0'>\n\
-<td align = 'left' valign = 'middle' style='Font-Family:Arial'>\n");
+<tr>\n\
+    <!-- Image on the left -->\n\
+    <td align = 'left' valign = 'middle' style='width:60%;'>\n\
+        <img src = 'file:///C:/CommonMedia/Resources/tagNameImg.png' alt = 'forest.png' \n\
+        style = 'display:block; margin-left:4em; max-width:100%; height:auto;'>\n\
+");
 
 		wcscat(lDialogString, aMessage ? aMessage : L"");
 
 		wcscat(lDialogString, L"\n\
-</td>\n\
-<td align = 'right' valign = 'middle' style = 'margin-top: 0em'>\n\
-<table  align = 'right' style = 'margin-right: 0em;'>\n\
-<tr align = 'right' style = 'margin-top: 5em;'>\n\
-<input type = 'button' value = 'OK' name = 'btn_OK' onClick = 'vbs:Run_ProgramOK' style = 'width: 5em; margin-top: 2em;'><br>\n\
-<input type = 'button' value = 'Cancel' name = 'btn_Cancel' onClick = 'vbs:Run_ProgramCancel' style = 'width: 5em;'><br><br>\n\
+    </td>\n\
+\n\
+    <!-- Buttons on the right -->\n\
+    <td align = 'right' valign = 'middle' style = 'width:40%;'>\n\
+        <input type = 'button' value = 'OK' name = 'btn_OK' \n\
+        onClick = 'vbs:Run_ProgramOK' style = 'width: 5em; margin: 1em;'><br>\n\
+\n\
+        <input type = 'button' value = 'Cancel' name = 'btn_Cancel' \n\
+        onClick = 'vbs:Run_ProgramCancel' style = 'width: 5em; margin: 1em;'>\n\
+    </td>\n\
 </tr>\n\
 </table>\n\
-</td>\n\
-</tr>\n\
-</table>\n");
-
-		wcscat(lDialogString, L"<table width = '100%' height = '100%' align = 'center' border = '0'>\n\
+\n\
+<!-- Text input box below the image and buttons -->\n\
+<table width = '100%' align = 'center' border = '0'>\n\
 <tr>\n\
-<td align = 'left' valign = 'top'>\n\
-<input type = 'password' id = 'txt_input'\n\
-name = 'txt_input' value = '' style = 'float:left;width:100%' ><BR>\n\
-</td>\n\
+    <td align = 'left' valign = 'top'>\n\
+        <input type = 'text' id = 'txt_input' name = 'txt_input' \n\
+        value = '' style = 'width:100%; margin-top:1em;'>\n\
+    </td>\n\
 </tr>\n\
 </table>\n\
 </body>\n\

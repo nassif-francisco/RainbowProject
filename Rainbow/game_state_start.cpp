@@ -465,18 +465,14 @@ void GameStateStart::handleInput()
             }
             else if (event.mouseButton.button == sf::Mouse::Right)
             {
-                if (sf::Keyboard::isKeyPressed(sf::Keyboard::H))
+                if (checkIfMouseClickIsOnMainHandle(worldPos))
                 {
-                    if (checkIfMouseClickIsOnMainHandle(worldPos))
-                    {
-                        this->actionState = RBActionState::TAGGING;
-                        char* newTag;
-                        newTag = tinyfd_inputBox(
-                            "Tag Name", NULL, "");
-                        break;
-                    }
+                    this->actionState = RBActionState::TAGGING;
+                    char* newTag;
+                    newTag = tinyfd_inputBox(
+                        "Give your hitbox a name", NULL, NULL);
+                    break;
                 }
-                
             }
             break;
         }
