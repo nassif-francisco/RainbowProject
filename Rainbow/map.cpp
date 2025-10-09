@@ -99,9 +99,29 @@ void Map::save(const std::string& filename)
         outputFile.write("\n", 1);
     }
 
+    const char* hitboxIdenfitier = "HITBOXES";
+    outputFile.write(hitboxIdenfitier, std::string(hitboxIdenfitier).size());
+    outputFile.write("\n", 1);
+
     for(auto box : this->hitboxes)
     {
+        std::string rowContent;
+        rowContent += box.Tag;
+        rowContent += ",";
+        for (int k = 0; k < 4; k++)
+        {
+            rowContent += std::to_string(box.AABB[k].x);
+            rowContent += ",";
+            rowContent += std::to_string(box.AABB[k].y);
 
+            if (k != 3)
+            {
+                rowContent += ";";
+            }           
+        }
+
+        outputFile.write(rowContent.c_str(), rowContent.size());
+        outputFile.write("\n", 1);
     }
 
     outputFile.close();
