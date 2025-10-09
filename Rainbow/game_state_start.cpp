@@ -339,7 +339,7 @@ void GameStateStart::handleInput()
             sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);        
             
             //PANNING case
-            if (event.mouseButton.button == sf::Mouse::Middle)
+            if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
             {
                 if (this->actionState != RBActionState::PANNING)
                 {
