@@ -44,6 +44,8 @@ public:
     /* Save map to disk */
     void save(const std::string& filename);
 
+    void load(const std::string& filename);
+
     /* Draw the map */
     void draw(sf::RenderWindow& window, float dt, 
         int* hoveredTile = nullptr,

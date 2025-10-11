@@ -46,6 +46,135 @@ void Map::load(const std::string& filename, unsigned int width, unsigned int hei
     return;
 }
 
+void Map::load(const std::string& filename)
+{
+    std::ifstream inputFile(filename);
+    if (!inputFile.is_open())
+    {
+        std::cerr << "Error: Could not open file " << filename << " for reading." << std::endl;
+        return;
+    }
+
+    this->tiles.clear();
+    this->hitboxes.clear();
+
+    std::string line;
+    enum class Section { NONE, BACKGROUND, FOREGROUND, HITBOXES } currentSection = Section::NONE;
+
+    while (std::getline(inputFile, line))
+    {
+        if (line.empty())
+            continue;
+
+        if (line == "BACKGROUND")
+        {
+            currentSection = Section::BACKGROUND;
+            continue;
+        }
+        else if (line == "FOREGROUND")
+        {
+            currentSection = Section::FOREGROUND;
+            continue;
+        }
+        else if (line == "HITBOXES")
+        {
+            currentSection = Section::HITBOXES;
+            continue;
+        }
+
+        switch (currentSection)
+        {
+        case Section::BACKGROUND:
+        case Section::FOREGROUND:
+        {
+            // Format: tileName,posX,posY
+            std::stringstream ss(line);
+            std::string tileName, posXStr, posYStr;
+
+            std::getline(ss, tileName, ',');
+            std::getline(ss, posXStr, ',');
+            std::getline(ss, posYStr, ',');
+
+            if (tileName.empty() || posXStr.empty() || posYStr.empty())
+                continue;
+
+            float x = std::stof(posXStr);
+            float y = std::stof(posYStr);
+
+            Tile currentTile = game->tileAtlas.at(tileName);
+            tiles.push_back(currentTile);
+
+            Tile& tile = tiles.back();
+
+            tile.tileType = (currentSection == Section::BACKGROUND)
+                ? TileType::BACKGROUND
+                : TileType::FOREGROUND;
+
+            sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+            sf::Vector2f spriteSize = bounds.getSize();
+
+            if (tile.isAnimated)
+            {
+
+                tile.sprite.setPosition(x - (spriteSize.x / tile.frames) / 2, y - spriteSize.y / 2);
+            }
+            else
+            {
+                tile.sprite.setPosition(x - spriteSize.x / 2, y - spriteSize.y / 2);
+            }
+
+            break;
+        }
+
+        case Section::HITBOXES:
+        {
+            // Format: Tag,x0,y0;x1,y1;x2,y2;x3,y3
+            std::stringstream ss(line);
+            std::string tag;
+            std::getline(ss, tag, ',');
+
+            if (tag.empty())
+                continue;
+
+            Hitbox box;
+            box.Tag = tag;
+
+            std::string coords;
+            std::getline(ss, coords);
+
+            std::stringstream coordStream(coords);
+            std::string vertexData;
+            int vertexIndex = 0;
+
+            while (std::getline(coordStream, vertexData, ';') && vertexIndex < 4)
+            {
+                std::stringstream vertexStream(vertexData);
+                std::string xStr, yStr;
+
+                std::getline(vertexStream, xStr, ',');
+                std::getline(vertexStream, yStr, ',');
+
+                if (!xStr.empty() && !yStr.empty())
+                {
+                    box.AABB[vertexIndex].x = std::stof(xStr);
+                    box.AABB[vertexIndex].y = std::stof(yStr);
+                }
+
+                vertexIndex++;
+            }
+
+            this->hitboxes.push_back(box);
+            break;
+        }
+
+        default:
+            break;
+        }
+    }
+
+    inputFile.close();
+}
+
 void Map::save(const std::string& filename)
 {
     std::ofstream outputFile;

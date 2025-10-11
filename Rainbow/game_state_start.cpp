@@ -556,6 +556,7 @@ void GameStateStart::handleInput()
             if (event.key.code == sf::Keyboard::Escape) this->game->window.close();
             else if (event.key.code == sf::Keyboard::LControl) this->LControlKeyPressed = true;
             else if (event.key.code == sf::Keyboard::S) this->SKeyPressed = true;
+            else if (event.key.code == sf::Keyboard::L) this->LKeyPressed = true;
             else if (event.key.code == sf::Keyboard::H)
             {
                 currentTileHovered = nullptr;
@@ -567,6 +568,14 @@ void GameStateStart::handleInput()
 				std::string filename = RBConstants::CommonMediaMapsPath + "test";
                 map.save(filename);
                 SKeyPressed = false;
+                LControlKeyPressed = false;
+            }
+
+            if (LControlKeyPressed && LKeyPressed)
+            {
+                std::string filename = RBConstants::CommonMediaMapsPath + "test";
+                map.load(filename);
+                LKeyPressed = false;
                 LControlKeyPressed = false;
             }
 
@@ -585,6 +594,10 @@ void GameStateStart::handleInput()
             else if (event.key.code == sf::Keyboard::S)
             {
                 SKeyPressed = false;
+            }
+            else if (event.key.code == sf::Keyboard::L)
+            {
+                LKeyPressed = false;
             }
             else if (event.key.code == sf::Keyboard::LControl)
             {

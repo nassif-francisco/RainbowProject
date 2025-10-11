@@ -25,6 +25,7 @@ private:
     int* currentTileHovered = nullptr;
     bool LControlKeyPressed = false;
     bool SKeyPressed = false;
+    bool LKeyPressed = false;
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
     int* currentMainHandleHovered = nullptr;
