@@ -45,6 +45,7 @@ public:
     void save(const std::string& filename);
 
     void insertHitBox(string line);
+    void insertTile(string line, TileType currentType);
 
     void load(const std::string& filename);
 

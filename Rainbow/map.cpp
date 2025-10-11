@@ -88,40 +88,13 @@ void Map::load(const std::string& filename)
         case Section::FOREGROUND:
         {
             // Format: tileName,posX,posY
-            std::stringstream ss(line);
-            std::string tileName, posXStr, posYStr;
-
-            std::getline(ss, tileName, ',');
-            std::getline(ss, posXStr, ',');
-            std::getline(ss, posYStr, ',');
-
-            if (tileName.empty() || posXStr.empty() || posYStr.empty())
-                continue;
-
-            float x = std::stof(posXStr);
-            float y = std::stof(posYStr);
-
-            Tile currentTile = game->tileAtlas.at(tileName);
-            tiles.push_back(currentTile);
-
-            Tile& tile = tiles.back();
-
-            tile.tileType = (currentSection == Section::BACKGROUND)
+            TileType currentTileType = (currentSection == Section::BACKGROUND)
                 ? TileType::BACKGROUND
                 : TileType::FOREGROUND;
 
-            sf::FloatRect bounds = tile.sprite.getGlobalBounds();
-            sf::Vector2f spriteSize = bounds.getSize();
+            std::stringstream ss(line);
 
-            if (tile.isAnimated)
-            {
-
-                tile.sprite.setPosition(x - (spriteSize.x / tile.frames) / 2, y - spriteSize.y / 2);
-            }
-            else
-            {
-                tile.sprite.setPosition(x - spriteSize.x / 2, y - spriteSize.y / 2);
-            }
+            insertTile(line, currentTileType);
 
             break;
         }
@@ -224,6 +197,28 @@ void Map::save(const std::string& filename)
     outputFile.close();
 
     return;
+}
+
+void Map::insertTile(string line, TileType currentType)
+{
+    // Parse tile line: name,x,y
+    std::stringstream ss(line);
+    std::string tileName, xStr, yStr;
+
+    std::getline(ss, tileName, ',');
+    std::getline(ss, xStr, ',');
+    std::getline(ss, yStr, ',');
+
+    float x = std::stof(xStr);
+    float y = std::stof(yStr);
+
+    Tile currentTile = game->tileAtlas.at(tileName);
+    tiles.push_back(currentTile);
+
+    Tile& tile = tiles.back();
+
+    tile.sprite.setPosition(x, y);
+    tile.tileType = currentType;
 }
 
 void Map::insertHitBox(string line)
