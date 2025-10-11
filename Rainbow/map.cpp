@@ -130,40 +130,8 @@ void Map::load(const std::string& filename)
         {
             // Format: Tag,x0,y0;x1,y1;x2,y2;x3,y3
             std::stringstream ss(line);
-            std::string tag;
-            std::getline(ss, tag, ',');
 
-            if (tag.empty())
-                continue;
-
-            Hitbox box;
-            box.Tag = tag;
-
-            std::string coords;
-            std::getline(ss, coords);
-
-            std::stringstream coordStream(coords);
-            std::string vertexData;
-            int vertexIndex = 0;
-
-            while (std::getline(coordStream, vertexData, ';') && vertexIndex < 4)
-            {
-                std::stringstream vertexStream(vertexData);
-                std::string xStr, yStr;
-
-                std::getline(vertexStream, xStr, ',');
-                std::getline(vertexStream, yStr, ',');
-
-                if (!xStr.empty() && !yStr.empty())
-                {
-                    box.AABB[vertexIndex].x = std::stof(xStr);
-                    box.AABB[vertexIndex].y = std::stof(yStr);
-                }
-
-                vertexIndex++;
-            }
-
-            this->hitboxes.push_back(box);
+            insertHitBox(line);
             break;
         }
 
@@ -256,6 +224,40 @@ void Map::save(const std::string& filename)
     outputFile.close();
 
     return;
+}
+
+void Map::insertHitBox(string line)
+{
+    //string currentTag = "";
+    std::vector<sf::Vector2f> AABB;
+    std::stringstream ss(line);
+    std::string hitboxTag, xStr, yStr;
+
+    for (int k = 0; k < 4; k++)
+    {
+        if (k == 0)
+        {
+            std::getline(ss, hitboxTag, ',');
+            std::getline(ss, xStr, ',');
+            std::getline(ss, yStr, ';');
+        }
+        else
+        {
+            std::getline(ss, xStr, ',');
+            std::getline(ss, yStr, ';');
+        }
+
+        float x = std::stof(xStr);
+        float y = std::stof(yStr);
+
+        sf::Vector2f currentPoint = sf::Vector2f(x, y);
+        AABB.push_back(currentPoint);
+    }
+
+    Hitbox currentHitbox(AABB, hitboxTag);
+    currentHitbox.initializeRectangle();
+
+    hitboxes.push_back(currentHitbox);
 }
 
 void Map::draw(sf::RenderWindow& window, float dt, int* hoveredTile, int* hoveredHitbox, int* hoveredVertexHandle, int* hoveredMainHandle)

@@ -28,6 +28,15 @@ class Hitbox
 		AABB = AABBPoints;
 		initialHoveredHandle = hoveredHandle;
 	}
+	Hitbox(vector<sf::Vector2f> AABBPoints, string tag)
+	{
+		AABB = AABBPoints;
+
+		if (!tag.empty())
+		{
+			Tag = tag;
+		}
+	}
 
 	void UpdatePoints(sf::Vector2f updatedCoordinates, AABBPoint point)
 	{

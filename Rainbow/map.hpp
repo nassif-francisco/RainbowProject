@@ -44,6 +44,8 @@ public:
     /* Save map to disk */
     void save(const std::string& filename);
 
+    void insertHitBox(string line);
+
     void load(const std::string& filename);
 
     /* Draw the map */
