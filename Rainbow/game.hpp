@@ -21,6 +21,7 @@ class Game
 private:
     void loadTextures();
     void loadTiles();
+    void newGameThread();
 
     void processFile(const fs::path& filePath) {
         // Replace this with your actual processing code

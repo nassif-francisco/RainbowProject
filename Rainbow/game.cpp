@@ -11,6 +11,7 @@
 #include <iostream>
 #include <filesystem>
 #include <string>
+#include <thread>
 
 
 void Game::loadTextures()
@@ -172,7 +173,10 @@ void Game::gameLoop()
 
 Game::Game()
 {
-    
+    /*std::thread my_thread([this] {
+        this->newGameThread();
+        });*/
+
     sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
 
     this->window.create(sf::VideoMode(desktop.width, desktop.height - RBConstants::toolbarHeight), "app.exe", sf::Style::Default);
@@ -191,6 +195,33 @@ Game::Game()
     this->toolbar.setTexture(this->texmgr.getRef("toolbar"));
     this->mainMenu.setTexture(this->texmgr.getRef("toolbar"));
     this->board.setTexture(this->texmgr.getRef("board"));
+
+    //my_thread.join();
+}
+
+void Game::newGameThread() {
+    sf::VideoMode desktop = sf::VideoMode::getDesktopMode();
+
+    sf::VideoMode VTMode(600, 400, 32);
+    sf::VideoMode VBMode(800, 300, 32);
+
+    sf::RenderWindow TopWin(VTMode, "This is the top window.");
+    TopWin.create(sf::VideoMode(800, 600), "app2.exe", sf::Style::Default);
+    std::string currentResolution = "_" + std::to_string(desktop.width) + "x" + std::to_string(desktop.height);
+
+    //this->currentResolution = currentResolution;
+
+    //this->loadTextures();
+    //this->loadTiles();
+
+    ////local tweat to set window in corner
+    //this->window.setPosition(sf::Vector2i(-10, -5));
+    //this->window.setFramerateLimit(60);
+
+    //this->background.setTexture(this->texmgr.getRef("background"));
+    //this->toolbar.setTexture(this->texmgr.getRef("toolbar"));
+    //this->mainMenu.setTexture(this->texmgr.getRef("toolbar"));
+    //this->board.setTexture(this->texmgr.getRef("board"));
 }
 
 void Game::loadTiles()
