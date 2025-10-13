@@ -11,8 +11,10 @@ class Hitbox
 {
 	public:
 
+	bool forceInitializeRectangle;
 	vector<sf::Vector2f> AABB;
 	sf::RectangleShape* Rectangle = nullptr;
+	//std::unique_ptr<sf::RectangleShape> Rectangle;
 	vector<sf::CircleShape> VertexHandles;
 	sf::CircleShape MainHandle;
 	int* initialHoveredHandle = nullptr;

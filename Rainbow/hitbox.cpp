@@ -5,7 +5,7 @@
 
 void Hitbox::draw(sf::RenderWindow& window, float dt)
 {
-    if (Rectangle == nullptr)
+    if (Rectangle == nullptr || forceInitializeRectangle == true)
     {
         initializeRectangle();
     }
@@ -18,6 +18,12 @@ void Hitbox::draw(sf::RenderWindow& window, float dt)
 
 void Hitbox::initializeRectangle()
 {
+    if (Rectangle != nullptr)
+    {
+        delete Rectangle;
+        Rectangle = nullptr;
+    }
+
     Rectangle = new sf::RectangleShape();
 
     Rectangle->setSize({ AABB[1].x - AABB[0].x, AABB[3].y - AABB[1].y });
@@ -25,6 +31,8 @@ void Hitbox::initializeRectangle()
     Rectangle->setOutlineThickness(2.f);
     Rectangle->setOutlineColor(sf::Color(250, 150, 100));
     Rectangle->setPosition({ AABB[0].x, AABB[0].y });
+
+    forceInitializeRectangle = false;
 }
 
 void Hitbox::updateRectangle()
