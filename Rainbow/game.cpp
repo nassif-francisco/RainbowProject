@@ -198,6 +198,10 @@ void Game::loadTiles()
     Animation staticAnim(0, 0, 1.0f);
 
     for (const std::string& tile : tileNames) {
+        if (tile == "C:\\Users\\franc\\Downloads\\newTileSet.png")
+        {
+            int a = 0;
+        }
         tileAtlas[tile] =
             Tile(tile, 25, 1, texmgr.getRef(tile),
                 { staticAnim },

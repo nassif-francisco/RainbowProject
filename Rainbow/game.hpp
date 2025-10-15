@@ -19,8 +19,6 @@ class GameState;
 class Game
 {
 private:
-    void loadTextures();
-    void loadTiles();
 
     void processFile(const fs::path& filePath) {
         // Replace this with your actual processing code
@@ -30,6 +28,8 @@ private:
 public:
 
     std::stack<GameState*> states;
+    void loadTiles();
+    void loadTextures();
 
     const static int tileHeight = 8;
     const static int tileWidth = 16;

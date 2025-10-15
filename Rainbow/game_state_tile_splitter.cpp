@@ -108,7 +108,7 @@ void GameStateTileSplitter::handleInput()
 
                     sf::FloatRect bounds = tile.sprite.getGlobalBounds();
                     sf::Vector2f spriteSize = bounds.getSize();
-                    tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
+                    //tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
                     break;
                 }
 
@@ -521,7 +521,49 @@ void GameStateTileSplitter::handleInput()
 
             if (LControlKeyPressed && OKeyPressed)
             {
-                //open dialog for search folder
+                char const* lFilterPatterns[2] = { "*.png", "*.jpg" };
+                char* tilesetFileName = tinyfd_openFileDialog(
+                    "select your tileset",
+                    "../",
+                    2,
+                    lFilterPatterns,
+                    "image files",
+                    1);
+
+                if (tilesetFileName == NULL)
+                {
+                    return;
+                }
+
+                std::string fileName(tilesetFileName);
+                //load the texture
+                game->texmgr.loadTexture(fileName, fileName);
+
+                //std::string tileName = fileName.replace(fileName.find(".png"), 4, "");
+                game->tileNames.push_back(fileName);
+                game->loadTiles();
+
+                this->map.tiles.push_back(game->tileAtlas.at(fileName));
+                Tile& tile = this->map.tiles.back();
+                tile.tileType = TileType::FOREGROUND;
+                sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+                sf::Vector2f spriteSize = bounds.getSize();
+
+                float spritewidth = tile.sprite.getGlobalBounds().getSize().x/2;
+                float spriteheight = tile.sprite.getGlobalBounds().getSize().y / 2;
+                
+                sf::Vector2f size = sf::Vector2f(this->game->window.getSize());
+                sf::Vector2f pos = sf::Vector2f(this->game->window.getPosition());
+
+                float xcoord = pos.x + size.x / 2.f - spritewidth;
+                float ycoord = pos.y + size.y / 2.f - spriteheight;
+                tile.sprite.setPosition(xcoord, ycoord);
+
+                OKeyPressed = false;
+                LControlKeyPressed = false;
+
+                return;
+
             }
 
             break;
