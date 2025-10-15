@@ -27,6 +27,9 @@ private:
     int* currentVertexHandleHovered = nullptr;
     int* currentMainHandleHovered = nullptr;
 
+    float XCornerTileSet;
+    float YCornerTileSet;
+
     std::vector<sf::Sprite> MainToolbarButtons;
 
     RBActionState  actionState;
@@ -50,6 +53,8 @@ private:
 
     Map map;
     void loadgame();
+    void insertTileSetInScreen(string fileName);
+    void createTilesUsingHitboxes(string fileName);
     void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void assembleBoardCollection(Game* game, MapGrid& mapGrid);

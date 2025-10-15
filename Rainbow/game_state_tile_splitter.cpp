@@ -541,108 +541,9 @@ void GameStateTileSplitter::handleInput()
                 }
 
                 std::string fileName(tilesetFileName);
-                //load the texture
-                game->texmgr.loadTexture(fileName, fileName);
 
-                //std::string tileName = fileName.replace(fileName.find(".png"), 4, "");
-                game->tileNames.push_back(fileName);
-                game->loadTiles();
-
-                this->map.tiles.push_back(game->tileAtlas.at(fileName));
-                Tile& tile = this->map.tiles.back();
-                tile.tileType = TileType::FOREGROUND;
-                sf::FloatRect bounds = tile.sprite.getGlobalBounds();
-                sf::Vector2f spriteSize = bounds.getSize();
-
-                float spritewidth = tile.sprite.getGlobalBounds().getSize().x/2;
-                float spriteheight = tile.sprite.getGlobalBounds().getSize().y / 2;
-                
-                sf::Vector2f size = sf::Vector2f(this->game->window.getSize());
-                sf::Vector2f pos = sf::Vector2f(this->game->window.getPosition());
-
-                float xcoord = pos.x + size.x / 2.f - spritewidth;
-                float ycoord = pos.y + size.y / 2.f - spriteheight;
-                tile.sprite.setPosition(xcoord, ycoord);
-
-                sf::Image sourceImage;
-                if (!sourceImage.loadFromFile(fileName))
-                {
-                    std::cerr << "Failed to load image\n";             
-
-                    OKeyPressed = false;
-                    LControlKeyPressed = false;
-
-                    return;
-                }
-
-
-                // Define the portion you want to extract
-                sf::IntRect rect(32, 64, 64, 64); // x, y, width, height
-
-                // Create a new image with the same size as the portion
-                sf::Image subImage;
-                subImage.create(rect.width, rect.height, sf::Color::Transparent);
-
-                // Copy pixels from the source image into the new one
-                subImage.copy(sourceImage, 0, 0, rect, true);
-
-                // Save the extracted part as a new PNG
-                string finalPathNewTileBase = RBConstants::CommonMediaEnvironmentPacksPath + "Toolbar/";
-
-                ////////////////////////////////////
-                string guidStr = generateRandomString();
-                ///////////////////////////////
-
-                string finalPathNewTile = finalPathNewTileBase + guidStr + ".png";
-                if (!subImage.saveToFile(finalPathNewTile))
-                {
-                    std::cerr << "Failed to save image\n";
-                    OKeyPressed = false;
-                    LControlKeyPressed = false;
-                    return;
-                }
-
-
-                /////////////////////////////
-                // Convert the sub-image into a texture
-                sf::Texture texture;
-                texture.loadFromImage(subImage);
-
-                // Create a sprite for resizing
-                sf::Sprite sprite(texture);
-
-                // Desired new size
-                unsigned newWidth = 32;
-                unsigned newHeight = 32;
-
-                // Calculate scale factors
-                sprite.setScale(
-                    static_cast<float>(newWidth) / rect.width,
-                    static_cast<float>(newHeight) / rect.height
-                );
-
-                // Render the scaled sprite into a new texture
-                sf::RenderTexture renderTexture;
-                renderTexture.create(newWidth, newHeight);
-                renderTexture.clear(sf::Color::Transparent);
-                renderTexture.draw(sprite);
-                renderTexture.display();
-
-                // Get the resized image
-                sf::Image resizedImage = renderTexture.getTexture().copyToImage();
-
-                string finalPathNewTileIcon = finalPathNewTileBase + guidStr + "Button.png";
-
-                // Save to file
-                if (!resizedImage.saveToFile(finalPathNewTileIcon))
-                {
-                    std::cerr << "Failed to save resized image\n";
-                    OKeyPressed = false;
-                    LControlKeyPressed = false;
-                    return;
-                }
-
-                game->tileNames.pop_back();
+                insertTileSetInScreen(fileName);
+                createTilesUsingHitboxes(fileName);
 
                 OKeyPressed = false;
                 LControlKeyPressed = false;
@@ -966,4 +867,114 @@ void GameStateTileSplitter::loadgame()
     this->game->popState();
 
     return;
+}
+
+void GameStateTileSplitter::insertTileSetInScreen(string tilesetFileName)
+{
+    std::string fileName(tilesetFileName);
+    //load the texture
+    game->texmgr.loadTexture(fileName, fileName);
+
+    //std::string tileName = fileName.replace(fileName.find(".png"), 4, "");
+    game->tileNames.push_back(fileName);
+    game->loadTiles();
+
+    this->map.tiles.push_back(game->tileAtlas.at(fileName));
+    Tile& tile = this->map.tiles.back();
+    tile.tileType = TileType::FOREGROUND;
+    sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+    sf::Vector2f spriteSize = bounds.getSize();
+
+    float spritewidth = tile.sprite.getGlobalBounds().getSize().x / 2;
+    float spriteheight = tile.sprite.getGlobalBounds().getSize().y / 2;
+
+    sf::Vector2f size = sf::Vector2f(this->game->window.getSize());
+    sf::Vector2f pos = sf::Vector2f(this->game->window.getPosition());
+
+    float xcoord = pos.x + size.x / 2.f - spritewidth;
+    float ycoord = pos.y + size.y / 2.f - spriteheight;
+    tile.sprite.setPosition(xcoord, ycoord);
+}
+
+void GameStateTileSplitter::createTilesUsingHitboxes(string fileName)
+{
+    sf::Image sourceImage;
+    if (!sourceImage.loadFromFile(fileName))
+    {
+        std::cerr << "Failed to load image\n";
+
+        OKeyPressed = false;
+        LControlKeyPressed = false;
+
+        return;
+    }
+
+
+    // Define the portion you want to extract
+    sf::IntRect rect(32, 64, 64, 64); // x, y, width, height
+
+    // Create a new image with the same size as the portion
+    sf::Image subImage;
+    subImage.create(rect.width, rect.height, sf::Color::Transparent);
+
+    // Copy pixels from the source image into the new one
+    subImage.copy(sourceImage, 0, 0, rect, true);
+
+    // Save the extracted part as a new PNG
+    string finalPathNewTileBase = RBConstants::CommonMediaEnvironmentPacksPath + "Toolbar/";
+
+    ////////////////////////////////////
+    string guidStr = generateRandomString();
+    ///////////////////////////////
+
+    string finalPathNewTile = finalPathNewTileBase + guidStr + ".png";
+    if (!subImage.saveToFile(finalPathNewTile))
+    {
+        std::cerr << "Failed to save image\n";
+        OKeyPressed = false;
+        LControlKeyPressed = false;
+        return;
+    }
+
+
+    /////////////////////////////
+    // Convert the sub-image into a texture
+    sf::Texture texture;
+    texture.loadFromImage(subImage);
+
+    // Create a sprite for resizing
+    sf::Sprite sprite(texture);
+
+    // Desired new size
+    unsigned newWidth = 32;
+    unsigned newHeight = 32;
+
+    // Calculate scale factors
+    sprite.setScale(
+        static_cast<float>(newWidth) / rect.width,
+        static_cast<float>(newHeight) / rect.height
+    );
+
+    // Render the scaled sprite into a new texture
+    sf::RenderTexture renderTexture;
+    renderTexture.create(newWidth, newHeight);
+    renderTexture.clear(sf::Color::Transparent);
+    renderTexture.draw(sprite);
+    renderTexture.display();
+
+    // Get the resized image
+    sf::Image resizedImage = renderTexture.getTexture().copyToImage();
+
+    string finalPathNewTileIcon = finalPathNewTileBase + guidStr + "Button.png";
+
+    // Save to file
+    if (!resizedImage.saveToFile(finalPathNewTileIcon))
+    {
+        std::cerr << "Failed to save resized image\n";
+        OKeyPressed = false;
+        LControlKeyPressed = false;
+        return;
+    }
+
+    game->tileNames.pop_back();
 }
