@@ -135,6 +135,7 @@
     <ClCompile Include="animation_handler.cpp" />
     <ClCompile Include="canvas.cpp" />
     <ClCompile Include="canvasObject.cpp" />
+    <ClCompile Include="game_state_tile_splitter.cpp" />
     <ClCompile Include="mapGrid.cpp" />
     <ClCompile Include="mapGrid.hpp" />
     <ClCompile Include="game.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="canvasObject.hpp" />
     <ClInclude Include="constants.hpp" />
     <ClInclude Include="game.hpp" />
+    <ClInclude Include="game_state_tile_splitter.hpp" />
     <ClInclude Include="game_state.hpp" />
     <ClInclude Include="game_state_editor.hpp" />
     <ClInclude Include="game_state_start.hpp" />

@@ -1,6 +1,6 @@
 #include <SFML/Graphics.hpp>
 
-#include "game_state_start.hpp"
+#include "game_state_tile_splitter.hpp"
 #include "game_state_editor.hpp"
 #include "game_state.hpp"
 #include <iostream>
@@ -8,41 +8,40 @@
 #include "hitbox.hpp"
 #include <string>
 #include "tinyfiledialogs.hpp"
-#include "game_state_tile_splitter.hpp"
 
-void GameStateStart::draw(const float dt)
+void GameStateTileSplitter::draw(const float dt)
 {
     this->game->window.setView(this->view);
     //this->game->window.setView(this->guiView);
 
     this->game->window.clear(sf::Color::Black);
 
-   /* sf::Vector2f viewCenter = view.getCenter();
-    sf::Vector2f viewSize = view.getSize();
+    /* sf::Vector2f viewCenter = view.getCenter();
+     sf::Vector2f viewSize = view.getSize();
 
-    float xcoord = viewCenter.x - viewSize.x / 2.f;
-    float ycoord = viewCenter.y - viewSize.y / 2.f;
+     float xcoord = viewCenter.x - viewSize.x / 2.f;
+     float ycoord = viewCenter.y - viewSize.y / 2.f;
 
-    sf::Vector2f pos = game->background.getPosition();
-    sf::Vector2f pos1 = sf::Vector2f(950.f, 0.f);
-    game->background.setPosition(xcoord, ycoord);
-    sf::FloatRect bounds = game->background.getGlobalBounds();
-    sf::FloatRect localbounds = game->background.getLocalBounds();*/
+     sf::Vector2f pos = game->background.getPosition();
+     sf::Vector2f pos1 = sf::Vector2f(950.f, 0.f);
+     game->background.setPosition(xcoord, ycoord);
+     sf::FloatRect bounds = game->background.getGlobalBounds();
+     sf::FloatRect localbounds = game->background.getLocalBounds();*/
 
     this->game->window.draw(this->game->background);
 
     //this->game->window.draw(this->game->board);
 
-	drawBoardCollection(this->game);
+    drawBoardCollection(this->game);
 
     this->map.draw(this->game->window, dt, currentTileHovered, currentHitboxHovered, currentVertexHandleHovered, currentMainHandleHovered);
 
     this->game->window.setView(this->guiView);
-    
+
     this->game->window.draw(this->game->toolbar);
 
     this->game->window.draw(this->game->mainMenu);
-    
+
     int k = 0;
     for (auto brush : this->Row1Brushes)
     {
@@ -58,7 +57,7 @@ void GameStateStart::draw(const float dt)
     {
         this->game->window.draw(brush);
     }
-    
+
     k = 0;
     for (auto button : this->MainToolbarButtons)
     {
@@ -80,19 +79,19 @@ void GameStateStart::draw(const float dt)
     return;
 }
 
-void GameStateStart::update(const float dt)
+void GameStateTileSplitter::update(const float dt)
 {
 }
 
-void GameStateStart::drawBoardCollection(Game* game)
+void GameStateTileSplitter::drawBoardCollection(Game* game)
 {
-	for (auto& board : this->game->boardCollection)
-	{
-		game->window.draw(board);
-	}
+    for (auto& board : this->game->boardCollection)
+    {
+        game->window.draw(board);
+    }
 }
 
-void GameStateStart::handleInput()
+void GameStateTileSplitter::handleInput()
 {
     sf::Event event;
 
@@ -130,7 +129,7 @@ void GameStateStart::handleInput()
             if (position.y < toolbarMinY)
             {
                 //CHECK FOR MOVING ACTION
-                
+
                 if (this->actionState == RBActionState::MOVING && currentTileHovered != nullptr)
                 {
                     sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
@@ -168,8 +167,8 @@ void GameStateStart::handleInput()
                     float widht = std::abs(hitbox.AABB[0].x - hitbox.AABB[1].x);
                     float height = std::abs(hitbox.AABB[0].y - hitbox.AABB[3].y);
 
-                    float rectHalfWidth = widht/2;
-                    float rectHalfHeight = height/2;
+                    float rectHalfWidth = widht / 2;
+                    float rectHalfHeight = height / 2;
 
 
                     //std::vector<sf::Vector2f> hitboxPositions = { sf::Vector2f(hitbox.AABB[0].x - deltaX, hitbox.AABB[0].x - deltaY),
@@ -196,15 +195,15 @@ void GameStateStart::handleInput()
 
                     hitbox.AABB = hitboxPositions;
 
-                   /* for (int k = 0; k < hitbox.AABB.size(); k++)
-                    {
-                        hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x, hitbox.AABB[k].y});
-                    }*/
+                    /* for (int k = 0; k < hitbox.AABB.size(); k++)
+                     {
+                         hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x, hitbox.AABB[k].y});
+                     }*/
 
                     Hitbox currentHitbox(hitboxPositions, currentVertexHandleHovered);
                     //currentHitbox.Rectangle = hitbox.Rectangle;
                     hitbox = currentHitbox;
-                    
+
                     break;
                 }
 
@@ -234,7 +233,7 @@ void GameStateStart::handleInput()
                             sf::Vector2f(hitbox.AABB[2].x, hitbox.AABB[2].y),
                             sf::Vector2f(worldPos.x, hitbox.AABB[3].y) };
                     }
-                    else if(point == AABBPoint::P2)
+                    else if (point == AABBPoint::P2)
                     {
                         hitboxPositions = { sf::Vector2f(hitbox.AABB[0].x, worldPos.y),
                            worldPos,
@@ -262,41 +261,41 @@ void GameStateStart::handleInput()
                     //delete hitboxxx;
                     //currentHitbox.Rectangle = hitbox.Rectangle;
                     hitbox = currentHitbox;
-                   /* hitbox.AABB = hitboxPositions;
-                    for (int k = 0; k < hitbox.AABB.size(); k++)
-                    {
-                        hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x, hitbox.AABB[k].y });
-                    }
-                    hitbox.initialHoveredHandle = currentVertexHandleHovered;
-                    hitbox.forceInitializeRectangle = true;*/
-                    //hitbox.Rectangle = nullptr;
+                    /* hitbox.AABB = hitboxPositions;
+                     for (int k = 0; k < hitbox.AABB.size(); k++)
+                     {
+                         hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x, hitbox.AABB[k].y });
+                     }
+                     hitbox.initialHoveredHandle = currentVertexHandleHovered;
+                     hitbox.forceInitializeRectangle = true;*/
+                     //hitbox.Rectangle = nullptr;
 
-                    ////Hitbox* hitbox = new Hitbox(hitboxPositions);
-                    ////Hitbox currentHitbox(hitboxPositions);
+                     ////Hitbox* hitbox = new Hitbox(hitboxPositions);
+                     ////Hitbox currentHitbox(hitboxPositions);
 
-                    ///*this->map.hitboxes.push_back(currentHitbox);*/
-
-
-                    //sf::FloatRect bounds = hitbox.Rectangle->getGlobalBounds();
-                    //sf::Vector2f spriteSize = bounds.getSize();
-                    //hitbox.Rectangle->setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
-                    //hitbox.AABB = hitboxPositions;
-
-                    //float handleCenterX = ((hitbox.AABB[0].x - RBConstants::VerticesSize) + (hitbox.AABB[1].x - RBConstants::VerticesSize)) / 2 - spriteSize.x / 2;
-                    //float handleCenterY = ((hitbox.AABB[1].y - RBConstants::VerticesSize) + (hitbox.AABB[3].y - RBConstants::VerticesSize)) / 2 - spriteSize.y / 2;
-
-                    //hitbox.MainHandle.setPosition(handleCenterX, handleCenterY);
+                     ///*this->map.hitboxes.push_back(currentHitbox);*/
 
 
-                    //for (int k = 0; k < hitbox.AABB.size(); k++)
-                    //{
-                    //    hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x - RBConstants::VerticesSize - spriteSize.x / 2, hitbox.AABB[k].y - RBConstants::VerticesSize - spriteSize.y / 2 });
-                    //}
+                     //sf::FloatRect bounds = hitbox.Rectangle->getGlobalBounds();
+                     //sf::Vector2f spriteSize = bounds.getSize();
+                     //hitbox.Rectangle->setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
+                     //hitbox.AABB = hitboxPositions;
+
+                     //float handleCenterX = ((hitbox.AABB[0].x - RBConstants::VerticesSize) + (hitbox.AABB[1].x - RBConstants::VerticesSize)) / 2 - spriteSize.x / 2;
+                     //float handleCenterY = ((hitbox.AABB[1].y - RBConstants::VerticesSize) + (hitbox.AABB[3].y - RBConstants::VerticesSize)) / 2 - spriteSize.y / 2;
+
+                     //hitbox.MainHandle.setPosition(handleCenterX, handleCenterY);
+
+
+                     //for (int k = 0; k < hitbox.AABB.size(); k++)
+                     //{
+                     //    hitbox.VertexHandles[k].setPosition({ hitbox.AABB[k].x - RBConstants::VerticesSize - spriteSize.x / 2, hitbox.AABB[k].y - RBConstants::VerticesSize - spriteSize.y / 2 });
+                     //}
 
                     break;
                 }
                 //END CHECK FOR EDITING
-                
+
                 //find which brush is being selected
                 //checkIfMousePositionIsOnTile(worldPos);
                 //break;
@@ -349,12 +348,12 @@ void GameStateStart::handleInput()
         }
         case sf::Event::MouseButtonPressed:
         {
-            
+
             // get global mouse position
             sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
             sf::Vector2i positionWindow = this->game->window.getPosition();
-            sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);        
-            
+            sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
+
             //PANNING case
             if (sf::Mouse::isButtonPressed(sf::Mouse::Middle))
             {
@@ -365,7 +364,7 @@ void GameStateStart::handleInput()
                 }
                 break;
             }
-            
+
             else if (event.mouseButton.button == sf::Mouse::Left)
             {
                 if (position.y > toolbarMinY)
@@ -414,7 +413,7 @@ void GameStateStart::handleInput()
                 if (this->actionState != RBActionState::PAINTING)
                 {
                     this->actionState = RBActionState::PAINTING;
-                } 
+                }
 
                 // set mouse position relative to a window
                 //sf::Mouse::setPosition(sf::Vector2i(100, 200), game->window);
@@ -422,7 +421,7 @@ void GameStateStart::handleInput()
                 std::cout << "postition.x: " << position.x << std::endl;
                 std::cout << "position.y: " << position.y << std::endl;
 
-                
+
 
                 std::cout << "worldPos.x: " << worldPos.x << std::endl;
                 std::cout << "worldPos.y: " << worldPos.y << std::endl;
@@ -454,7 +453,7 @@ void GameStateStart::handleInput()
                     //// change the size to 100x100
                     //rectangle.setSize({ 100.f, 100.f });
                 }
-                
+
                 TileType tileType;
                 tileType = currentPaintingGroundType;
                 this->map.tiles.push_back(game->tileAtlas.at(tileName));
@@ -465,18 +464,18 @@ void GameStateStart::handleInput()
 
                 if (tile.isAnimated)
                 {
-                   
-                    tile.sprite.setPosition(worldPos.x - (spriteSize.x /tile.frames)/2, worldPos.y - spriteSize.y / 2);
+
+                    tile.sprite.setPosition(worldPos.x - (spriteSize.x / tile.frames) / 2, worldPos.y - spriteSize.y / 2);
                 }
                 else
                 {
-                    tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2); 
+                    tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
                 }
 
-               
+
 
                 currentTileHovered = new int(map.tiles.size() - 1);
-                
+
 
                 //view.setCenter(900.f, 900.f);
             }
@@ -511,7 +510,7 @@ void GameStateStart::handleInput()
             /* Stop selecting */
             else if (event.mouseButton.button == sf::Mouse::Left)
             {
-                if (this->actionState == RBActionState::PAINTING 
+                if (this->actionState == RBActionState::PAINTING
                     || this->actionState == RBActionState::BRUSHING
                     || this->actionState == RBActionState::MOVING
                     || this->actionState == RBActionState::EDITING)
@@ -534,16 +533,16 @@ void GameStateStart::handleInput()
 
             float height = sf::VideoMode::getDesktopMode().height;
 
-			float currentToolbarHeightFactor = GetCurrentToolbarHeightFactor();
+            float currentToolbarHeightFactor = GetCurrentToolbarHeightFactor();
 
-            float toolbarOffsetPosition = (height - RBConstants::toolbarHeight) - (height - RBConstants::toolbarHeight)/ currentToolbarHeightFactor;
+            float toolbarOffsetPosition = (height - RBConstants::toolbarHeight) - (height - RBConstants::toolbarHeight) / currentToolbarHeightFactor;
             toolbarMinY = toolbarOffsetPosition;
 
             std::cout << "SizeWindow.x: " << sizeWindow.x << std::endl;
             std::cout << "SizeWindow.y: " << sizeWindow.y << std::endl;
 
             sf::Vector2i position = sf::Mouse::getPosition();
-            
+
 
             // set mouse position relative to a window
             //sf::Mouse::setPosition(sf::Vector2i(100, 200), game->window);
@@ -554,17 +553,17 @@ void GameStateStart::handleInput()
 
 
 
-           /* sf::Vector2f viewCenter = view.getCenter();
-            sf::Vector2f viewSize = view.getSize();
+            /* sf::Vector2f viewCenter = view.getCenter();
+             sf::Vector2f viewSize = view.getSize();
 
-            float xcoord = viewCenter.x - viewSize.x / 2.f;
-            float ycoord = viewCenter.y - viewSize.y / 2.f;
+             float xcoord = viewCenter.x - viewSize.x / 2.f;
+             float ycoord = viewCenter.y - viewSize.y / 2.f;
 
-            sf::Vector2f pos = game->background.getPosition();
-            sf::Vector2f pos1 = sf::Vector2f(950.f, 0.f);
-            game->background.setPosition(xcoord, ycoord);
-            sf::FloatRect bounds = game->background.getGlobalBounds();
-            sf::FloatRect localbounds = game->background.getLocalBounds();*/
+             sf::Vector2f pos = game->background.getPosition();
+             sf::Vector2f pos1 = sf::Vector2f(950.f, 0.f);
+             game->background.setPosition(xcoord, ycoord);
+             sf::FloatRect bounds = game->background.getGlobalBounds();
+             sf::FloatRect localbounds = game->background.getLocalBounds();*/
 
             break;
         }
@@ -574,16 +573,15 @@ void GameStateStart::handleInput()
             else if (event.key.code == sf::Keyboard::LControl) this->LControlKeyPressed = true;
             else if (event.key.code == sf::Keyboard::S) this->SKeyPressed = true;
             else if (event.key.code == sf::Keyboard::L) this->LKeyPressed = true;
-            else if (event.key.code == sf::Keyboard::T) this->TKeyPressed = true;
             else if (event.key.code == sf::Keyboard::H)
             {
                 currentTileHovered = nullptr;
             }
-            
+
 
             if (LControlKeyPressed && SKeyPressed)
             {
-				std::string filename = RBConstants::CommonMediaMapsPath + "test";
+                std::string filename = RBConstants::CommonMediaMapsPath + "test";
                 map.save(filename);
                 SKeyPressed = false;
                 LControlKeyPressed = false;
@@ -597,19 +595,11 @@ void GameStateStart::handleInput()
                 LControlKeyPressed = false;
             }
 
-            if (LControlKeyPressed && TKeyPressed)
-            {
-                TKeyPressed = false;
-                LControlKeyPressed = false;
-
-                loadTileSplitter();
-            }
-
             break;
         }
         case sf::Event::KeyReleased:
         {
-            
+
             if (event.key.code == sf::Keyboard::H)
             {
                 currentTileHovered = nullptr;
@@ -638,32 +628,32 @@ void GameStateStart::handleInput()
     return;
 }
 
-void GameStateStart::assembleBoardCollection(Game* game, MapGrid& mapGrid)
+void GameStateTileSplitter::assembleBoardCollection(Game* game, MapGrid& mapGrid)
 {
     sf::Sprite boardSprite = game->board;
-    
+
     for (int k = 0; k < mapGrid.RepetitionFactor; k++) //repetition along y axis
     {
         for (int m = 0; m < mapGrid.RepetitionFactor; m++) // rep along x axis
         {
-			double xPosition = mapGrid.UpperLeftCornerPosition.x + (m * mapGrid.TileSizeX);
-			double yPosition = mapGrid.UpperLeftCornerPosition.y + (k * mapGrid.TileSizeY);
-            
+            double xPosition = mapGrid.UpperLeftCornerPosition.x + (m * mapGrid.TileSizeX);
+            double yPosition = mapGrid.UpperLeftCornerPosition.y + (k * mapGrid.TileSizeY);
+
             sf::Sprite newBoardSprite = boardSprite;
-			newBoardSprite.setPosition(xPosition, yPosition);
-			game->boardCollection.push_back(newBoardSprite);
+            newBoardSprite.setPosition(xPosition, yPosition);
+            game->boardCollection.push_back(newBoardSprite);
         }
     }
 }
 
-void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size)
+void GameStateTileSplitter::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size)
 {
     float xcoord = pos.x + size.x / 2.f;
     float ycoord = pos.y + size.y / 2.f;
     float currentToolbarHeightFactor = GetCurrentToolbarHeightFactor();
 
     float toolbarOffsetPosition = size.y - size.y / currentToolbarHeightFactor;
-    
+
     //float toolbarOffsetPosition = RBConstants::windowHeight - RBConstants::toolbarHeight;
     toolbarMinY = toolbarOffsetPosition;
 
@@ -681,10 +671,10 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     float brushWidth = 32.f;
     float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
-    for (int i =0; i<=8; i++)
+    for (int i = 0; i <= 8; i++)
     {
         brushPositionX += brushDistance + brushWidth;
-        sf::Sprite* newSprite =  new sf::Sprite();
+        sf::Sprite* newSprite = new sf::Sprite();
         Row1Brushes.push_back(*newSprite);
 
         this->Row1Brushes[i].setTexture(this->game->texmgr.getBrushRef(this->game->brushNames[i]));
@@ -712,7 +702,7 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
 
 }
 
-void GameStateStart::assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f size)
+void GameStateTileSplitter::assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f size)
 {
     float xcoord = pos.x + size.x / 2.f;
     float ycoord = pos.y + size.y / 2.f;
@@ -768,7 +758,7 @@ void GameStateStart::assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f
 
 }
 
-bool GameStateStart::checkIfMousePositionIsOnTile(sf::Vector2f position)
+bool GameStateTileSplitter::checkIfMousePositionIsOnTile(sf::Vector2f position)
 {
     int b = 0;
 
@@ -792,7 +782,7 @@ bool GameStateStart::checkIfMousePositionIsOnTile(sf::Vector2f position)
     return false;
 }
 
-bool GameStateStart::checkIfMouseClickIsOnTile(sf::Vector2f position)
+bool GameStateTileSplitter::checkIfMouseClickIsOnTile(sf::Vector2f position)
 {
     int b = 0;
     for (auto tile : this->map.tiles)
@@ -810,13 +800,13 @@ bool GameStateStart::checkIfMouseClickIsOnTile(sf::Vector2f position)
     return false;
 }
 
-bool GameStateStart::checkIfMouseClickIsOnVertexHandle(sf::Vector2f position)
+bool GameStateTileSplitter::checkIfMouseClickIsOnVertexHandle(sf::Vector2f position)
 {
     int b = 0;
     for (auto hitbox : this->map.hitboxes)
-    {     
+    {
         int h = 0;
-        for (auto handle: hitbox.VertexHandles)
+        for (auto handle : hitbox.VertexHandles)
         {
             sf::FloatRect boundingBox = handle.getGlobalBounds();
 
@@ -826,7 +816,7 @@ bool GameStateStart::checkIfMouseClickIsOnVertexHandle(sf::Vector2f position)
                 currentVertexHandleHovered = new int(h);
                 return true;
             }
-            h++;        
+            h++;
         }
         b++;
     }
@@ -836,7 +826,7 @@ bool GameStateStart::checkIfMouseClickIsOnVertexHandle(sf::Vector2f position)
     return false;
 }
 
-bool GameStateStart::checkIfMouseClickIsOnMainHandle(sf::Vector2f position)
+bool GameStateTileSplitter::checkIfMouseClickIsOnMainHandle(sf::Vector2f position)
 {
     int b = 0;
     for (auto hitbox : this->map.hitboxes)
@@ -862,7 +852,7 @@ bool GameStateStart::checkIfMouseClickIsOnMainHandle(sf::Vector2f position)
 
 
 
-void GameStateStart::setCurrentTyleID(sf::Vector2f position)
+void GameStateTileSplitter::setCurrentTyleID(sf::Vector2f position)
 {
     int b = 0;
     for (auto brush : this->Row1Brushes)
@@ -878,7 +868,7 @@ void GameStateStart::setCurrentTyleID(sf::Vector2f position)
     }
 }
 
-void GameStateStart::setCurrentTyleType(sf::Vector2f position)
+void GameStateTileSplitter::setCurrentTyleType(sf::Vector2f position)
 {
     int b = 0;
     for (auto button : this->MainToolbarButtons)
@@ -901,7 +891,7 @@ void GameStateStart::setCurrentTyleType(sf::Vector2f position)
     }
 }
 
-GameStateStart::GameStateStart(Game* game)
+GameStateTileSplitter::GameStateTileSplitter(Game* game)
 {
     this->game = game;
     sf::Vector2f size = sf::Vector2f(this->game->window.getSize());
@@ -926,12 +916,12 @@ GameStateStart::GameStateStart(Game* game)
     float ycoordback = viewCenter.y - viewSize.y / 2.f;
 
     sf::Vector2f posgame = game->background.getPosition();
-	sf::Vector2i mapUpperLeftPosition = MapGrid::GetMapUpperLeftCornerPosition(this->game->window);
-    
+    sf::Vector2i mapUpperLeftPosition = MapGrid::GetMapUpperLeftCornerPosition(this->game->window);
+
     //assemble board pattern
     sf::FloatRect boundsSprite = game->board.getGlobalBounds();
     sf::Vector2f spriteSize = boundsSprite.getSize();
-	MapGrid mapGrid = MapGrid(mapUpperLeftPosition, spriteSize.x, spriteSize.y, 10);
+    MapGrid mapGrid = MapGrid(mapUpperLeftPosition, spriteSize.x, spriteSize.y, 10);
     //board pattern
 
 
@@ -939,7 +929,7 @@ GameStateStart::GameStateStart(Game* game)
     game->background.setPosition(pos);
     game->board.setPosition(viewCenter.x - 378.5, viewCenter.y - 378.5);
 
-	assembleBoardCollection(game, mapGrid);
+    assembleBoardCollection(game, mapGrid);
     assembleToolbar(game, pos, size);
     assembleMainMenu(game, pos, size);
 
@@ -947,10 +937,10 @@ GameStateStart::GameStateStart(Game* game)
     sf::FloatRect localbounds = game->background.getLocalBounds();
 }
 
-void GameStateStart::loadTileSplitter()
+void GameStateTileSplitter::loadgame()
 {
-    GameStateTileSplitter* gameStateTileSplitter = new GameStateTileSplitter(this->game);
-    this->game->pushState(gameStateTileSplitter);
+    GameStateEditor* gameStateEditor = new GameStateEditor(this->game);
+    this->game->pushState(gameStateEditor);
 
     return;
 }

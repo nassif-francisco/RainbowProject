@@ -1,5 +1,5 @@
-#ifndef GAME_STATE_START_HPP
-#define GAME_STATE_START_HPP
+#ifndef GAME_STATE_TILE_SPLITTER_HPP
+#define GAME_STATE_TILE_SPLITTER_HPP
 
 #include <SFML/Graphics.hpp>
 
@@ -11,7 +11,7 @@
 #include "mapGrid.hpp"
 
 
-class GameStateStart : public GameState
+class GameStateTileSplitter : public GameState
 {
 private:
 
@@ -26,7 +26,6 @@ private:
     bool LControlKeyPressed = false;
     bool SKeyPressed = false;
     bool LKeyPressed = false;
-    bool TKeyPressed = false;
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
     int* currentMainHandleHovered = nullptr;
@@ -42,21 +41,21 @@ private:
     float toolbarMinY;
     float mainMenuMinY;
 
-	const float GetCurrentToolbarHeightFactor()
-	{
-		if (this->game->currentResolution == "_1920x1080")
-		{
-			return RBConstants::toolbarHeightFactor_1920x1080;
-		}
-		else if (this->game->currentResolution == "_2560x1600")
-		{
-			return RBConstants::toolbarHeightFactor_2560x1600;
-		}
-	}
+    const float GetCurrentToolbarHeightFactor()
+    {
+        if (this->game->currentResolution == "_1920x1080")
+        {
+            return RBConstants::toolbarHeightFactor_1920x1080;
+        }
+        else if (this->game->currentResolution == "_2560x1600")
+        {
+            return RBConstants::toolbarHeightFactor_2560x1600;
+        }
+    }
 
     Canvas canvas;
     Map map;
-    void loadTileSplitter();
+    void loadgame();
     void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void assembleBoardCollection(Game* game, MapGrid& mapGrid);
@@ -75,7 +74,7 @@ public:
     virtual void update(const float dt);
     virtual void handleInput();
 
-    GameStateStart(Game* game);
+    GameStateTileSplitter(Game* game);
 
 };
 
