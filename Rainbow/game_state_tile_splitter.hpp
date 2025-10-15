@@ -18,26 +18,20 @@ private:
     sf::View view;
     sf::View guiView;
 
-    sf::Sprite brickBrushIcon;
-
-    int* currentBrush = nullptr;
-    TileType currentPaintingGroundType = TileType::BACKGROUND;
     int* currentTileHovered = nullptr;
     bool LControlKeyPressed = false;
     bool SKeyPressed = false;
-    bool LKeyPressed = false;
+    bool OKeyPressed = false;
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
     int* currentMainHandleHovered = nullptr;
-    std::vector<sf::Sprite> Row1Brushes;
-    std::vector<sf::Sprite> Row2Brushes;
 
     std::vector<sf::Sprite> MainToolbarButtons;
 
     RBActionState  actionState;
     sf::Vector2i panningAnchor;
     float zoomLevel;
-    std::string currentTyleID;
+
     float toolbarMinY;
     float mainMenuMinY;
 
@@ -53,7 +47,6 @@ private:
         }
     }
 
-    Canvas canvas;
     Map map;
     void loadgame();
     void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
@@ -78,4 +71,4 @@ public:
 
 };
 
-#endif /* GAME_STATE_START_HPP */
+#endif /* GAME_STATE_TILE_SPLITTER_HPP */

@@ -131,7 +131,7 @@ void Game::pushState(GameState* state)
 
 void Game::popState()
 {
-    delete this->states.top();
+    //delete this->states.top();
     this->states.pop();
 
     return;

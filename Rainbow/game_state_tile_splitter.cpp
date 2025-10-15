@@ -42,37 +42,6 @@ void GameStateTileSplitter::draw(const float dt)
 
     this->game->window.draw(this->game->mainMenu);
 
-    int k = 0;
-    for (auto brush : this->Row1Brushes)
-    {
-        if (currentBrush != nullptr && *currentBrush == k)
-        {
-            brush.setColor(sf::Color(255, 255, 255, 128));
-        }
-        this->game->window.draw(brush);
-        k++;
-    }
-
-    for (auto brush : this->Row2Brushes)
-    {
-        this->game->window.draw(brush);
-    }
-
-    k = 0;
-    for (auto button : this->MainToolbarButtons)
-    {
-        if (k == 0 && currentPaintingGroundType == TileType::BACKGROUND)
-        {
-            button.setColor(sf::Color(255, 255, 255, 128));
-        }
-        else if (k == 1 && currentPaintingGroundType == TileType::FOREGROUND)
-        {
-            button.setColor(sf::Color(255, 255, 255, 128));
-        }
-        this->game->window.draw(button);
-        k++;
-    }
-
     //this->game->window.draw(this->brickBrushIcon);
     this->game->window.setView(this->view);
 
@@ -369,15 +338,12 @@ void GameStateTileSplitter::handleInput()
             {
                 if (position.y > toolbarMinY)
                 {
-                    //find which brush is being selected
-                    setCurrentTyleID(sf::Vector2f(position.x, position.y));
                     break;
                 }
 
                 if (position.y > mainMenuMinY && position.y < mainMenuMinY + RBConstants::toolbarHeight)
                 {
-                    setCurrentTyleType(sf::Vector2f(position.x, position.y));
-                    break;
+
                 }
 
                 if (!sf::Keyboard::isKeyPressed(sf::Keyboard::H))
@@ -403,12 +369,6 @@ void GameStateTileSplitter::handleInput()
                     }
                 }
 
-                //check if current position is over any existing tile
-                /*if (checkIfMouseClickIsOnTile(worldPos))
-                {
-                    this->actionState = RBActionState::MOVING;
-                    break;
-                }*/
 
                 if (this->actionState != RBActionState::PAINTING)
                 {
@@ -426,11 +386,7 @@ void GameStateTileSplitter::handleInput()
                 std::cout << "worldPos.x: " << worldPos.x << std::endl;
                 std::cout << "worldPos.y: " << worldPos.y << std::endl;
 
-                if (currentBrush == nullptr)
-                {
-                    return;
-                }
-                std::string currentBrushName = this->game->brushNames[*currentBrush];
+                std::string currentBrushName = "AABBButton";
                 std::string tileName = currentBrushName.replace(currentBrushName.find("Button"), 6, "");
 
                 if (tileName == "AABB")
@@ -452,28 +408,7 @@ void GameStateTileSplitter::handleInput()
 
                     //// change the size to 100x100
                     //rectangle.setSize({ 100.f, 100.f });
-                }
-
-                TileType tileType;
-                tileType = currentPaintingGroundType;
-                this->map.tiles.push_back(game->tileAtlas.at(tileName));
-                Tile& tile = this->map.tiles.back();
-                tile.tileType = tileType;
-                sf::FloatRect bounds = tile.sprite.getGlobalBounds();
-                sf::Vector2f spriteSize = bounds.getSize();
-
-                if (tile.isAnimated)
-                {
-
-                    tile.sprite.setPosition(worldPos.x - (spriteSize.x / tile.frames) / 2, worldPos.y - spriteSize.y / 2);
-                }
-                else
-                {
-                    tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
-                }
-
-
-
+                } 
                 currentTileHovered = new int(map.tiles.size() - 1);
 
 
@@ -572,7 +507,7 @@ void GameStateTileSplitter::handleInput()
             if (event.key.code == sf::Keyboard::Escape) this->game->window.close();
             else if (event.key.code == sf::Keyboard::LControl) this->LControlKeyPressed = true;
             else if (event.key.code == sf::Keyboard::S) this->SKeyPressed = true;
-            else if (event.key.code == sf::Keyboard::L) this->LKeyPressed = true;
+            else if (event.key.code == sf::Keyboard::O) this->OKeyPressed = true;
             else if (event.key.code == sf::Keyboard::H)
             {
                 currentTileHovered = nullptr;
@@ -581,18 +516,12 @@ void GameStateTileSplitter::handleInput()
 
             if (LControlKeyPressed && SKeyPressed)
             {
-                std::string filename = RBConstants::CommonMediaMapsPath + "test";
-                map.save(filename);
-                SKeyPressed = false;
-                LControlKeyPressed = false;
+                loadgame();
             }
 
-            if (LControlKeyPressed && LKeyPressed)
+            if (LControlKeyPressed && OKeyPressed)
             {
-                std::string filename = RBConstants::CommonMediaMapsPath + "test";
-                map.load(filename);
-                LKeyPressed = false;
-                LControlKeyPressed = false;
+                //open dialog for search folder
             }
 
             break;
@@ -611,9 +540,9 @@ void GameStateTileSplitter::handleInput()
             {
                 SKeyPressed = false;
             }
-            else if (event.key.code == sf::Keyboard::L)
+            else if (event.key.code == sf::Keyboard::O)
             {
-                LKeyPressed = false;
+                OKeyPressed = false;
             }
             else if (event.key.code == sf::Keyboard::LControl)
             {
@@ -671,16 +600,7 @@ void GameStateTileSplitter::assembleToolbar(Game* game, sf::Vector2f pos, sf::Ve
     float brushWidth = 32.f;
     float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
-    for (int i = 0; i <= 8; i++)
-    {
-        brushPositionX += brushDistance + brushWidth;
-        sf::Sprite* newSprite = new sf::Sprite();
-        Row1Brushes.push_back(*newSprite);
-
-        this->Row1Brushes[i].setTexture(this->game->texmgr.getBrushRef(this->game->brushNames[i]));
-
-        this->Row1Brushes[i].setPosition(brushPositionX, pos.y + brushDistance + toolbarOffsetPosition);
-    }
+   
 
     //for (size_t i = 21; i <= this->game->brushNames.size(); i++)
     //{
@@ -855,40 +775,12 @@ bool GameStateTileSplitter::checkIfMouseClickIsOnMainHandle(sf::Vector2f positio
 void GameStateTileSplitter::setCurrentTyleID(sf::Vector2f position)
 {
     int b = 0;
-    for (auto brush : this->Row1Brushes)
-    {
-        sf::FloatRect boundingBox = brush.getGlobalBounds();
-
-        if (boundingBox.contains((sf::Vector2f)position))
-        {
-            currentBrush = new int(b);
-            brush.setColor(sf::Color(255, 255, 255, 128));
-        }
-        b++;
-    }
 }
 
 void GameStateTileSplitter::setCurrentTyleType(sf::Vector2f position)
 {
     int b = 0;
-    for (auto button : this->MainToolbarButtons)
-    {
-        sf::FloatRect boundingBox = button.getGlobalBounds();
-
-        if (boundingBox.contains((sf::Vector2f)position))
-        {
-            if (b == 0)
-            {
-                currentPaintingGroundType = TileType::BACKGROUND;
-            }
-            else
-            {
-                currentPaintingGroundType = TileType::FOREGROUND;
-            }
-            button.setColor(sf::Color(255, 255, 255, 128));
-        }
-        b++;
-    }
+   
 }
 
 GameStateTileSplitter::GameStateTileSplitter(Game* game)
@@ -939,8 +831,6 @@ GameStateTileSplitter::GameStateTileSplitter(Game* game)
 
 void GameStateTileSplitter::loadgame()
 {
-    GameStateEditor* gameStateEditor = new GameStateEditor(this->game);
-    this->game->pushState(gameStateEditor);
-
+    this->game->popState();
     return;
 }
