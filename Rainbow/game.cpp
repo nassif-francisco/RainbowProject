@@ -154,8 +154,13 @@ void Game::popState()
 {
     //delete this->states.top();
     this->states.pop();
-    GameState* currentState = states.top();
-    currentState->updateObjects();
+
+    if (!this->states.empty())
+    {
+        GameState* currentState = states.top();
+        currentState->updateObjects();
+
+    }     
 
     return;
 }
