@@ -559,6 +559,69 @@ void GameStateTileSplitter::handleInput()
                 float ycoord = pos.y + size.y / 2.f - spriteheight;
                 tile.sprite.setPosition(xcoord, ycoord);
 
+                sf::Image sourceImage;
+                if (!sourceImage.loadFromFile(fileName))
+                {
+                    std::cerr << "Failed to load image\n";
+                    return;
+                }
+
+
+                // Define the portion you want to extract
+                sf::IntRect rect(32, 64, 64, 64); // x, y, width, height
+
+                // Create a new image with the same size as the portion
+                sf::Image subImage;
+                subImage.create(rect.width, rect.height, sf::Color::Transparent);
+
+                // Copy pixels from the source image into the new one
+                subImage.copy(sourceImage, 0, 0, rect, true);
+
+                // Save the extracted part as a new PNG
+                if (!subImage.saveToFile("C:\\Users\\franc\\Downloads\\extracted_part.png"))
+                {
+                    std::cerr << "Failed to save image\n";
+                    return;
+                }
+
+
+                /////////////////////////////
+                // Convert the sub-image into a texture
+                sf::Texture texture;
+                texture.loadFromImage(subImage);
+
+                // Create a sprite for resizing
+                sf::Sprite sprite(texture);
+
+                // Desired new size
+                unsigned newWidth = 32;
+                unsigned newHeight = 32;
+
+                // Calculate scale factors
+                sprite.setScale(
+                    static_cast<float>(newWidth) / rect.width,
+                    static_cast<float>(newHeight) / rect.height
+                );
+
+                // Render the scaled sprite into a new texture
+                sf::RenderTexture renderTexture;
+                renderTexture.create(newWidth, newHeight);
+                renderTexture.clear(sf::Color::Transparent);
+                renderTexture.draw(sprite);
+                renderTexture.display();
+
+                // Get the resized image
+                sf::Image resizedImage = renderTexture.getTexture().copyToImage();
+
+                // Save to file
+                if (!resizedImage.saveToFile("C:\\Users\\franc\\Downloads\\resized_part.png"))
+                {
+                    std::cerr << "Failed to save resized image\n";
+                    return;
+                }
+
+
+
                 OKeyPressed = false;
                 LControlKeyPressed = false;
 

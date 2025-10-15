@@ -681,7 +681,7 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     float brushWidth = 32.f;
     float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
-    for (int i =0; i<=8; i++)
+    for (int i =0; i<=10; i++)
     {
         brushPositionX += brushDistance + brushWidth;
         sf::Sprite* newSprite =  new sf::Sprite();
