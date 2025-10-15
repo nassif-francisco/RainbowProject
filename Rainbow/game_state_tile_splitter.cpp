@@ -9,6 +9,7 @@
 #include <string>
 #include "tinyfiledialogs.hpp"
 
+
 void GameStateTileSplitter::draw(const float dt)
 {
     this->game->window.setView(this->view);
@@ -586,7 +587,14 @@ void GameStateTileSplitter::handleInput()
                 subImage.copy(sourceImage, 0, 0, rect, true);
 
                 // Save the extracted part as a new PNG
-                if (!subImage.saveToFile("C:\\Users\\franc\\Downloads\\extracted_part.png"))
+                string finalPathNewTileBase = RBConstants::CommonMediaEnvironmentPacksPath + "Toolbar/";
+
+                ////////////////////////////////////
+                string guidStr = generateRandomString();
+                ///////////////////////////////
+
+                string finalPathNewTile = finalPathNewTileBase + guidStr + ".png";
+                if (!subImage.saveToFile(finalPathNewTile))
                 {
                     std::cerr << "Failed to save image\n";
                     OKeyPressed = false;
@@ -623,14 +631,18 @@ void GameStateTileSplitter::handleInput()
                 // Get the resized image
                 sf::Image resizedImage = renderTexture.getTexture().copyToImage();
 
+                string finalPathNewTileIcon = finalPathNewTileBase + guidStr + "Button.png";
+
                 // Save to file
-                if (!resizedImage.saveToFile("C:\\Users\\franc\\Downloads\\resized_part.png"))
+                if (!resizedImage.saveToFile(finalPathNewTileIcon))
                 {
                     std::cerr << "Failed to save resized image\n";
                     OKeyPressed = false;
                     LControlKeyPressed = false;
                     return;
                 }
+
+                game->tileNames.pop_back();
 
                 OKeyPressed = false;
                 LControlKeyPressed = false;
