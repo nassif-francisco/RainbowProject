@@ -681,7 +681,9 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     float brushWidth = 32.f;
     float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
-    for (int i =0; i<=10; i++)
+    size_t totalTiles = game->tileNames.size();
+
+    for (int i =0; i < totalTiles; i++)
     {
         brushPositionX += brushDistance + brushWidth;
         sf::Sprite* newSprite =  new sf::Sprite();
@@ -899,6 +901,17 @@ void GameStateStart::setCurrentTyleType(sf::Vector2f position)
         }
         b++;
     }
+}
+
+void GameStateStart::updateObjects()
+{
+    game->loadTextures();
+    game->loadTiles();
+
+    sf::Vector2f size = sf::Vector2f(this->game->window.getSize());
+    sf::Vector2f pos = sf::Vector2f(this->game->window.getPosition());
+
+    assembleToolbar(game, pos, size);
 }
 
 GameStateStart::GameStateStart(Game* game)

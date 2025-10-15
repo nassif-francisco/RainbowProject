@@ -120,6 +120,11 @@ void GameStateEditor::handleInput()
     return;
 }
 
+void GameStateEditor::updateObjects()
+{
+    
+}
+
 void GameStateEditor::loadgame()
 {
     GameStateStart* gameStateEditor = new GameStateStart(this->game);

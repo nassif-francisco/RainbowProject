@@ -532,6 +532,10 @@ void GameStateTileSplitter::handleInput()
 
                 if (tilesetFileName == NULL)
                 {
+
+                    OKeyPressed = false;
+                    LControlKeyPressed = false;
+                    
                     return;
                 }
 
@@ -562,7 +566,11 @@ void GameStateTileSplitter::handleInput()
                 sf::Image sourceImage;
                 if (!sourceImage.loadFromFile(fileName))
                 {
-                    std::cerr << "Failed to load image\n";
+                    std::cerr << "Failed to load image\n";             
+
+                    OKeyPressed = false;
+                    LControlKeyPressed = false;
+
                     return;
                 }
 
@@ -581,6 +589,8 @@ void GameStateTileSplitter::handleInput()
                 if (!subImage.saveToFile("C:\\Users\\franc\\Downloads\\extracted_part.png"))
                 {
                     std::cerr << "Failed to save image\n";
+                    OKeyPressed = false;
+                    LControlKeyPressed = false;
                     return;
                 }
 
@@ -617,10 +627,10 @@ void GameStateTileSplitter::handleInput()
                 if (!resizedImage.saveToFile("C:\\Users\\franc\\Downloads\\resized_part.png"))
                 {
                     std::cerr << "Failed to save resized image\n";
+                    OKeyPressed = false;
+                    LControlKeyPressed = false;
                     return;
                 }
-
-
 
                 OKeyPressed = false;
                 LControlKeyPressed = false;
@@ -888,6 +898,11 @@ void GameStateTileSplitter::setCurrentTyleType(sf::Vector2f position)
    
 }
 
+void GameStateTileSplitter::updateObjects()
+{
+
+}
+
 GameStateTileSplitter::GameStateTileSplitter(Game* game)
 {
     this->game = game;
@@ -937,5 +952,6 @@ GameStateTileSplitter::GameStateTileSplitter(Game* game)
 void GameStateTileSplitter::loadgame()
 {
     this->game->popState();
+
     return;
 }

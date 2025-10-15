@@ -66,16 +66,37 @@ void Game::loadTextures()
                     }
                     else
                     {
-                        tileNames.push_back(tileName);
+                        auto it = std::find(tileNames.begin(), tileNames.end(), filename);
+
+                        if (it != tileNames.end())
+                        {
+                            //it is already contained
+                        }
+                        else
+                        {
+                            tileNames.push_back(tileName);
+                        }
+                        
                     }
 
                     texmgr.loadTexture(tileName, finalPath2);
                 }
                 else
-                {
+                {                
+                    
                     std::string tileName = filename.replace(filename.find(".png"), 4, "");
-                    brushNames.push_back(tileName);
-                    texmgr.loadBrushTexture(tileName, finalPath2);
+                    auto it = std::find(brushNames.begin(), brushNames.end(), tileName);
+
+                    if (it != brushNames.end())
+                    {
+                        //it is already contained
+                    }
+                    else
+                    {
+                        brushNames.push_back(tileName);
+                        texmgr.loadBrushTexture(tileName, finalPath2);
+                    }
+                  
                 }
             }
         }
@@ -133,6 +154,8 @@ void Game::popState()
 {
     //delete this->states.top();
     this->states.pop();
+    GameState* currentState = states.top();
+    currentState->updateObjects();
 
     return;
 }
@@ -141,6 +164,7 @@ void Game::changeState(GameState* state)
 {
     if (!this->states.empty())
         popState();
+    state->updateObjects();
     pushState(state);
 
     return;
@@ -198,10 +222,6 @@ void Game::loadTiles()
     Animation staticAnim(0, 0, 1.0f);
 
     for (const std::string& tile : tileNames) {
-        if (tile == "C:\\Users\\franc\\Downloads\\newTileSet.png")
-        {
-            int a = 0;
-        }
         tileAtlas[tile] =
             Tile(tile, 25, 1, texmgr.getRef(tile),
                 { staticAnim },
