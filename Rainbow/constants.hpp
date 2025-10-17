@@ -24,7 +24,9 @@ public:
 
 };
 
-enum class RBActionState { NONE, PANNING, PAINTING, BRUSHING, MOVING, EDITING, TAGGING };
+enum class RBActionState { NONE, PANNING, PAINTING, BRUSHING, MOVING, EDITING, TAGGING, PAINTINGWITHMASTER };
+
+enum class TileMasterSlaveClass {MASTER, SLAVE , NONE};
 
 
 #endif /* ANIMATION_HANDLER_HPP */

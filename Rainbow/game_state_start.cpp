@@ -130,6 +130,36 @@ void GameStateStart::handleInput()
             if (position.y < toolbarMinY)
             {
                 //CHECK FOR MOVING ACTION
+
+                if (this->actionState == RBActionState::PAINTINGWITHMASTER)
+                {
+                    if (currentBrush == nullptr)
+                    {
+                        return;
+                    }
+                    std::string currentBrushName = this->game->brushNames[*currentBrush];
+                    std::string tileName = currentBrushName.replace(currentBrushName.find("Button"), 6, "");
+                                     
+                    TileType tileType;
+                    tileType = currentPaintingGroundType;
+                    this->map.tiles.push_back(game->tileAtlas.at(tileName));
+                    Tile& tile = this->map.tiles.back();
+                    tile.tileType = tileType;
+                    sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+                    sf::Vector2f spriteSize = bounds.getSize();
+
+                    if (tile.isAnimated)
+                    {
+
+                        tile.sprite.setPosition(worldPos.x - (spriteSize.x / tile.frames) / 2, worldPos.y - spriteSize.y / 2);
+                    }
+                    else
+                    {
+                        tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
+                    }
+
+                    //currentTileHovered = new int(map.tiles.size() - 1);
+                }
                 
                 if (this->actionState == RBActionState::MOVING && currentTileHovered != nullptr)
                 {
@@ -410,11 +440,16 @@ void GameStateStart::handleInput()
                     this->actionState = RBActionState::MOVING;
                     break;
                 }*/
+                if (MKeyPressed && this->actionState != RBActionState::PAINTINGWITHMASTER)
+                {
+                    this->actionState = RBActionState::PAINTINGWITHMASTER;
+                }
 
-                if (this->actionState != RBActionState::PAINTING)
+                if (this->actionState != RBActionState::PAINTING && (this->actionState != RBActionState::PAINTINGWITHMASTER))
                 {
                     this->actionState = RBActionState::PAINTING;
                 } 
+                //NOW PROCEED TO PAINT
 
                 // set mouse position relative to a window
                 //sf::Mouse::setPosition(sf::Vector2i(100, 200), game->window);
@@ -514,7 +549,8 @@ void GameStateStart::handleInput()
                 if (this->actionState == RBActionState::PAINTING 
                     || this->actionState == RBActionState::BRUSHING
                     || this->actionState == RBActionState::MOVING
-                    || this->actionState == RBActionState::EDITING)
+                    || this->actionState == RBActionState::EDITING
+                    || this->actionState == RBActionState::PAINTINGWITHMASTER)
                 {
                     this->actionState = RBActionState::NONE;
                 }
@@ -573,11 +609,17 @@ void GameStateStart::handleInput()
             if (event.key.code == sf::Keyboard::Escape) this->game->window.close();
             else if (event.key.code == sf::Keyboard::LControl) this->LControlKeyPressed = true;
             else if (event.key.code == sf::Keyboard::S) this->SKeyPressed = true;
+            else if (event.key.code == sf::Keyboard::M) this->MKeyPressed = true;
             else if (event.key.code == sf::Keyboard::L) this->LKeyPressed = true;
             else if (event.key.code == sf::Keyboard::T) this->TKeyPressed = true;
             else if (event.key.code == sf::Keyboard::H)
             {
                 currentTileHovered = nullptr;
+            }
+
+            if (MKeyPressed)
+            {
+                int a = 0;
             }
             
 
@@ -624,6 +666,10 @@ void GameStateStart::handleInput()
             else if (event.key.code == sf::Keyboard::L)
             {
                 LKeyPressed = false;
+            }
+            else if (event.key.code == sf::Keyboard::M)
+            {
+                MKeyPressed = false;
             }
             else if (event.key.code == sf::Keyboard::LControl)
             {

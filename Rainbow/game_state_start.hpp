@@ -27,6 +27,7 @@ private:
     bool SKeyPressed = false;
     bool LKeyPressed = false;
     bool TKeyPressed = false;
+    bool MKeyPressed = false;
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
     int* currentMainHandleHovered = nullptr;

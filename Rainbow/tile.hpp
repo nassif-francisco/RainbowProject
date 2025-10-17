@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <vector>
+#include "constants.hpp"
 
 #include "animation_handler.hpp"
 
@@ -20,6 +21,7 @@ public:
     TileType tileType;
 
     std::string tileName;
+    TileMasterSlaveClass tileMasterSlaveClass = TileMasterSlaveClass::NONE;
 
     int frames;
 
