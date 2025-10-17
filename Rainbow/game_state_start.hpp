@@ -34,6 +34,8 @@ private:
     bool TKeyPressed = false;
     bool MKeyPressed = false;
     bool DKeyPressed = false;
+    bool BKeyPressed = false;
+    bool FKeyPressed = false;
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
     int* currentMainHandleHovered = nullptr;

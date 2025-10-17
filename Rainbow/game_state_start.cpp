@@ -318,7 +318,41 @@ void GameStateStart::handleInput()
                         eraseTile();
                         break;
 
-                    }             
+                    }  
+
+                    if (BKeyPressed == true)
+                    {
+                        Tile& tile = this->map.tiles[*currentTileHovered];
+                        tile.tileType = TileType::BACKGROUND;
+
+                        if (tile.tileMasterSlaveType == TileMasterSlaveType::MASTER)
+                        {
+                            for (auto& tiledelegate : map.tiles)
+                            {
+                                if (tiledelegate.tileMasterSlaveType == TileMasterSlaveType::SLAVE && tiledelegate.masterTileID == tile.masterTileID)
+                                {
+                                    tiledelegate.tileType = TileType::BACKGROUND;
+                                }
+                            }
+                        }
+                    }
+
+                    if (FKeyPressed == true)
+                    {
+                        Tile& tile = this->map.tiles[*currentTileHovered];
+                        tile.tileType = TileType::FOREGROUND;
+
+                        if (tile.tileMasterSlaveType == TileMasterSlaveType::MASTER)
+                        {
+                            for (auto& tiledelegate : map.tiles)
+                            {
+                                if (tiledelegate.tileMasterSlaveType == TileMasterSlaveType::SLAVE && tiledelegate.masterTileID == tile.masterTileID)
+                                {
+                                    tiledelegate.tileType = TileType::FOREGROUND;
+                                }
+                            }
+                        }
+                    }
                     
                     sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
                     sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
@@ -816,6 +850,8 @@ void GameStateStart::handleInput()
             else if (event.key.code == sf::Keyboard::S) this->SKeyPressed = true;
             else if (event.key.code == sf::Keyboard::M) this->MKeyPressed = true;
             else if (event.key.code == sf::Keyboard::D) this->DKeyPressed = true;
+            else if (event.key.code == sf::Keyboard::B) this->BKeyPressed = true;
+            else if (event.key.code == sf::Keyboard::F) this->FKeyPressed = true;
             else if (event.key.code == sf::Keyboard::L) this->LKeyPressed = true;
             else if (event.key.code == sf::Keyboard::T) this->TKeyPressed = true;
             else if (event.key.code == sf::Keyboard::H)
@@ -875,6 +911,14 @@ void GameStateStart::handleInput()
             else if (event.key.code == sf::Keyboard::D)
             {
                 DKeyPressed = false;
+            }
+            else if (event.key.code == sf::Keyboard::B)
+            {
+                BKeyPressed = false;
+            }
+            else if (event.key.code == sf::Keyboard::F)
+            {
+                FKeyPressed = false;
             }
             else if (event.key.code == sf::Keyboard::LControl)
             {
