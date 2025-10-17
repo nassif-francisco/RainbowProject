@@ -29,6 +29,7 @@ private:
 
     float XCornerTileSet;
     float YCornerTileSet;
+    string tileSetFileName;
 
     std::vector<sf::Sprite> MainToolbarButtons;
 

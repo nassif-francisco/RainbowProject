@@ -517,6 +517,7 @@ void GameStateTileSplitter::handleInput()
 
             if (LControlKeyPressed && SKeyPressed)
             {
+                createTilesUsingHitboxes(tileSetFileName);
                 loadgame();
             }
 
@@ -541,9 +542,11 @@ void GameStateTileSplitter::handleInput()
                 }
 
                 std::string fileName(tilesetFileName);
+                tileSetFileName = fileName;
 
                 insertTileSetInScreen(fileName);
-                createTilesUsingHitboxes(fileName);
+
+                //createTilesUsingHitboxes(fileName);
 
                 OKeyPressed = false;
                 LControlKeyPressed = false;
@@ -893,87 +896,99 @@ void GameStateTileSplitter::insertTileSetInScreen(string tilesetFileName)
 
     float xcoord = pos.x + size.x / 2.f - spritewidth;
     float ycoord = pos.y + size.y / 2.f - spriteheight;
+    XCornerTileSet = xcoord;
+    YCornerTileSet = ycoord;
+
     tile.sprite.setPosition(xcoord, ycoord);
 }
 
 void GameStateTileSplitter::createTilesUsingHitboxes(string fileName)
 {
-    sf::Image sourceImage;
-    if (!sourceImage.loadFromFile(fileName))
+    for (auto& hitbox : map.hitboxes)
     {
-        std::cerr << "Failed to load image\n";
-
-        OKeyPressed = false;
-        LControlKeyPressed = false;
-
-        return;
-    }
 
 
-    // Define the portion you want to extract
-    sf::IntRect rect(32, 64, 64, 64); // x, y, width, height
 
-    // Create a new image with the same size as the portion
-    sf::Image subImage;
-    subImage.create(rect.width, rect.height, sf::Color::Transparent);
+        sf::Image sourceImage;
+        if (!sourceImage.loadFromFile(fileName))
+        {
+            std::cerr << "Failed to load image\n";
 
-    // Copy pixels from the source image into the new one
-    subImage.copy(sourceImage, 0, 0, rect, true);
+            OKeyPressed = false;
+            LControlKeyPressed = false;
 
-    // Save the extracted part as a new PNG
-    string finalPathNewTileBase = RBConstants::CommonMediaEnvironmentPacksPath + "Toolbar/";
+            return;
+        }
 
-    ////////////////////////////////////
-    string guidStr = generateRandomString();
-    ///////////////////////////////
-
-    string finalPathNewTile = finalPathNewTileBase + guidStr + ".png";
-    if (!subImage.saveToFile(finalPathNewTile))
-    {
-        std::cerr << "Failed to save image\n";
-        OKeyPressed = false;
-        LControlKeyPressed = false;
-        return;
-    }
+        float width = std::abs(hitbox.AABB[0].x - hitbox.AABB[1].x);
+        float height = std::abs(hitbox.AABB[0].y - hitbox.AABB[3].y);
 
 
-    /////////////////////////////
-    // Convert the sub-image into a texture
-    sf::Texture texture;
-    texture.loadFromImage(subImage);
+        // Define the portion you want to extract
+        sf::IntRect rect(hitbox.AABB[0].x - XCornerTileSet, hitbox.AABB[0].y - YCornerTileSet, width, height); // x, y, width, height
 
-    // Create a sprite for resizing
-    sf::Sprite sprite(texture);
+        // Create a new image with the same size as the portion
+        sf::Image subImage;
+        subImage.create(rect.width, rect.height, sf::Color::Transparent);
 
-    // Desired new size
-    unsigned newWidth = 32;
-    unsigned newHeight = 32;
+        // Copy pixels from the source image into the new one
+        subImage.copy(sourceImage, 0, 0, rect, true);
 
-    // Calculate scale factors
-    sprite.setScale(
-        static_cast<float>(newWidth) / rect.width,
-        static_cast<float>(newHeight) / rect.height
-    );
+        // Save the extracted part as a new PNG
+        string finalPathNewTileBase = RBConstants::CommonMediaEnvironmentPacksPath + "Toolbar/";
 
-    // Render the scaled sprite into a new texture
-    sf::RenderTexture renderTexture;
-    renderTexture.create(newWidth, newHeight);
-    renderTexture.clear(sf::Color::Transparent);
-    renderTexture.draw(sprite);
-    renderTexture.display();
+        ////////////////////////////////////
+        string guidStr = generateRandomString();
+        ///////////////////////////////
 
-    // Get the resized image
-    sf::Image resizedImage = renderTexture.getTexture().copyToImage();
+        string finalPathNewTile = finalPathNewTileBase + guidStr + ".png";
+        if (!subImage.saveToFile(finalPathNewTile))
+        {
+            std::cerr << "Failed to save image\n";
+            OKeyPressed = false;
+            LControlKeyPressed = false;
+            return;
+        }
 
-    string finalPathNewTileIcon = finalPathNewTileBase + guidStr + "Button.png";
 
-    // Save to file
-    if (!resizedImage.saveToFile(finalPathNewTileIcon))
-    {
-        std::cerr << "Failed to save resized image\n";
-        OKeyPressed = false;
-        LControlKeyPressed = false;
-        return;
+        /////////////////////////////
+        // Convert the sub-image into a texture
+        sf::Texture texture;
+        texture.loadFromImage(subImage);
+
+        // Create a sprite for resizing
+        sf::Sprite sprite(texture);
+
+        // Desired new size
+        unsigned newWidth = 32;
+        unsigned newHeight = 32;
+
+        // Calculate scale factors
+        sprite.setScale(
+            static_cast<float>(newWidth) / rect.width,
+            static_cast<float>(newHeight) / rect.height
+        );
+
+        // Render the scaled sprite into a new texture
+        sf::RenderTexture renderTexture;
+        renderTexture.create(newWidth, newHeight);
+        renderTexture.clear(sf::Color::Transparent);
+        renderTexture.draw(sprite);
+        renderTexture.display();
+
+        // Get the resized image
+        sf::Image resizedImage = renderTexture.getTexture().copyToImage();
+
+        string finalPathNewTileIcon = finalPathNewTileBase + guidStr + "Button.png";
+
+        // Save to file
+        if (!resizedImage.saveToFile(finalPathNewTileIcon))
+        {
+            std::cerr << "Failed to save resized image\n";
+            OKeyPressed = false;
+            LControlKeyPressed = false;
+            return;
+        }
     }
 
     game->tileNames.pop_back();
