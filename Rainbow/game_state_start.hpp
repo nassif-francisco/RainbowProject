@@ -130,6 +130,7 @@ private:
     bool checkIfMouseClickIsOnMainHandle(sf::Vector2f position);
     void drawBoardCollection(Game* game);
     void executePaintingWithMaster(sf::Vector2f worldPos);
+    void eraseTile();
     //std::string getCurrentTyleID();
 
 public:

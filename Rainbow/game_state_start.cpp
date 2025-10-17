@@ -253,6 +253,13 @@ void GameStateStart::executePaintingWithMaster(sf::Vector2f worldPos)
 
 }
 
+void GameStateStart::eraseTile()
+{
+    this->actionState = RBActionState::DELETING;
+    this->map.tiles.erase(map.tiles.begin() + *currentTileHovered);
+    currentTileHovered = nullptr;
+}
+
 void GameStateStart::handleInput()
 {
     sf::Event event;
@@ -299,6 +306,13 @@ void GameStateStart::handleInput()
                 
                 if (this->actionState == RBActionState::MOVING && currentTileHovered != nullptr)
                 {
+                    if (DKeyPressed == true)
+                    {
+                        eraseTile();
+                        break;
+
+                    }             
+                    
                     sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
                     sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
 
@@ -524,7 +538,6 @@ void GameStateStart::handleInput()
             //{
             //    this->actionState = RBActionState::MOVING;
             //}
-
 
 
             if (this->actionState == RBActionState::PANNING)
