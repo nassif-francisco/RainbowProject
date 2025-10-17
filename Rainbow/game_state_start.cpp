@@ -253,6 +253,13 @@ void GameStateStart::executePaintingWithMaster(sf::Vector2f worldPos)
 
 }
 
+void GameStateStart::eraseHitbox()
+{
+    this->actionState = RBActionState::DELETING;
+    this->map.hitboxes.erase(map.hitboxes.begin() + *currentHitboxHovered);
+    currentHitboxHovered = nullptr;
+}
+
 void GameStateStart::eraseTile()
 {
     this->actionState = RBActionState::DELETING;
@@ -358,6 +365,14 @@ void GameStateStart::handleInput()
 
                 if (this->actionState == RBActionState::MOVING && currentMainHandleHovered != nullptr)
                 {
+                    
+                    if (DKeyPressed == true)
+                    {
+                        eraseHitbox();
+                        break;
+
+                    }
+                    
                     sf::Vector2i position = sf::Mouse::getPosition(this->game->window);
                     sf::Vector2f worldPos = this->game->window.mapPixelToCoords(position);
 

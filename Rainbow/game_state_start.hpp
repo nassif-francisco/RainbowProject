@@ -131,6 +131,7 @@ private:
     void drawBoardCollection(Game* game);
     void executePaintingWithMaster(sf::Vector2f worldPos);
     void eraseTile();
+    void eraseHitbox();
     //std::string getCurrentTyleID();
 
 public:
