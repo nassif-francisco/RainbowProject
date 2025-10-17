@@ -152,7 +152,8 @@ void GameStateStart::handleInput()
                     sf::Vector2f topCoordinate = GetCurrentTileMasterTopLeftCorner();
                     std::string currentTileMasterID;
 
-                    if (currentTileMaster != nullptr)
+                    if (currentTileMasterDelegate != nullptr) //currentTileMaster is dereferenced. I guess masterdelegate survives because it is assigned in each iteration.
+                        //remember that delegate and master were pointing to the same tile address.
                     {
                         currentTileMasterID = currentTileMasterDelegate->masterTileID;
                     }
