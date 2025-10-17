@@ -92,6 +92,167 @@ void GameStateStart::drawBoardCollection(Game* game)
 	}
 }
 
+void GameStateStart::executePaintingWithMaster(sf::Vector2f worldPos)
+{
+    if (currentBrush == nullptr)
+    {
+        return;
+    }
+    std::string currentBrushName = this->game->brushNames[*currentBrush];
+    std::string tileName = currentBrushName.replace(currentBrushName.find("Button"), 6, "");
+
+
+    //check if the mouse position surpasses the delegate's
+    MasterPaintingDirection paintingDirection = MasterPaintingDirection::NONE;
+
+    sf::FloatRect bounds = currentTileMasterDelegate->sprite.getGlobalBounds();
+    sf::Vector2f spriteSize = bounds.getSize();
+
+    sf::Vector2f topRightCoordinate = GetCurrentTileMasterTopRightCorner();
+    sf::Vector2f bottomRightCoordinate = GetCurrentTileMasterBottomRightCorner();
+    sf::Vector2f topCoordinate = GetCurrentTileMasterTopLeftCorner();
+    std::string currentTileMasterID;
+
+    if (currentTileMasterDelegate != nullptr) //currentTileMaster is dereferenced. I guess masterdelegate survives because it is assigned in each iteration.
+        //remember that delegate and master were pointing to the same tile address.
+    {
+        currentTileMasterID = currentTileMasterDelegate->masterTileID;
+    }
+
+    if (worldPos.x > topRightCoordinate.x && worldPos.y >= topRightCoordinate.y)
+    {
+        paintingDirection = MasterPaintingDirection::RIGHT;
+    }
+    else if (worldPos.x < topCoordinate.x && worldPos.y >= topCoordinate.y)
+    {
+        paintingDirection = MasterPaintingDirection::LEFT;
+    }
+    else if (worldPos.y > bottomRightCoordinate.y && worldPos.x <= bottomRightCoordinate.x)
+    {
+        paintingDirection = MasterPaintingDirection::DOWN;
+    }
+    else if (worldPos.y < topRightCoordinate.y && worldPos.x <= topRightCoordinate.x)
+    {
+        paintingDirection = MasterPaintingDirection::UP;
+    }
+
+
+
+
+    if (paintingDirection == MasterPaintingDirection::RIGHT)
+    {
+        TileType tileType;
+        tileType = currentPaintingGroundType;
+        this->map.tiles.push_back(game->tileAtlas.at(tileName));
+        Tile& tile = this->map.tiles.back();
+
+
+        tile.masterTileID = currentTileMasterID;
+
+        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
+        currentTileMasterDelegate = &tile;
+
+        tile.tileType = tileType;
+        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+        sf::Vector2f spriteSize = bounds.getSize();
+
+        if (tile.isAnimated)
+        {
+
+            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames), topRightCoordinate.y - spriteSize.y);
+        }
+        else
+        {
+            tile.sprite.setPosition(topRightCoordinate.x, topRightCoordinate.y);
+        }
+    }
+
+    if (paintingDirection == MasterPaintingDirection::LEFT)
+    {
+        TileType tileType;
+        tileType = currentPaintingGroundType;
+        this->map.tiles.push_back(game->tileAtlas.at(tileName));
+        Tile& tile = this->map.tiles.back();
+
+        tile.masterTileID = currentTileMasterID;
+
+        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
+        currentTileMasterDelegate = &tile;
+
+        tile.tileType = tileType;
+        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+        sf::Vector2f spriteSize = bounds.getSize();
+
+        if (tile.isAnimated)
+        {
+
+            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+        }
+        else
+        {
+            tile.sprite.setPosition(topCoordinate.x - spriteSize.x, topCoordinate.y);
+        }
+    }
+
+
+    if (paintingDirection == MasterPaintingDirection::DOWN)
+    {
+        TileType tileType;
+        tileType = currentPaintingGroundType;
+        this->map.tiles.push_back(game->tileAtlas.at(tileName));
+        Tile& tile = this->map.tiles.back();
+
+        tile.masterTileID = currentTileMasterID;
+
+        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
+        currentTileMasterDelegate = &tile;
+
+        tile.tileType = tileType;
+        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+        sf::Vector2f spriteSize = bounds.getSize();
+
+        if (tile.isAnimated)
+        {
+
+            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+        }
+        else
+        {
+            tile.sprite.setPosition(topCoordinate.x, topCoordinate.y + spriteSize.y);
+        }
+    }
+
+
+    if (paintingDirection == MasterPaintingDirection::UP)
+    {
+        TileType tileType;
+        tileType = currentPaintingGroundType;
+        this->map.tiles.push_back(game->tileAtlas.at(tileName));
+        Tile& tile = this->map.tiles.back();
+
+        tile.masterTileID = currentTileMasterID;
+
+        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
+        currentTileMasterDelegate = &tile;
+
+        tile.tileType = tileType;
+        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+        sf::Vector2f spriteSize = bounds.getSize();
+
+        if (tile.isAnimated)
+        {
+
+            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+        }
+        else
+        {
+            tile.sprite.setPosition(topCoordinate.x, topCoordinate.y - spriteSize.y);
+        }
+    }
+
+
+}
+
 void GameStateStart::handleInput()
 {
     sf::Event event;
@@ -133,165 +294,7 @@ void GameStateStart::handleInput()
 
                 if (this->actionState == RBActionState::PAINTINGWITHMASTER)
                 {
-                    if (currentBrush == nullptr)
-                    {
-                        return;
-                    }
-                    std::string currentBrushName = this->game->brushNames[*currentBrush];
-                    std::string tileName = currentBrushName.replace(currentBrushName.find("Button"), 6, "");
-
-
-                    //check if the mouse position surpasses the delegate's
-                    MasterPaintingDirection paintingDirection = MasterPaintingDirection::NONE;
-
-                    sf::FloatRect bounds = currentTileMasterDelegate->sprite.getGlobalBounds();
-                    sf::Vector2f spriteSize = bounds.getSize();
-
-                    sf::Vector2f topRightCoordinate = GetCurrentTileMasterTopRightCorner();
-                    sf::Vector2f bottomRightCoordinate = GetCurrentTileMasterBottomRightCorner();
-                    sf::Vector2f topCoordinate = GetCurrentTileMasterTopLeftCorner();
-                    std::string currentTileMasterID;
-
-                    if (currentTileMasterDelegate != nullptr) //currentTileMaster is dereferenced. I guess masterdelegate survives because it is assigned in each iteration.
-                        //remember that delegate and master were pointing to the same tile address.
-                    {
-                        currentTileMasterID = currentTileMasterDelegate->masterTileID;
-                    }
-
-                    if (worldPos.x > topRightCoordinate.x && worldPos.y >= topRightCoordinate.y)
-                    {
-                        paintingDirection = MasterPaintingDirection::RIGHT;
-                    }
-                    else if (worldPos.x < topCoordinate.x && worldPos.y >= topCoordinate.y)
-                    {
-                        paintingDirection = MasterPaintingDirection::LEFT;
-                    }
-                    else if (worldPos.y > bottomRightCoordinate.y && worldPos.x <= bottomRightCoordinate.x)
-                    {
-                        paintingDirection = MasterPaintingDirection::DOWN;
-                    }
-                    else if(worldPos.y < topRightCoordinate.y && worldPos.x <= topRightCoordinate.x)
-                    {
-                        paintingDirection = MasterPaintingDirection::UP;
-                    }
-
-
-
-
-                    if (paintingDirection == MasterPaintingDirection::RIGHT)
-                    {
-                        TileType tileType;
-                        tileType = currentPaintingGroundType;
-                        this->map.tiles.push_back(game->tileAtlas.at(tileName));
-                        Tile& tile = this->map.tiles.back();
-                        
-
-                        tile.masterTileID = currentTileMasterID;
-
-                        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
-                        currentTileMasterDelegate = &tile;
-
-                        tile.tileType = tileType;
-                        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
-                        sf::Vector2f spriteSize = bounds.getSize();
-
-                        if (tile.isAnimated)
-                        {
-
-                            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames), topRightCoordinate.y - spriteSize.y);
-                        }
-                        else
-                        {
-                            tile.sprite.setPosition(topRightCoordinate.x, topRightCoordinate.y);
-                        }
-                    }
-
-                    if (paintingDirection == MasterPaintingDirection::LEFT)
-                    {
-                        TileType tileType;
-                        tileType = currentPaintingGroundType;
-                        this->map.tiles.push_back(game->tileAtlas.at(tileName));
-                        Tile& tile = this->map.tiles.back();
-
-                        tile.masterTileID = currentTileMasterID;
-
-                        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
-                        currentTileMasterDelegate = &tile;
-
-                        tile.tileType = tileType;
-                        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
-                        sf::Vector2f spriteSize = bounds.getSize();
-
-                        if (tile.isAnimated)
-                        {
-
-                            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
-                        }
-                        else
-                        {
-                            tile.sprite.setPosition(topCoordinate.x - spriteSize.x, topCoordinate.y);
-                        }
-                    }
-
-
-                    if (paintingDirection == MasterPaintingDirection::DOWN)
-                    {
-                        TileType tileType;
-                        tileType = currentPaintingGroundType;
-                        this->map.tiles.push_back(game->tileAtlas.at(tileName));
-                        Tile& tile = this->map.tiles.back();
-
-                        tile.masterTileID = currentTileMasterID;
-
-                        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
-                        currentTileMasterDelegate = &tile;
-
-                        tile.tileType = tileType;
-                        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
-                        sf::Vector2f spriteSize = bounds.getSize();
-
-                        if (tile.isAnimated)
-                        {
-
-                            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
-                        }
-                        else
-                        {
-                            tile.sprite.setPosition(topCoordinate.x, topCoordinate.y + spriteSize.y);
-                        }
-                    }
-
-
-                    if (paintingDirection == MasterPaintingDirection::UP)
-                    {
-                        TileType tileType;
-                        tileType = currentPaintingGroundType;
-                        this->map.tiles.push_back(game->tileAtlas.at(tileName));
-                        Tile& tile = this->map.tiles.back();
-
-                        tile.masterTileID = currentTileMasterID;
-
-                        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
-                        currentTileMasterDelegate = &tile;
-
-                        tile.tileType = tileType;
-                        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
-                        sf::Vector2f spriteSize = bounds.getSize();
-
-                        if (tile.isAnimated)
-                        {
-
-                            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
-                        }
-                        else
-                        {
-                            tile.sprite.setPosition(topCoordinate.x, topCoordinate.y - spriteSize.y);
-                        }
-                    }
-                                     
-                    
-
-                    //currentTileHovered = new int(map.tiles.size() - 1);
+                    executePaintingWithMaster(worldPos);
                 }
                 
                 if (this->actionState == RBActionState::MOVING && currentTileHovered != nullptr)
@@ -784,16 +787,12 @@ void GameStateStart::handleInput()
             else if (event.key.code == sf::Keyboard::LControl) this->LControlKeyPressed = true;
             else if (event.key.code == sf::Keyboard::S) this->SKeyPressed = true;
             else if (event.key.code == sf::Keyboard::M) this->MKeyPressed = true;
+            else if (event.key.code == sf::Keyboard::D) this->DKeyPressed = true;
             else if (event.key.code == sf::Keyboard::L) this->LKeyPressed = true;
             else if (event.key.code == sf::Keyboard::T) this->TKeyPressed = true;
             else if (event.key.code == sf::Keyboard::H)
             {
                 currentTileHovered = nullptr;
-            }
-
-            if (MKeyPressed)
-            {
-                int a = 0;
             }
             
 
@@ -844,6 +843,10 @@ void GameStateStart::handleInput()
             else if (event.key.code == sf::Keyboard::M)
             {
                 MKeyPressed = false;
+            }
+            else if (event.key.code == sf::Keyboard::D)
+            {
+                DKeyPressed = false;
             }
             else if (event.key.code == sf::Keyboard::LControl)
             {

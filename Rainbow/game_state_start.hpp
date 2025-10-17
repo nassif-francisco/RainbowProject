@@ -33,6 +33,7 @@ private:
     bool LKeyPressed = false;
     bool TKeyPressed = false;
     bool MKeyPressed = false;
+    bool DKeyPressed = false;
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
     int* currentMainHandleHovered = nullptr;
@@ -128,6 +129,7 @@ private:
     bool checkIfMouseClickIsOnVertexHandle(sf::Vector2f position);
     bool checkIfMouseClickIsOnMainHandle(sf::Vector2f position);
     void drawBoardCollection(Game* game);
+    void executePaintingWithMaster(sf::Vector2f worldPos);
     //std::string getCurrentTyleID();
 
 public:
