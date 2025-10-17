@@ -179,6 +179,7 @@ void GameStateStart::handleInput()
                         Tile& tile = this->map.tiles.back();
 
                         tile.TileMaster = currentTileMaster;
+                        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
                         currentTileMasterDelegate = &tile;
 
 
@@ -191,7 +192,7 @@ void GameStateStart::handleInput()
                         if (tile.isAnimated)
                         {
 
-                            tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+                            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames), topRightCoordinate.y - spriteSize.y);
                         }
                         else
                         {
@@ -207,6 +208,7 @@ void GameStateStart::handleInput()
                         Tile& tile = this->map.tiles.back();
 
                         tile.TileMaster = currentTileMaster;
+                        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
                         currentTileMasterDelegate = &tile;
 
                         tile.tileType = tileType;
@@ -216,7 +218,7 @@ void GameStateStart::handleInput()
                         if (tile.isAnimated)
                         {
 
-                            tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+                            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
                         }
                         else
                         {
@@ -233,6 +235,7 @@ void GameStateStart::handleInput()
                         Tile& tile = this->map.tiles.back();
 
                         tile.TileMaster = currentTileMaster;
+                        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
                         currentTileMasterDelegate = &tile;
 
                         tile.tileType = tileType;
@@ -242,7 +245,7 @@ void GameStateStart::handleInput()
                         if (tile.isAnimated)
                         {
 
-                            tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+                            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
                         }
                         else
                         {
@@ -259,6 +262,7 @@ void GameStateStart::handleInput()
                         Tile& tile = this->map.tiles.back();
 
                         tile.TileMaster = currentTileMaster;
+                        tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
                         currentTileMasterDelegate = &tile;
 
                         tile.tileType = tileType;
@@ -268,7 +272,7 @@ void GameStateStart::handleInput()
                         if (tile.isAnimated)
                         {
 
-                            tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+                            //tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
                         }
                         else
                         {
@@ -290,7 +294,39 @@ void GameStateStart::handleInput()
 
                     sf::FloatRect bounds = tile.sprite.getGlobalBounds();
                     sf::Vector2f spriteSize = bounds.getSize();
+
+                    float oldMasterTileXPos = bounds.getPosition().x;
+                    float oldMasterTileYPos = bounds.getPosition().y;
+
                     tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
+
+                    float newMasterTileXPos = worldPos.x - spriteSize.x / 2;
+                    float newMasterTileYPos = worldPos.y - spriteSize.y / 2;
+
+                    float deltaX = std::abs(newMasterTileXPos - oldMasterTileXPos);
+                    if (newMasterTileXPos < oldMasterTileXPos)
+                    {
+                        deltaX *= -1;
+                    }
+                    float deltaY = std::abs(newMasterTileYPos - oldMasterTileYPos);
+                    if (newMasterTileYPos < oldMasterTileYPos)
+                    {
+                        deltaY *= -1;
+                    }
+
+                    //if tile is master, move slaves
+                    if (tile.tileMasterSlaveType == TileMasterSlaveType::MASTER)
+                    {
+                        for (auto &tiledelegate:map.tiles)
+                        {
+                            if (tiledelegate.tileMasterSlaveType == TileMasterSlaveType::SLAVE)
+                            {
+                                tiledelegate.sprite.setPosition(tiledelegate.sprite.getGlobalBounds().getPosition().x + deltaX, tiledelegate.sprite.getGlobalBounds().getPosition().y + deltaY);
+                            }
+                        }
+                    }
+
+
                     break;
                 }
 
@@ -617,6 +653,8 @@ void GameStateStart::handleInput()
 
                 currentTileMaster = &tile;
                 currentTileMasterDelegate = &tile;
+
+                tile.tileMasterSlaveType = TileMasterSlaveType::MASTER;
 
                 tile.tileType = tileType;
                 sf::FloatRect bounds = tile.sprite.getGlobalBounds();

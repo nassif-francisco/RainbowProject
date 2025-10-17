@@ -28,5 +28,7 @@ enum class RBActionState { NONE, PANNING, PAINTING, BRUSHING, MOVING, EDITING, T
 
 enum class MasterPaintingDirection {RIGHT, LEFT, DOWN, UP, NONE};
 
+enum class TileMasterSlaveType {MASTER, SLAVE, NONE};
+
 
 #endif /* ANIMATION_HANDLER_HPP */
