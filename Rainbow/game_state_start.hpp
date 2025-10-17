@@ -22,6 +22,10 @@ private:
 
     int* currentBrush = nullptr;
     TileType currentPaintingGroundType = TileType::BACKGROUND;
+
+    Tile* currentTileMaster = nullptr;
+    Tile* currentTileMasterDelegate = nullptr;
+
     int* currentTileHovered = nullptr;
     bool LControlKeyPressed = false;
     bool SKeyPressed = false;
@@ -54,6 +58,40 @@ private:
 			return RBConstants::toolbarHeightFactor_2560x1600;
 		}
 	}
+
+    sf::Vector2f GetCurrentTileMasterTopLeftCorner()
+    {
+        float tileXPosition = currentTileMasterDelegate->sprite.getGlobalBounds().getPosition().x;
+        float tileYPosition = currentTileMasterDelegate->sprite.getGlobalBounds().getPosition().y;
+
+        return sf::Vector2f(tileXPosition, tileYPosition);
+    }
+    sf::Vector2f GetCurrentTileMasterTopRightCorner()
+    {
+        float width = currentTileMasterDelegate->sprite.getGlobalBounds().getSize().x;
+        float tileXPosition = currentTileMasterDelegate->sprite.getGlobalBounds().getPosition().x;
+        float tileYPosition = currentTileMasterDelegate->sprite.getGlobalBounds().getPosition().y;
+        
+        return sf::Vector2f( tileXPosition + width, tileYPosition);
+    }
+
+    sf::Vector2f GetCurrentTileMasterBottomLeftCorner()
+    {
+        float height = currentTileMasterDelegate->sprite.getGlobalBounds().getSize().y;
+        float tileXPosition = currentTileMasterDelegate->sprite.getGlobalBounds().getPosition().x;
+        float tileYPosition = currentTileMasterDelegate->sprite.getGlobalBounds().getPosition().y;
+
+        return sf::Vector2f(tileXPosition, tileYPosition + height);
+    }
+    sf::Vector2f GetCurrentTileMasterBottomRightCorner()
+    {
+        float height = currentTileMasterDelegate->sprite.getGlobalBounds().getSize().y;
+        float width = currentTileMasterDelegate->sprite.getGlobalBounds().getSize().x;
+        float tileXPosition = currentTileMasterDelegate->sprite.getGlobalBounds().getPosition().x;
+        float tileYPosition = currentTileMasterDelegate->sprite.getGlobalBounds().getPosition().y;
+
+        return sf::Vector2f(tileXPosition + width, tileYPosition + height);
+    }
 
     Canvas canvas;
     Map map;

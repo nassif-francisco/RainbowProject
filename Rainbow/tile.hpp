@@ -21,7 +21,7 @@ public:
     TileType tileType;
 
     std::string tileName;
-    TileMasterSlaveClass tileMasterSlaveClass = TileMasterSlaveClass::NONE;
+    Tile* TileMaster = nullptr;
 
     int frames;
 

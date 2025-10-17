@@ -139,24 +139,63 @@ void GameStateStart::handleInput()
                     }
                     std::string currentBrushName = this->game->brushNames[*currentBrush];
                     std::string tileName = currentBrushName.replace(currentBrushName.find("Button"), 6, "");
-                                     
-                    TileType tileType;
-                    tileType = currentPaintingGroundType;
-                    this->map.tiles.push_back(game->tileAtlas.at(tileName));
-                    Tile& tile = this->map.tiles.back();
-                    tile.tileType = tileType;
-                    sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+
+
+                    //check if the mouse position surpasses the delegate's
+                    MasterPaintingDirection paintingDirection = MasterPaintingDirection::NONE;
+
+                    sf::FloatRect bounds = currentTileMasterDelegate->sprite.getGlobalBounds();
                     sf::Vector2f spriteSize = bounds.getSize();
 
-                    if (tile.isAnimated)
+                    sf::Vector2f topRightCoordinate = GetCurrentTileMasterTopRightCorner();
+                    sf::Vector2f bottomRightCoordinate = GetCurrentTileMasterBottomRightCorner();
+                    sf::Vector2f topCoordinate = GetCurrentTileMasterTopLeftCorner();
+
+                    if (worldPos.x > topRightCoordinate.x)
+                    {
+                        paintingDirection = MasterPaintingDirection::RIGHT;
+                    }
+                    /*else if ()
                     {
 
-                        tile.sprite.setPosition(worldPos.x - (spriteSize.x / tile.frames) / 2, worldPos.y - spriteSize.y / 2);
                     }
-                    else
+                    else if ()
                     {
-                        tile.sprite.setPosition(worldPos.x - spriteSize.x / 2, worldPos.y - spriteSize.y / 2);
+
                     }
+                    else if()
+                    {
+                    
+                    }*/
+                    if (paintingDirection == MasterPaintingDirection::RIGHT)
+                    {
+                        TileType tileType;
+                        tileType = currentPaintingGroundType;
+                        this->map.tiles.push_back(game->tileAtlas.at(tileName));
+                        Tile& tile = this->map.tiles.back();
+
+                        tile.TileMaster = currentTileMaster;
+                        currentTileMasterDelegate = &tile;
+
+
+
+
+                        tile.tileType = tileType;
+                        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+                        sf::Vector2f spriteSize = bounds.getSize();
+
+                        if (tile.isAnimated)
+                        {
+
+                            tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+                        }
+                        else
+                        {
+                            tile.sprite.setPosition(topRightCoordinate.x, topRightCoordinate.y);
+                        }
+                    }
+                                     
+                    
 
                     //currentTileHovered = new int(map.tiles.size() - 1);
                 }
@@ -494,6 +533,10 @@ void GameStateStart::handleInput()
                 tileType = currentPaintingGroundType;
                 this->map.tiles.push_back(game->tileAtlas.at(tileName));
                 Tile& tile = this->map.tiles.back();
+
+                currentTileMaster = &tile;
+                currentTileMasterDelegate = &tile;
+
                 tile.tileType = tileType;
                 sf::FloatRect bounds = tile.sprite.getGlobalBounds();
                 sf::Vector2f spriteSize = bounds.getSize();
@@ -553,6 +596,8 @@ void GameStateStart::handleInput()
                     || this->actionState == RBActionState::PAINTINGWITHMASTER)
                 {
                     this->actionState = RBActionState::NONE;
+                    currentTileMaster = nullptr;
+                    currentTileMasterDelegate = nullptr;
                 }
             }
             break;
