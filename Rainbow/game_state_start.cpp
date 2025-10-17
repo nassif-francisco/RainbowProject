@@ -151,22 +151,26 @@ void GameStateStart::handleInput()
                     sf::Vector2f bottomRightCoordinate = GetCurrentTileMasterBottomRightCorner();
                     sf::Vector2f topCoordinate = GetCurrentTileMasterTopLeftCorner();
 
-                    if (worldPos.x > topRightCoordinate.x)
+                    if (worldPos.x > topRightCoordinate.x && worldPos.y >= topRightCoordinate.y)
                     {
                         paintingDirection = MasterPaintingDirection::RIGHT;
                     }
-                    /*else if ()
+                    else if (worldPos.x < topCoordinate.x && worldPos.y >= topCoordinate.y)
                     {
-
+                        paintingDirection = MasterPaintingDirection::LEFT;
                     }
-                    else if ()
+                    else if (worldPos.y > bottomRightCoordinate.y && worldPos.x <= bottomRightCoordinate.x)
                     {
-
+                        paintingDirection = MasterPaintingDirection::DOWN;
                     }
-                    else if()
+                    else if(worldPos.y < topRightCoordinate.y && worldPos.x <= topRightCoordinate.x)
                     {
-                    
-                    }*/
+                        paintingDirection = MasterPaintingDirection::UP;
+                    }
+
+
+
+
                     if (paintingDirection == MasterPaintingDirection::RIGHT)
                     {
                         TileType tileType;
@@ -192,6 +196,83 @@ void GameStateStart::handleInput()
                         else
                         {
                             tile.sprite.setPosition(topRightCoordinate.x, topRightCoordinate.y);
+                        }
+                    }
+
+                    if (paintingDirection == MasterPaintingDirection::LEFT)
+                    {
+                        TileType tileType;
+                        tileType = currentPaintingGroundType;
+                        this->map.tiles.push_back(game->tileAtlas.at(tileName));
+                        Tile& tile = this->map.tiles.back();
+
+                        tile.TileMaster = currentTileMaster;
+                        currentTileMasterDelegate = &tile;
+
+                        tile.tileType = tileType;
+                        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+                        sf::Vector2f spriteSize = bounds.getSize();
+
+                        if (tile.isAnimated)
+                        {
+
+                            tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+                        }
+                        else
+                        {
+                            tile.sprite.setPosition(topCoordinate.x - spriteSize.x, topCoordinate.y);
+                        }
+                    }
+
+
+                    if (paintingDirection == MasterPaintingDirection::DOWN)
+                    {
+                        TileType tileType;
+                        tileType = currentPaintingGroundType;
+                        this->map.tiles.push_back(game->tileAtlas.at(tileName));
+                        Tile& tile = this->map.tiles.back();
+
+                        tile.TileMaster = currentTileMaster;
+                        currentTileMasterDelegate = &tile;
+
+                        tile.tileType = tileType;
+                        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+                        sf::Vector2f spriteSize = bounds.getSize();
+
+                        if (tile.isAnimated)
+                        {
+
+                            tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+                        }
+                        else
+                        {
+                            tile.sprite.setPosition(topCoordinate.x, topCoordinate.y + spriteSize.y);
+                        }
+                    }
+
+
+                    if (paintingDirection == MasterPaintingDirection::UP)
+                    {
+                        TileType tileType;
+                        tileType = currentPaintingGroundType;
+                        this->map.tiles.push_back(game->tileAtlas.at(tileName));
+                        Tile& tile = this->map.tiles.back();
+
+                        tile.TileMaster = currentTileMaster;
+                        currentTileMasterDelegate = &tile;
+
+                        tile.tileType = tileType;
+                        sf::FloatRect bounds = tile.sprite.getGlobalBounds();
+                        sf::Vector2f spriteSize = bounds.getSize();
+
+                        if (tile.isAnimated)
+                        {
+
+                            tile.sprite.setPosition(topRightCoordinate.x - (spriteSize.x / tile.frames) / 2, topRightCoordinate.y - spriteSize.y / 2);
+                        }
+                        else
+                        {
+                            tile.sprite.setPosition(topCoordinate.x, topCoordinate.y - spriteSize.y);
                         }
                     }
                                      
