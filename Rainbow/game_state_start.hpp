@@ -9,6 +9,7 @@
 #include "constants.hpp"
 #include <string>
 #include "mapGrid.hpp"
+#include <random>
 
 
 class GameStateStart : public GameState
@@ -58,6 +59,27 @@ private:
 			return RBConstants::toolbarHeightFactor_2560x1600;
 		}
 	}
+
+    std::string generateRandomString(size_t length = 6)
+    {
+        static const std::string chars =
+            "0123456789"
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            "abcdefghijklmnopqrstuvwxyz";
+
+        // Use a random device and Mersenne Twister for high-quality randomness
+        static std::random_device rd;
+        static std::mt19937 generator(rd());
+        std::uniform_int_distribution<> dist(0, static_cast<int>(chars.size() - 1));
+
+        std::string result;
+        result.reserve(length);
+
+        for (size_t i = 0; i < length; ++i)
+            result += chars[dist(generator)];
+
+        return result;
+    }
 
     sf::Vector2f GetCurrentTileMasterTopLeftCorner()
     {

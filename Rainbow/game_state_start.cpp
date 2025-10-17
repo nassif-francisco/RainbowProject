@@ -150,6 +150,12 @@ void GameStateStart::handleInput()
                     sf::Vector2f topRightCoordinate = GetCurrentTileMasterTopRightCorner();
                     sf::Vector2f bottomRightCoordinate = GetCurrentTileMasterBottomRightCorner();
                     sf::Vector2f topCoordinate = GetCurrentTileMasterTopLeftCorner();
+                    std::string currentTileMasterID;
+
+                    if (currentTileMaster != nullptr)
+                    {
+                        currentTileMasterID = currentTileMasterDelegate->masterTileID;
+                    }
 
                     if (worldPos.x > topRightCoordinate.x && worldPos.y >= topRightCoordinate.y)
                     {
@@ -177,13 +183,12 @@ void GameStateStart::handleInput()
                         tileType = currentPaintingGroundType;
                         this->map.tiles.push_back(game->tileAtlas.at(tileName));
                         Tile& tile = this->map.tiles.back();
+                        
 
-                        tile.TileMaster = currentTileMaster;
+                        tile.masterTileID = currentTileMasterID;
+
                         tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
                         currentTileMasterDelegate = &tile;
-
-
-
 
                         tile.tileType = tileType;
                         sf::FloatRect bounds = tile.sprite.getGlobalBounds();
@@ -207,7 +212,8 @@ void GameStateStart::handleInput()
                         this->map.tiles.push_back(game->tileAtlas.at(tileName));
                         Tile& tile = this->map.tiles.back();
 
-                        tile.TileMaster = currentTileMaster;
+                        tile.masterTileID = currentTileMasterID;
+
                         tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
                         currentTileMasterDelegate = &tile;
 
@@ -234,7 +240,8 @@ void GameStateStart::handleInput()
                         this->map.tiles.push_back(game->tileAtlas.at(tileName));
                         Tile& tile = this->map.tiles.back();
 
-                        tile.TileMaster = currentTileMaster;
+                        tile.masterTileID = currentTileMasterID;
+
                         tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
                         currentTileMasterDelegate = &tile;
 
@@ -261,7 +268,8 @@ void GameStateStart::handleInput()
                         this->map.tiles.push_back(game->tileAtlas.at(tileName));
                         Tile& tile = this->map.tiles.back();
 
-                        tile.TileMaster = currentTileMaster;
+                        tile.masterTileID = currentTileMasterID;
+
                         tile.tileMasterSlaveType = TileMasterSlaveType::SLAVE;
                         currentTileMasterDelegate = &tile;
 
@@ -319,7 +327,7 @@ void GameStateStart::handleInput()
                     {
                         for (auto &tiledelegate:map.tiles)
                         {
-                            if (tiledelegate.tileMasterSlaveType == TileMasterSlaveType::SLAVE)
+                            if (tiledelegate.tileMasterSlaveType == TileMasterSlaveType::SLAVE && tiledelegate.masterTileID == tile.masterTileID)
                             {
                                 tiledelegate.sprite.setPosition(tiledelegate.sprite.getGlobalBounds().getPosition().x + deltaX, tiledelegate.sprite.getGlobalBounds().getPosition().y + deltaY);
                             }
@@ -655,6 +663,7 @@ void GameStateStart::handleInput()
                 currentTileMasterDelegate = &tile;
 
                 tile.tileMasterSlaveType = TileMasterSlaveType::MASTER;
+                tile.masterTileID = generateRandomString();
 
                 tile.tileType = tileType;
                 sf::FloatRect bounds = tile.sprite.getGlobalBounds();

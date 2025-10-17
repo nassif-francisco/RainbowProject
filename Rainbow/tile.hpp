@@ -23,6 +23,7 @@ public:
     std::string tileName;
     Tile* TileMaster = nullptr;
     TileMasterSlaveType tileMasterSlaveType = TileMasterSlaveType::NONE;
+    std::string masterTileID;
 
 
     int frames;
