@@ -872,6 +872,55 @@ void GameStateTileSplitter::loadgame()
     return;
 }
 
+void GameStateTileSplitter::insertDefaultHitboxesForSprites(string filename, float spritewidth, float spriteheight)
+{
+    
+    int verticalFrames = 0;
+    int horizontalFrames = 1; //by default, take the whole width of the image
+
+    std::vector<int> numbers;
+
+    for (size_t pos = 0; (pos = filename.find('_', pos)) != std::string::npos; ++pos) {
+        if (pos + 1 < filename.size() && std::isdigit(filename[pos + 1])) {
+            numbers.push_back(filename[pos + 1] - '0');
+        }
+    }
+
+    if (numbers.size() == 0)
+    {
+        return;
+    }
+
+    if (numbers.size() >= 1) {
+        verticalFrames = numbers[0];
+    }
+    if (numbers.size() >= 2) {
+        horizontalFrames = numbers[1];
+    }
+
+    float currentSpriteWidht = spritewidth / horizontalFrames;
+    float currentSpriteHeight = spriteheight / verticalFrames;
+
+    sf::Vector2f worldPos = sf::Vector2f(XCornerTileSet, YCornerTileSet);
+
+    for (int k= 0; k < verticalFrames; k++)
+    { 
+        std::vector<sf::Vector2f> hitboxPositions = { worldPos,
+            sf::Vector2f(worldPos.x + currentSpriteWidht, worldPos.y),
+            sf::Vector2f(worldPos.x + currentSpriteWidht, worldPos.y + currentSpriteHeight),
+            sf::Vector2f(worldPos.x, worldPos.y + currentSpriteHeight) };
+
+        //Hitbox* hitbox = new Hitbox(hitboxPositions);
+        Hitbox currentHitbox(hitboxPositions);
+
+        this->map.hitboxes.push_back(currentHitbox);
+
+        worldPos.y += currentSpriteHeight;
+
+    }
+
+}
+
 void GameStateTileSplitter::insertTileSetInScreen(string tilesetFileName)
 {
     std::string fileName(tilesetFileName);
@@ -900,15 +949,18 @@ void GameStateTileSplitter::insertTileSetInScreen(string tilesetFileName)
     YCornerTileSet = ycoord;
 
     tile.sprite.setPosition(xcoord, ycoord);
+
+    insertDefaultHitboxesForSprites(fileName, spritewidth*2, spriteheight*2);
+
+    //check if tilename contains "_" character
+
+    
 }
 
 void GameStateTileSplitter::createTilesUsingHitboxes(string fileName)
 {
     for (auto& hitbox : map.hitboxes)
     {
-
-
-
         sf::Image sourceImage;
         if (!sourceImage.loadFromFile(fileName))
         {

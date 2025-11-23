@@ -55,6 +55,7 @@ private:
     Map map;
     void loadgame();
     void insertTileSetInScreen(string fileName);
+    void insertDefaultHitboxesForSprites(string fileNam, float spritewidth, float spriteheighte);
     void createTilesUsingHitboxes(string fileName);
     void assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f size);
     void assembleMainMenu(Game* game, sf::Vector2f pos, sf::Vector2f size);
