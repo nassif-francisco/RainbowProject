@@ -26,6 +26,8 @@ private:
     int* currentHitboxHovered = nullptr;
     int* currentVertexHandleHovered = nullptr;
     int* currentMainHandleHovered = nullptr;
+    int verticalFrames = 0;
+    int horizontalFrames = 1; //by default, take the whole width of the image
 
     float XCornerTileSet;
     float YCornerTileSet;

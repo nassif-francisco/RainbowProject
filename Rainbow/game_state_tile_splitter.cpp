@@ -874,10 +874,7 @@ void GameStateTileSplitter::loadgame()
 
 void GameStateTileSplitter::insertDefaultHitboxesForSprites(string filename, float spritewidth, float spriteheight)
 {
-    
-    int verticalFrames = 0;
-    int horizontalFrames = 1; //by default, take the whole width of the image
-
+   
     std::vector<int> numbers;
 
     for (size_t pos = 0; (pos = filename.find('_', pos)) != std::string::npos; ++pos) {
@@ -898,7 +895,7 @@ void GameStateTileSplitter::insertDefaultHitboxesForSprites(string filename, flo
         horizontalFrames = numbers[1];
     }
 
-    float currentSpriteWidht = spritewidth / horizontalFrames;
+    float currentSpriteWidht = spritewidth / 1;
     float currentSpriteHeight = spriteheight / verticalFrames;
 
     sf::Vector2f worldPos = sf::Vector2f(XCornerTileSet, YCornerTileSet);
@@ -992,8 +989,17 @@ void GameStateTileSplitter::createTilesUsingHitboxes(string fileName)
         ////////////////////////////////////
         string guidStr = generateRandomString();
         ///////////////////////////////
+        string finalPathNewTile;
 
-        string finalPathNewTile = finalPathNewTileBase + guidStr + ".png";
+        if (verticalFrames > 0) //then it is a sprite
+        {
+            finalPathNewTile = finalPathNewTileBase + guidStr + "Sprite" + "_" + std::to_string(horizontalFrames) +".png";
+        }
+        else
+        {
+            finalPathNewTile = finalPathNewTileBase + guidStr + ".png";
+        }
+
         if (!subImage.saveToFile(finalPathNewTile))
         {
             std::cerr << "Failed to save image\n";
@@ -1031,7 +1037,16 @@ void GameStateTileSplitter::createTilesUsingHitboxes(string fileName)
         // Get the resized image
         sf::Image resizedImage = renderTexture.getTexture().copyToImage();
 
-        string finalPathNewTileIcon = finalPathNewTileBase + guidStr + "Button.png";
+        string finalPathNewTileIcon;
+
+        if (verticalFrames > 0) //then it is a sprite
+        {
+            finalPathNewTileIcon = finalPathNewTileBase + guidStr + "Sprite" + "_" + std::to_string(horizontalFrames) + "Button.png";
+        }
+        else
+        {
+            finalPathNewTileIcon = finalPathNewTileBase + guidStr + "Button.png";
+        }
 
         // Save to file
         if (!resizedImage.saveToFile(finalPathNewTileIcon))
