@@ -977,6 +977,8 @@ void GameStateStart::assembleToolbar(Game* game, sf::Vector2f pos, sf::Vector2f 
     float brushPositionY = pos.y + brushDistance + toolbarOffsetPosition;
 
     size_t totalTiles = game->tileNames.size();
+    size_t totalspriteTiles = game->tileSprites.size();
+    totalTiles += totalspriteTiles -1;
 
     for (int i =0; i < totalTiles; i++)
     {
