@@ -61,6 +61,10 @@ private:
 		{
 			return RBConstants::toolbarHeightFactor_2560x1600;
 		}
+        else if (this->game->currentResolution == "_1440x900")
+        {
+            return RBConstants::toolbarHeightFactor_1440x900;
+        }
 	}
 
     std::string generateRandomString(size_t length = 6)
